@@ -4,13 +4,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.thkong.tradedun.Common.httpConnection;
+import com.thkong.tradedun.User.vo.Access_token_info;
 import com.thkong.tradedun.User.vo.KakaoLoginOutput;
 
 @Service
@@ -69,7 +68,20 @@ public class userServiceImpl implements userService {
 		ObjectMapper mapper = new ObjectMapper();
 		KakaoLoginOutput output = mapper.readValue(out, KakaoLoginOutput.class);
 		
+		kakaoInfo(output.getAccess_token());
+		
 		return output.getAccess_token();
+	}
+	
+	public void kakaoInfo(String access_token) throws IOException {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("Authorization", "Bearer "+ access_token);
+		
+		String out = conn.HttpGetConnection("https://kapi.kakao.com/v1/user/access_token_info", map).toString();
+		ObjectMapper mapper = new ObjectMapper();
+		Access_token_info output = mapper.readValue(out, Access_token_info.class);
+		
+		System.out.println("아이디 : " + output.getId());
 	}
 
 }

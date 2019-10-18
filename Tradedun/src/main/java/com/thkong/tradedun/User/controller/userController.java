@@ -25,14 +25,11 @@ public class userController {
 	}
 	
 	@RequestMapping(value="/kakaoLogin", method = RequestMethod.GET)
-	public String kakaoLogin(@RequestParam(name = "code", required = true) String code, HttpServletRequest req) {
-		System.out.println("code : " + code);
+	public String kakaoLogin(@RequestParam(name = "code", required = true) String code, HttpServletRequest req) throws IOException {
+		
 		String redirectUrl = req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort();
-		try {
-			service.kakaoLogin(code, redirectUrl);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		req.getSession().setAttribute("access_token", service.kakaoLogin(code, redirectUrl));
+		
 		return null;
 	}
 }
