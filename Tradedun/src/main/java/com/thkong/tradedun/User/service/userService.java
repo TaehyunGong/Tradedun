@@ -1,8 +1,10 @@
 package com.thkong.tradedun.User.service;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 public interface userService {
 
-	public String login(String SNS, HttpServletRequest req);
+	public String login(String SNS, String redirectUrl);
+	
+	public String kakaoLogin(String code, String redirectUrl) throws IOException ;
 }

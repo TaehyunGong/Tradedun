@@ -1,5 +1,7 @@
 package com.thkong.tradedun.User.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,19 @@ public class userController {
 	
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public String login(@RequestParam(name = "SNS", required = true) String SNS, HttpServletRequest req) {
-		return service.login(SNS, req);
+		String redirectUrl = req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort();
+		return service.login(SNS, redirectUrl);
+	}
+	
+	@RequestMapping(value="/kakaoLogin", method = RequestMethod.GET)
+	public String kakaoLogin(@RequestParam(name = "code", required = true) String code, HttpServletRequest req) {
+		System.out.println("code : " + code);
+		String redirectUrl = req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort();
+		try {
+			service.kakaoLogin(code, redirectUrl);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
