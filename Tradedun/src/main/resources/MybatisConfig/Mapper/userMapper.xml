@@ -3,4 +3,9 @@
 
 <mapper namespace="com.thkong.tradedun.User.dao.userDao">
 
+	<select id="selectUserOne" parameterType="String" resultType="User">
+		SELECT userNo, snsId, nickName, email, emailYN, messageYN, createDT, deleteDT
+		FROM   User
+		WHERE  userNo = #{userId} 
+	</select>
 </mapper>

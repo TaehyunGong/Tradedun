@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.thkong.tradedun.Common.httpConnection;
+import com.thkong.tradedun.User.dao.userDao;
 import com.thkong.tradedun.User.vo.Access_token_info;
 import com.thkong.tradedun.User.vo.KakaoLoginOutput;
+import com.thkong.tradedun.User.vo.User;
 
 @Service
 public class userServiceImpl implements userService {
@@ -20,6 +23,9 @@ public class userServiceImpl implements userService {
 	
 	@Value("#{props['kakako.AdminKey']}")
 	private String kakaoAdminKey;
+	
+	@Autowired
+	private userDao dao;
 	
 	private httpConnection conn = httpConnection.getInstance();
 	
@@ -73,6 +79,30 @@ public class userServiceImpl implements userService {
 		return output.getAccess_token();
 	}
 	
+	/**
+	 * @description SNS종류에 따라 로그인을 시도한다. 만약 최초 ID라면 회원가입도 동시에 시켜준다.
+	 * @createDate 2019. 10. 21.
+	 * @param userNo
+	 * @param sns
+	 * @return
+	 */
+	public User snsLoginAndJoin(String userId, String sns) {
+		User user = dao.selectUserOne(userId);
+		
+		if(user == null) {
+			System.out.println("없음");
+		}
+		
+		return null;
+	}
+	
+	
+	/**
+	 * @description 카카오톡의 access_token를 가지고 고유의 userid를 가져온다.
+	 * @createDate 2019. 10. 21.
+	 * @param access_token
+	 * @throws IOException
+	 */
 	public void kakaoInfo(String access_token) throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("Authorization", "Bearer "+ access_token);
@@ -81,7 +111,7 @@ public class userServiceImpl implements userService {
 		ObjectMapper mapper = new ObjectMapper();
 		Access_token_info output = mapper.readValue(out, Access_token_info.class);
 		
-		System.out.println("아이디 : " + output.getId());
+		snsLoginAndJoin(output.getId(), "kakao");
 	}
 
 }
