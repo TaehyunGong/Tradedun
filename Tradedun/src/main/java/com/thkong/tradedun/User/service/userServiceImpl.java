@@ -1,9 +1,11 @@
 package com.thkong.tradedun.User.service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.thkong.tradedun.Common.httpConnection;
 import com.thkong.tradedun.User.dao.userDao;
 import com.thkong.tradedun.User.vo.Access_token_info;
+import com.thkong.tradedun.User.vo.KakaoInfoDetail;
 import com.thkong.tradedun.User.vo.KakaoLoginOutput;
 import com.thkong.tradedun.User.vo.User;
 
@@ -28,7 +31,13 @@ public class userServiceImpl implements userService {
 	private userDao dao;
 	
 	private httpConnection conn = httpConnection.getInstance();
+	private ObjectMapper mapper = null;
 	
+	public userServiceImpl() {
+		this.mapper = new ObjectMapper();
+		mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
+
 	/**
 	 * @description 카카오톡 로그인을 하기위해 카카오 로그인 페이지로 리다이렉트 url를 생성해준다.
 	 * @createDate 2019. 10. 19.
@@ -71,7 +80,6 @@ public class userServiceImpl implements userService {
 		
 		String out = conn.HttpPostConnection("https://kauth.kakao.com/oauth/token", map).toString();
 		
-		ObjectMapper mapper = new ObjectMapper();
 		KakaoLoginOutput output = mapper.readValue(out, KakaoLoginOutput.class);
 		
 		kakaoInfo(output.getAccess_token());
@@ -85,12 +93,16 @@ public class userServiceImpl implements userService {
 	 * @param userNo
 	 * @param sns
 	 * @return
+	 * @throws IOException 
 	 */
-	public User snsLoginAndJoin(String userId, String sns) {
+	public User snsLoginAndJoin(String userId, String sns) throws IOException {
 		User user = dao.selectUserOne(userId);
+		System.out.println("USER : + " + user);
 		
+		//해당 유저가 가입돼 있지 않다면 가입시켜준다.
 		if(user == null) {
-			System.out.println("없음");
+			int result = dao.insertUser(kakaoInfoDetail(userId));
+			System.out.println("결과  : " + result);
 		}
 		
 		return null;
@@ -108,10 +120,34 @@ public class userServiceImpl implements userService {
 		map.put("Authorization", "Bearer "+ access_token);
 		
 		String out = conn.HttpGetConnection("https://kapi.kakao.com/v1/user/access_token_info", map).toString();
-		ObjectMapper mapper = new ObjectMapper();
 		Access_token_info output = mapper.readValue(out, Access_token_info.class);
 		
 		snsLoginAndJoin(output.getId(), "kakao");
+	}
+	
+	/**
+	 * @description 카카오 userId로 해당 디테일한 정보들은 가져온다.
+	 * @createDate 2019. 10. 21.
+	 * @param userId
+	 * @return
+	 * @throws IOException
+	 */
+	public User kakaoInfoDetail(String userId) throws IOException {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("Authorization", "KakaoAK "+ kakaoAdminKey);
+		map.put("target_id_type=", "user_id");
+		map.put("target_id=", userId);
+		
+		String result = conn.HttpPostConnection("https://kapi.kakao.com/v2/user/me", map).toString();
+		KakaoInfoDetail detail = mapper.readValue(result, KakaoInfoDetail.class);
+
+		User user = new User();
+		user.setUserNo(userId);
+		user.setNickName(detail.getProperties().getNickname());
+		user.setEmail(detail.getKakao_account().getEmail());
+		user.setCreateDT(new Date());
+		
+		return user;
 	}
 
 }

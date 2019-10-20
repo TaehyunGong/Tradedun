@@ -1,5 +1,7 @@
 package com.thkong.tradedun.User.vo;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -8,8 +10,8 @@ public class User {
 	private String snsId;
 	private String nickName;
 	private String email;
-	private String emailYN;
-	private String messageYN;
-	private String createDT;
-	private String deleteDT;
+	private char emailYN;
+	private char messageYN;
+	private Date createDT;
+	private Date deleteDT;
 }

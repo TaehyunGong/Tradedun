@@ -8,4 +8,9 @@
 		FROM   User
 		WHERE  userNo = #{userId} 
 	</select>
+	
+	<insert id="insertUser" parameterType="User">
+		INSERT INTO User (userNo, nickName, email, emailYN, createDT)
+		VALUES(#{userNo}, #{nickName}, #{email}, #{emailYN}, #{createDT})
+	</insert>
 </mapper>
