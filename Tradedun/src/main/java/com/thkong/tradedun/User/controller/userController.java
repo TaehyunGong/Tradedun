@@ -28,7 +28,7 @@ public class userController {
 	public String kakaoLogin(@RequestParam(name = "code", required = true) String code, HttpServletRequest req) throws IOException {
 		
 		String redirectUrl = req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort();
-		req.getSession().setAttribute("access_token", service.kakaoLogin(code, redirectUrl));
+		req.getSession().setAttribute("user", service.kakaoLogin(code, redirectUrl));
 		
 		return null;
 	}

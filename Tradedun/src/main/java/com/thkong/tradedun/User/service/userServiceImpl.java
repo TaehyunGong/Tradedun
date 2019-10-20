@@ -70,7 +70,7 @@ public class userServiceImpl implements userService {
 	 * @throws IOException
 	 */
 	@Override
-	public String kakaoLogin(String code, String redirectUrl) throws IOException {
+	public User kakaoLogin(String code, String redirectUrl) throws IOException {
 		
 		//사용자가 취소 누르면 error 파라메터를 받음 
 		// 그때 여기서 구분해야할듯
@@ -84,9 +84,7 @@ public class userServiceImpl implements userService {
 		
 		KakaoLoginOutput output = mapper.readValue(out, KakaoLoginOutput.class);
 		
-		kakaoInfo(output.getAccess_token());
-		
-		return output.getAccess_token();
+		return kakaoInfo(output.getAccess_token());
 	}
 	
 	/**
@@ -97,13 +95,17 @@ public class userServiceImpl implements userService {
 	 * @return
 	 * @throws IOException 
 	 */
-	public User snsLoginAndJoin(String userId, String sns) throws IOException {
+	public User snsLoginAndJoin(String userId) throws IOException {
 		User user = dao.selectUserOne(userId);
 		
 		//해당 유저가 가입돼 있지 않다면 가입시켜준다.
 		if(user == null) {
-			int result = dao.insertUser(kakaoInfoDetail(userId));
-			throw new IOException();
+			user =kakaoInfoDetail(userId);
+			
+			//만약 회원가입을 실패한다면 에러를 반환한다.
+			if(dao.insertUser(user) == 0) {
+				new IOException();
+			}
 		}
 		
 		return user;
@@ -116,14 +118,14 @@ public class userServiceImpl implements userService {
 	 * @param access_token
 	 * @throws IOException
 	 */
-	public void kakaoInfo(String access_token) throws IOException {
+	public User kakaoInfo(String access_token) throws IOException {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("Authorization", "Bearer "+ access_token);
 		
 		String out = conn.HttpGetConnection("https://kapi.kakao.com/v1/user/access_token_info", map).toString();
 		Access_token_info output = mapper.readValue(out, Access_token_info.class);
 		
-		snsLoginAndJoin(output.getId(), "kakao");
+		return snsLoginAndJoin(output.getId());
 	}
 	
 	/**
