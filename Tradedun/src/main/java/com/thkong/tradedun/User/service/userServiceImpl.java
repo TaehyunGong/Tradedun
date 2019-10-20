@@ -10,6 +10,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.thkong.tradedun.Common.httpConnection;
 import com.thkong.tradedun.User.dao.userDao;
@@ -18,6 +19,7 @@ import com.thkong.tradedun.User.vo.KakaoInfoDetail;
 import com.thkong.tradedun.User.vo.KakaoLoginOutput;
 import com.thkong.tradedun.User.vo.User;
 
+@Transactional
 @Service
 public class userServiceImpl implements userService {
 
@@ -97,15 +99,14 @@ public class userServiceImpl implements userService {
 	 */
 	public User snsLoginAndJoin(String userId, String sns) throws IOException {
 		User user = dao.selectUserOne(userId);
-		System.out.println("USER : + " + user);
 		
 		//해당 유저가 가입돼 있지 않다면 가입시켜준다.
 		if(user == null) {
 			int result = dao.insertUser(kakaoInfoDetail(userId));
-			System.out.println("결과  : " + result);
+			throw new IOException();
 		}
 		
-		return null;
+		return user;
 	}
 	
 	
