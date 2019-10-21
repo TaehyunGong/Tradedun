@@ -5,7 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codehaus.jackson.map.DeserializationConfig;
+import javax.servlet.http.HttpSession;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -121,8 +122,10 @@ public class userServiceImpl implements userService {
 		
 		String out = conn.HttpGetConnection("https://kapi.kakao.com/v1/user/access_token_info", map).toString();
 		Access_token_info output = mapper.readValue(out, Access_token_info.class);
+		User user = snsLoginAndJoin(output.getId());
+		user.setAccess_token(access_token);
 		
-		return snsLoginAndJoin(output.getId());
+		return user;
 	}
 	
 	/**
@@ -148,6 +151,24 @@ public class userServiceImpl implements userService {
 		user.setCreateDT(new Date());
 		
 		return user;
+	}
+
+	/**
+	 * @description session에 있는 access_token를 가져와 로그아웃 요청 처리를 해주고 성공여부를 알기위해 id를 반환해준다.
+	 * @createDate 2019. 10. 21.
+	 * @param session
+	 * @return
+	 * @throws IOException
+	 */
+	@Override
+	public String logout(HttpSession session) throws IOException {
+		User user = (User)session.getAttribute("user");
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("Authorization", "Bearer "+ user.getAccess_token());
+		String out = conn.HttpGetConnection("https://kapi.kakao.com/v1/user/logout", map).toString();
+		Access_token_info output = mapper.readValue(out, Access_token_info.class);
+		return output.getId();
 	}
 
 }
