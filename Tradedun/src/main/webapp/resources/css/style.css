@@ -8224,14 +8224,14 @@ h1, h2, h3, h4, h5,
       .hero-wrap .overlay {
         height: 1150px; } }
   .hero-wrap.hero-wrap-2 {
-    height: 700px !important;
+    height: 300px !important;
     position: relative; }
     .hero-wrap.hero-wrap-2 .overlay {
       width: 100%;
       opacity: .05;
-      height: 700px; }
+      height: 300px; }
     .hero-wrap.hero-wrap-2 .slider-text {
-      height: 700px !important; }
+      height: 300px !important; }
 
 .slider-text {
   height: 850px; }
