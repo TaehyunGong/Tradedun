@@ -99,7 +99,7 @@
     		var character = $('#character'+num).val();
     		
     		$.ajax({
-   			  	url: "/",
+   			  	url: "/action/avatarSeachList",
    			    data: {
    			    	server:server,
    			    	character:character

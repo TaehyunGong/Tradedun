@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class httpConnection {
 
-	public static final String ENCODING = "UTF-8";
+	private final String ENCODING = "UTF-8";
 
 	private httpConnection(){}
 	
@@ -112,7 +112,7 @@ public class httpConnection {
 	
 	//파라메터 URL 인코딩
 	public String URLencoder(String contents) throws UnsupportedEncodingException {
-		return URLEncoder.encode(URLEncoder.encode(contents, ENCODING), "MS949");
+		return URLEncoder.encode(contents, ENCODING);
 	}
 	
 }
