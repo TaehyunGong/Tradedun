@@ -19,7 +19,7 @@ public class auctionController {
 	@Autowired
 	auctionService service;
 	
-	@RequestMapping(value="/action/avatarSeachList", method = RequestMethod.GET)
+	@RequestMapping(value="/action/avatarSeachList", method = RequestMethod.GET, produces = "application/text; charset=utf8")
 	public @ResponseBody String avatarSeachList(@RequestParam(required = true) String server
 										  , @RequestParam(required = true) String character) throws IOException {
 		return service.avatarSeachList(server, character);
