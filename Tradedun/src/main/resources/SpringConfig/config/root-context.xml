@@ -19,4 +19,17 @@
 	    </property>
 	</bean>
 	     		
+	<!-- 템플릿 엔진을 빈으로 올리고 path경로를 webapp/resources/template/으로 고정시키고 인코딩 설정해준다. -->
+	<bean id='velocityEngine' class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+	       <property name="resourceLoaderPath">
+	             <value>/resources/template/</value>
+	       </property>
+	       <property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+
 </beans>

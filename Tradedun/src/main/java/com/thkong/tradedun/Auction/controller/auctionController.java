@@ -20,9 +20,8 @@ public class auctionController {
 	auctionService service;
 	
 	@RequestMapping(value="/action/avatarSeachList", method = RequestMethod.GET)
-	public @ResponseBody List<Character> avatarSeachList(@RequestParam(required = true) String server
+	public @ResponseBody String avatarSeachList(@RequestParam(required = true) String server
 										  , @RequestParam(required = true) String character) throws IOException {
-		List<Character> list = service.avatarSeachList(server, character).getRows();
-		return list;
+		return service.avatarSeachList(server, character);
 	}
 }

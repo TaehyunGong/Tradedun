@@ -1,13 +1,19 @@
 package com.thkong.tradedun.Auction.service;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.List;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thkong.tradedun.Auction.vo.Character;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Common.httpConnection;
 
@@ -21,18 +27,32 @@ public class auctionServiceImpl implements auctionService {
 	@Autowired
 	private ObjectMapper mapper;
 	
+	@Autowired 
+	VelocityEngine velocityEngine;
+	
 	private httpConnection conn = httpConnection.getInstance();
 
 	@Override
-	public Characters avatarSeachList(String server, String character) throws IOException {
+	public String avatarSeachList(String server, String character) throws IOException {
 		
 		character = conn.URLencoder(character);
 		
 		String result = conn.HttpGetConnection("https://api.neople.co.kr/df/servers/bakal/characters?"
 				+ "characterName=" + character + "&wordType=full&apikey="+dnfRestKey).toString();
 		
-		Characters list = mapper.readValue(result, Characters.class);
-		return list;
+		List<Character> list = mapper.readValue(result, Characters.class).getRows();
+		
+		Template template = velocityEngine.getTemplate("AuctionCharacterSelectForm.vm");
+        
+		VelocityContext velocityContext = new VelocityContext(); 
+		velocityContext.put("list", list); 
+
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+
+		System.out.println(stringWriter.toString());
+		
+		return stringWriter.toString();
 	}
 	
 }

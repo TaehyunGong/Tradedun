@@ -80,21 +80,9 @@
 	            </div>
   			</div>
   			
-  			<div id='charChoose1' class="request-form ftco-animate container" >
+  			<div id='charChoose1' class="request-form ftco-animate container" style='display:none;'>
           		<h2>캐릭터 선택</h2>
           		<div class="row">
-	    			<div class="col-md-3">
-	    				<div class="car-wrap ftco-animate">
-	    					<img class="img-c d-flex align-items-end" src='https://img-api.neople.co.kr/df/servers/bakal/characters/43555446f17e37fcf3eb546ee312d0f8?zoom=1'/>
-	    					<div class="text p-4 text-center">
-	    						<h2 class="mb-0"><a href="/?page=car-single">체원</a></h2>
-	    						<span>바칼</span>
-	    						<p class="d-flex mb-0 d-block-c">
-		    						<a onclick='' class="btn btn-black btn-outline-black mr-1">선택</a> 
-	    						</p>
-	    					</div>
-	    				</div>
-	    			</div>
 	    		</div>
   			</div>
   			
@@ -130,9 +118,7 @@
    			    	$('#charSearch'+num).hide();
    			    	$('#charChoose'+num).show();
    			    	
-   			    	$.each(data, function(key, value){
-						console.log(value);
-   			    	});
+   			    	$('#charChoose'+num+' .row').append(data);	
    			    },
    			    error: function (request, status, error){        
    			    }
