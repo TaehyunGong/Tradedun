@@ -53,7 +53,7 @@
       </div>    
         
       <div id="search1" class="row block-9 justify-content-center mb-5">
-			<div class="request-form ftco-animate">
+			<div id='charSearch1' class="request-form ftco-animate" >
           		<h2>판매 하실 아바타가 착용된 캐릭터 조회</h2>
           		
    				<div class="d-flex">
@@ -79,6 +79,25 @@
 	              	<input type="button" onclick="search(1)" value="검색" class="btn btn-primary py-3 px-4">
 	            </div>
   			</div>
+  			
+  			<div id='charChoose1' class="request-form ftco-animate container" >
+          		<h2>캐릭터 선택</h2>
+          		<div class="row">
+	    			<div class="col-md-3">
+	    				<div class="car-wrap ftco-animate">
+	    					<img class="img-c d-flex align-items-end" src='https://img-api.neople.co.kr/df/servers/bakal/characters/43555446f17e37fcf3eb546ee312d0f8?zoom=1'/>
+	    					<div class="text p-4 text-center">
+	    						<h2 class="mb-0"><a href="/?page=car-single">체원</a></h2>
+	    						<span>바칼</span>
+	    						<p class="d-flex mb-0 d-block-c">
+		    						<a onclick='' class="btn btn-black btn-outline-black mr-1">선택</a> 
+	    						</p>
+	    					</div>
+	    				</div>
+	    			</div>
+	    		</div>
+  			</div>
+  			
       </div>
       
 	  <div class="row block-9 justify-content-center mb-5">
@@ -108,11 +127,20 @@
    			 	async: false,
    			    cache: false,
    			    success: function(data){
-					console.log(data);
+   			    	$('#charSearch'+num).hide();
+   			    	$('#charChoose'+num).show();
+   			    	
+   			    	$.each(data, function(key, value){
+						console.log(value);
+   			    	});
    			    },
    			    error: function (request, status, error){        
    			    }
     		})
+    	}
+    	
+    	function avartar(){
+    		
     	}
     </script>
     
