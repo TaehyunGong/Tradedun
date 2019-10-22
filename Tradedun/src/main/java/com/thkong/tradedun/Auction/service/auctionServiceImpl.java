@@ -49,8 +49,6 @@ public class auctionServiceImpl implements auctionService {
 
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);
-
-		System.out.println(stringWriter.toString());
 		
 		return stringWriter.toString();
 	}
