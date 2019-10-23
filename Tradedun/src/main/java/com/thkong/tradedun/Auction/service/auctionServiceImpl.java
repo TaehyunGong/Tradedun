@@ -87,7 +87,7 @@ public class auctionServiceImpl implements auctionService {
 
 		for(Avatar avartar : detail.getAvatar()) {
 			String itemId = avartar.getItemId();
-			if(itemId.length() == 0)
+			if(itemId == null)
 				itemId = avartar.getClone().getItemId();
 			minPriceAuction(itemId);
 		}
@@ -98,11 +98,17 @@ public class auctionServiceImpl implements auctionService {
 	public Auction minPriceAuction(String itemId) throws IOException {
 		
 		String url = "https://api.neople.co.kr/df/auction?itemId="+itemId+"&sort=unitPrice:asc&limit=10&apikey="+dnfRestKey;
-		System.out.println("url : " + url);
 		String result = conn.HttpGetConnection(url).toString();
-		System.out.println("result : " + result);
 		Auctions detail = mapper.readValue(result, Auctions.class);
-		System.out.println(detail.toString());
+
+		if(detail.getRows().size() != 0) {
+			String name = detail.getRows().get(0).getItemName();
+			int price = detail.getRows().get(0).getCurrentPrice();
+			
+			System.out.println(name + " : " + price);
+		}else {
+			System.out.println(itemId + " : 없음");
+		}
 		
 		return null;
 	}
