@@ -127,8 +127,8 @@
     	}
     	
     	function avartar(num, charNum){
-    		var server = $('#charServer'+charNum).text();
-    		var character = $('#charName'+charNum).text();
+    		var server = $('#charServer'+charNum).val();
+    		var character = $('#charName'+charNum).val();
     		
     		$.ajax({
    			  	url: "/auction/charAvatarSeach",
