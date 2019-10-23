@@ -15,6 +15,7 @@ public class Avatar {
 	private ItemDetail clone;
 	private ItemDetail random;
 	private String optionAbility;
+	private String ability;
 	private List<ItemDetail> emblems;
 	
 }

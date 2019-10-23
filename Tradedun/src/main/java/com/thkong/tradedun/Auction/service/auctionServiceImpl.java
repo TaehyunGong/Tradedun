@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
+import com.thkong.tradedun.Auction.vo.Auctions;
+import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Character;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Common.httpConnection;
@@ -33,6 +36,15 @@ public class auctionServiceImpl implements auctionService {
 	
 	private httpConnection conn = httpConnection.getInstance();
 
+	/**
+	 * @description 캐릭터명으로 조회후 해당 캐릭에 match되는 리스트 뿌려줌, 리펙토링 필요
+	 * @createDate 2019. 10. 23.
+	 * @param server
+	 * @param character
+	 * @param number
+	 * @return
+	 * @throws IOException
+	 */
 	@Override
 	public String charSeachList(String server, String character, String number) throws IOException {
 		
@@ -56,20 +68,42 @@ public class auctionServiceImpl implements auctionService {
 		return stringWriter.toString();
 	}
 
+	/**
+	 * @description 캐릭터id를 가져와 해당 아바타를 상세하게 뿌려줌, 리펙토링 필요
+	 * @createDate 2019. 10. 23.
+	 * @param server
+	 * @param character
+	 * @param number
+	 * @return
+	 * @throws IOException
+	 */
 	@Override
 	public String charAvatarSeach(String server, String character, String number) throws IOException {
 		character = conn.URLencoder(character);
 		
 		String url = "https://api.neople.co.kr/df/servers/"+server+"/characters/"+character+"/equip/avatar?apikey="+dnfRestKey;
 		String result = conn.HttpGetConnection(url).toString();
-		
-		System.out.println("url : " + url);
-		System.out.println(result);
-		
 		AuctionCharacterDetail detail = mapper.readValue(result, AuctionCharacterDetail.class);
-		System.out.println(detail.toString());
+
+		for(Avatar avartar : detail.getAvatar()) {
+			String itemId = avartar.getItemId();
+			if(itemId.length() == 0)
+				itemId = avartar.getClone().getItemId();
+			minPriceAuction(itemId);
+		}
 		
 		return detail.toString();
 	}
 	
+	public Auction minPriceAuction(String itemId) throws IOException {
+		
+		String url = "https://api.neople.co.kr/df/auction?itemId="+itemId+"&sort=unitPrice:asc&limit=10&apikey="+dnfRestKey;
+		System.out.println("url : " + url);
+		String result = conn.HttpGetConnection(url).toString();
+		System.out.println("result : " + result);
+		Auctions detail = mapper.readValue(result, Auctions.class);
+		System.out.println(detail.toString());
+		
+		return null;
+	}
 }
