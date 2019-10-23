@@ -33,7 +33,7 @@ public class auctionServiceImpl implements auctionService {
 	private httpConnection conn = httpConnection.getInstance();
 
 	@Override
-	public String avatarSeachList(String server, String character) throws IOException {
+	public String charSeachList(String server, String character, String number) throws IOException {
 		
 		character = conn.URLencoder(character);
 		
@@ -46,6 +46,28 @@ public class auctionServiceImpl implements auctionService {
         
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("list", list); 
+		velocityContext.put("number", number);
+
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+		
+		return stringWriter.toString();
+	}
+
+	@Override
+	public String charAvatarSeach(String server, String character, String number) throws IOException {
+		character = conn.URLencoder(character);
+		
+		String result = conn.HttpGetConnection("https://api.neople.co.kr/df/servers/bakal/characters?"
+				+ "characterName=" + character + "&wordType=full&apikey="+dnfRestKey).toString();
+		
+		List<Character> list = mapper.readValue(result, Characters.class).getRows();
+		
+		Template template = velocityEngine.getTemplate("AuctionCharacterSelectForm.vm");
+        
+		VelocityContext velocityContext = new VelocityContext(); 
+		velocityContext.put("list", list); 
+		velocityContext.put("number", number);
 
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);

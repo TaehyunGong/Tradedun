@@ -106,10 +106,11 @@
     		var character = $('#character'+num).val();
     		
     		$.ajax({
-   			  	url: "/action/avatarSeachList",
+   			  	url: "/auction/charSeachList",
    			    data: {
    			    	server:server,
-   			    	character:character
+   			    	character:character,
+   			    	number:num
    			    },
    			    type: "GET",
    			 	async: false,
@@ -122,11 +123,29 @@
    			    },
    			    error: function (request, status, error){        
    			    }
-    		})
+    		});
     	}
     	
-    	function avartar(){
+    	function avartar(num, charNum){
+    		var server = $('#charServer'+charNum).text();
+    		var character = $('#charName'+charNum).text();
     		
+    		$.ajax({
+   			  	url: "/auction/charAvatarSeach",
+   			    data: {
+   			    	server:server,
+   			    	character:character,
+   			    	number:num
+   			    },
+   			    type: "GET",
+   			 	async: false,
+   			    cache: false,
+   			    success: function(data){
+   			    	console.log(data);
+   			    },
+   			    error: function (request, status, error){        
+   			    }
+    		});
     	}
     </script>
     

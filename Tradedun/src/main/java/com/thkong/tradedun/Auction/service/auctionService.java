@@ -6,6 +6,7 @@ import com.thkong.tradedun.Auction.vo.Characters;
 
 public interface auctionService {
 
-	public String avatarSeachList(String server, String character) throws IOException;
+	public String charSeachList(String server, String character, String number) throws IOException;
 	
+	public String charAvatarSeach(String server, String character, String number) throws IOException;
 }

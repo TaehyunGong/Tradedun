@@ -4,10 +4,10 @@
 	<div class="car-wrap ftco-animate fadeInUp ftco-animated">
 		<img class="img-c d-flex align-items-end" src='https://img-api.neople.co.kr/df/servers/bakal/characters/$character.characterId?zoom=1'/>
 		<div class="text p-4 text-center">
-			<h2 class="mb-0"><a href="/?page=car-single">$character.characterName</a></h2>
-			<span>바칼</span>
+			<h2 class="mb-0" id='charName$velocityCount'>$character.characterName</h2>
+			<span id='charServer$velocityCount'>바칼</span>
 			<p class="d-flex mb-0 d-block-c">
-				<a onclick='' class="btn btn-black btn-outline-black mr-1">선택</a> 
+				<a onclick='avartar(${number}, $velocityCount)' class="btn btn-black btn-outline-black mr-1">선택</a> 
 			</p>
 		</div>
 	</div>
