@@ -21,6 +21,13 @@
 	        </list>
 	    </property>
 	</bean>
+	
+	<!-- 별도로 생성한 던파 API Common 라이브러리를 빈으로 등록 후 mapper와 httpconnection을 필수로 DI받는다. -->
+	<bean id='dnfapi' class='com.thkong.tradedun.Common.DnfApiLib'>
+		<constructor-arg name="mapper" ref='mapper'/>
+		<constructor-arg name="conn" ref='conn'/>
+		<constructor-arg name="dnfRestKey" value="#{props['dnf.RestKey']}"/>
+	</bean>
 	     		
 	<!-- 템플릿 엔진을 빈으로 올리고 path경로를 webapp/resources/template/으로 고정시키고 인코딩 설정해준다. -->
 	<bean id='velocityEngine' class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
