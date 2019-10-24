@@ -2,12 +2,12 @@ package com.thkong.tradedun.Auction.service;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,11 +17,8 @@ import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
-import com.thkong.tradedun.Auction.vo.Character;
 import com.thkong.tradedun.Auction.vo.Characters;
-import com.thkong.tradedun.Auction.vo.DnfApiError;
 import com.thkong.tradedun.Common.DnfApiLib;
-import com.thkong.tradedun.Common.httpConnection;
 
 @Transactional
 @Service
@@ -30,14 +27,8 @@ public class auctionServiceImpl implements auctionService {
 	@Value("#{props['dnf.RestKey']}")
 	private String dnfRestKey;
 	
-	@Autowired
-	private ObjectMapper mapper;
-	
 	@Autowired 
 	VelocityEngine velocityEngine;
-	
-	@Autowired
-	private httpConnection conn;
 	
 	@Autowired
 	private DnfApiLib dnfapi;
@@ -81,12 +72,21 @@ public class auctionServiceImpl implements auctionService {
 	public String charAvatarSeach(String server, String character, String number) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
 
-		for(Avatar avartar : detail.getAvatar()) {
-			String itemId = avartar.getItemId();
-			if(itemId == null)
-				itemId = avartar.getClone().getItemId();
-			minPriceAuction(itemId);
+		List<Auctions> avatarList = new ArrayList<Auctions>();
+		List<Auctions> cloneAvatarList = new ArrayList<Auctions>();
+		
+		//모자 부터 피부까지 총 9부위만 조회한다.
+		for(int n=0; n<9; n++) {
+			Avatar avatar = detail.getAvatar().get(n);
+			String itemId = avatar.getItemId();
+			String cloneItemId = avatar.getClone().getItemId();
+			
+			avatarList.add(dnfapi.auction(itemId));
+			cloneAvatarList.add(dnfapi.auction(cloneItemId));
 		}
+		
+		System.out.println(avatarList);
+		System.out.println(cloneAvatarList);
 		
 		return detail.toString();
 	}
