@@ -1,20 +1,39 @@
+<div class="row">
+	<div class='col-md-3'>
+		<div class="text p-4 text-center">
+			<img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/servers/bakal/characters/$wearAvatar.characterId'/>
+			<h2 class="mb-0">$wearAvatar.characterName</h2>
+			<span>$wearAvatar.jobGrowName</span>
+		</div> 
+	</div>
+
 <div class="table-responsive col-md-9">
 	<table class="table table-condensed " >
 	
 #foreach($index in [0..8])
 
-	<tbody id='test' class="labels">
+	<tbody id='test' class="selectAuction auctionList">
 	  <tr class='trLine'>
 	    <td>$wearAvatar.getAvatar().get($index).getSlotName()</td>
 	    <td>$wearAvatar.getAvatar().get($index).getItemName()</td>
-	    <td>#if($avatarList.get($index).getRows().size() != 0)$avatarList.get($index).getRows().get(0).getCurrentPrice()#end</td>
+	    <td>#if($avatarList.get($index).getRows().size() != 0)
+	    	$avatarList.get($index).getRows().get(0).getAvatar().getEmblems().get(0).getItemName()
+	    #end</td>
+	    <td>#if($avatarList.get($index).getRows().size() != 0)
+	    	$avatarList.get($index).getRows().get(0).getAvatar().getEmblems().get(1).getItemName()
+	    #end</td>
+	    <td>#if($avatarList.get($index).getRows().size() != 0)
+	    	$avatarList.get($index).getRows().get(0).getCurrentPrice()
+	    #end</td>
 	  </tr>
 	</tbody>
-	<tbody class="hide">
+	<tbody class="hide" style='display:none;'>
 	  #foreach($avatar in $avatarList.get($index).getRows())
-	  <tr>
+	  <tr class="auctionList">
 	  	<td>$wearAvatar.getAvatar().get($index).getSlotName()</td>
 	    <td>$wearAvatar.getAvatar().get($index).getItemName()</td>
+	    <td>$wearAvatar.getAvatar().get($index).getEmblems().get(0).getItemName()</td>
+	    <td>$wearAvatar.getAvatar().get($index).getEmblems().get(1).getItemName()</td>
 	    <td>$avatar.currentPrice</td>
 	  </tr>
 	  #end
@@ -23,4 +42,6 @@
 #end
 
 	</table>
+</div>
+
 </div>

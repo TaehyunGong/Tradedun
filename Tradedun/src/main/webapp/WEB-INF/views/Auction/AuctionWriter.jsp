@@ -84,20 +84,6 @@
   			<div id='charBox1' class="request-form ftco-animate container" style='display:none;'>
           		<div class="row">
 	    		</div>
-	    		<div class="row">
-					<div class='col-md-3'>
-						<div class="text p-4 text-center">
-							<img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/servers/bakal/characters/43555446f17e37fcf3eb546ee312d0f8'/>
-							<h2 class="mb-0">체원</h2>
-							<span>검신</span>
-							<p class="d-flex mb-0 d-block-c">
-								<input type="hidden" id='charName$velocityCount' value="$character.characterId">
-								<input type="hidden" id="charServer$velocityCount" value="${server}">
-							</p>
-						</div> 
-					</div>
-					
-				</div>
   			</div>
   			
       </div>
