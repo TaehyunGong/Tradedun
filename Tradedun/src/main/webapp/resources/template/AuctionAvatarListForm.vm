@@ -1,0 +1,26 @@
+<div class="table-responsive col-md-9">
+	<table class="table table-condensed " >
+	
+#foreach($index in [0..8])
+
+	<tbody id='test' class="labels">
+	  <tr class='trLine'>
+	    <td>$wearAvatar.getAvatar().get($index).getSlotName()</td>
+	    <td>$wearAvatar.getAvatar().get($index).getItemName()</td>
+	    <td>#if($avatarList.get($index).getRows().size() != 0)$avatarList.get($index).getRows().get(0).getCurrentPrice()#end</td>
+	  </tr>
+	</tbody>
+	<tbody class="hide">
+	  #foreach($avatar in $avatarList.get($index).getRows())
+	  <tr>
+	  	<td>$wearAvatar.getAvatar().get($index).getSlotName()</td>
+	    <td>$wearAvatar.getAvatar().get($index).getItemName()</td>
+	    <td>$avatar.currentPrice</td>
+	  </tr>
+	  #end
+	</tbody>
+	
+#end
+
+	</table>
+</div>

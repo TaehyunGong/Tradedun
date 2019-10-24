@@ -85,10 +85,17 @@ public class auctionServiceImpl implements auctionService {
 			cloneAvatarList.add(dnfapi.auction(cloneItemId));
 		}
 		
-		System.out.println(avatarList);
-		System.out.println(cloneAvatarList);
+		Template template = velocityEngine.getTemplate("AuctionAvatarListForm.vm");
+        
+		VelocityContext velocityContext = new VelocityContext(); 
+		velocityContext.put("wearAvatar", detail);
+		velocityContext.put("avatarList", avatarList);
+		velocityContext.put("cloneAvatarList", cloneAvatarList);
 		
-		return detail.toString();
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+		System.out.println(stringWriter.toString());
+		return stringWriter.toString();
 	}
 	
 	public Auction minPriceAuction(String itemId) throws IOException {

@@ -8770,6 +8770,7 @@ h1, h2, h3, h4, h5,
 .car-list {
   overflow-x: scroll; }
 
+/*
 .table {
   min-width: 1000px !important;
   width: 100%; }
@@ -8880,7 +8881,7 @@ h1, h2, h3, h4, h5,
         opacity: 1; }
       .table tbody tr td.price:hover .price-rate {
         opacity: 0; }
-
+*/
 @media (max-width: 767.98px) {
   .img-2 {
     height: 600px; } }
