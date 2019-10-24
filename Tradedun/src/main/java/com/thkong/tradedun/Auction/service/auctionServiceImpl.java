@@ -20,6 +20,7 @@ import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Character;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.DnfApiError;
+import com.thkong.tradedun.Common.DnfApiLib;
 import com.thkong.tradedun.Common.httpConnection;
 
 @Transactional
@@ -37,6 +38,9 @@ public class auctionServiceImpl implements auctionService {
 	
 	@Autowired
 	private httpConnection conn;
+	
+	@Autowired
+	private DnfApiLib dnfapi;
 
 	/**
 	 * @description 캐릭터명으로 조회후 해당 캐릭에 match되는 리스트 뿌려줌, 리펙토링 필요
@@ -49,21 +53,12 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String charSeachList(String server, String character, String number) throws IOException {
+		Characters characters = dnfapi.characters(server,character);
 		
-		character = conn.URLencoder(character);
-		
-		String result = conn.HttpGetConnection("https://api.neople.co.kr/df/servers/bakal/characters?"
-				+ "characterName=" + character + "&wordType=full&apikey="+dnfRestKey).toString();
-		System.out.println(result);
-		List<Character> list = mapper.readValue(result, Characters.class).getRows();
-		if(list == null) {
-			DnfApiError error = mapper.readValue(result, DnfApiError.class);
-			System.out.println(error);
-		}
 		Template template = velocityEngine.getTemplate("AuctionCharacterSelectForm.vm");
         
 		VelocityContext velocityContext = new VelocityContext(); 
-		velocityContext.put("list", list);
+		velocityContext.put("list", characters.getRows());
 		velocityContext.put("server", server);
 		velocityContext.put("number", number);
 
@@ -84,11 +79,7 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String charAvatarSeach(String server, String character, String number) throws IOException {
-		character = conn.URLencoder(character);
-		
-		String url = "https://api.neople.co.kr/df/servers/"+server+"/characters/"+character+"/equip/avatar?apikey="+dnfRestKey;
-		String result = conn.HttpGetConnection(url).toString();
-		AuctionCharacterDetail detail = mapper.readValue(result, AuctionCharacterDetail.class);
+		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
 
 		for(Avatar avartar : detail.getAvatar()) {
 			String itemId = avartar.getItemId();
@@ -101,10 +92,7 @@ public class auctionServiceImpl implements auctionService {
 	}
 	
 	public Auction minPriceAuction(String itemId) throws IOException {
-		
-		String url = "https://api.neople.co.kr/df/auction?itemId="+itemId+"&sort=unitPrice:asc&limit=10&apikey="+dnfRestKey;
-		String result = conn.HttpGetConnection(url).toString();
-		Auctions detail = mapper.readValue(result, Auctions.class);
+		Auctions detail = dnfapi.auction(itemId);
 
 		if(detail.getRows().size() != 0) {
 			String name = detail.getRows().get(0).getItemName();

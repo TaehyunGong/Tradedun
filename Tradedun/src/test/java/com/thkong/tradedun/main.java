@@ -14,6 +14,6 @@ public class main {
 		ApplicationContext context = new GenericXmlApplicationContext("/SpringConfig/config/root-context.xml");
 		DnfApiLib dnfapi = context.getBean("dnfapi", DnfApiLib.class);
 		
-		dnfapi.characters();
+		dnfapi.characters("bakal", "체원");
 	}
 }
