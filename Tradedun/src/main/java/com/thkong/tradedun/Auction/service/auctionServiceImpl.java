@@ -19,6 +19,7 @@ import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Character;
 import com.thkong.tradedun.Auction.vo.Characters;
+import com.thkong.tradedun.Auction.vo.DnfApiError;
 import com.thkong.tradedun.Common.httpConnection;
 
 @Transactional
@@ -34,7 +35,8 @@ public class auctionServiceImpl implements auctionService {
 	@Autowired 
 	VelocityEngine velocityEngine;
 	
-	private httpConnection conn = httpConnection.getInstance();
+	@Autowired
+	private httpConnection conn;
 
 	/**
 	 * @description 캐릭터명으로 조회후 해당 캐릭에 match되는 리스트 뿌려줌, 리펙토링 필요
@@ -52,9 +54,12 @@ public class auctionServiceImpl implements auctionService {
 		
 		String result = conn.HttpGetConnection("https://api.neople.co.kr/df/servers/bakal/characters?"
 				+ "characterName=" + character + "&wordType=full&apikey="+dnfRestKey).toString();
-		
+		System.out.println(result);
 		List<Character> list = mapper.readValue(result, Characters.class).getRows();
-		
+		if(list == null) {
+			DnfApiError error = mapper.readValue(result, DnfApiError.class);
+			System.out.println(error);
+		}
 		Template template = velocityEngine.getTemplate("AuctionCharacterSelectForm.vm");
         
 		VelocityContext velocityContext = new VelocityContext(); 
