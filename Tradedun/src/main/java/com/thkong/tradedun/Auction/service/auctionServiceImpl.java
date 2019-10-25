@@ -3,6 +3,7 @@ package com.thkong.tradedun.Auction.service;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.velocity.Template;
@@ -72,49 +73,60 @@ public class auctionServiceImpl implements auctionService {
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
 		List<Auctions> avatarList = new ArrayList<Auctions>();
-		System.out.println(detail);
+		
+		//임시용
+		List<String> parts = Arrays.asList(
+				new String[]{"HEADGEAR", "HAIR", "FACE", "JACKET", "PANTS", "SHOES", "BREAST", "WAIST", "SKIN"});
 		
 		//만약 노압일경우 없는상태라면 경고창으로 반환
 		if(detail.getAvatar().size() == 0)
 			return "noAvatar";
 		
-		//모자 부터 피부까지 총 8부위만 조회한다.
-		for(Avatar avatar : detail.getAvatar()) {
+		//아바타가 9피스가 아닐경우 슬롯을 자동 삽입
+		List<Avatar> wearAvatar = new ArrayList<Avatar>();
+		for(String part : parts) {
+			Avatar avat = new Avatar(); 
+			avat.setSlotId(part);
 			
-//			Avatar avatar = detail.getAvatar().get(n);
+			for(Avatar avatar : detail.getAvatar()) {
+				if(part.contains(avatar.getSlotId())) {
+					avat = avatar;
+					break;
+				}
+			}
+			wearAvatar.add(avat);
+		}
+		
+		//모자 부터 피부까지 총 8부위만 조회한다.
+		for(Avatar avatar : wearAvatar) {
 			String itemId;
-			if(kind.equals("wear")) {
+			if(kind.equals("wear") || avatar.getSlotId().equals("SKIN")) {
 				itemId = avatar.getItemId();
 			}
 			else {
 				itemId = avatar.getClone().getItemId();
-				
-				//클론 아바타로 선택하게 된다면 화면상 에서도 클론아바타만 보여준다.
-				Avatar cloneAvatar = new Avatar();
-				
-				cloneAvatar.setItemId(itemId);
-				cloneAvatar.setSlotId(avatar.getSlotId());
-				cloneAvatar.setSlotName(avatar.getSlotName());
-				cloneAvatar.setItemName(avatar.getClone().getItemName());
-//				detail.getAvatar().set(n, cloneAvatar);
-				avatar = cloneAvatar;
+				avatar.setItemId(avatar.getClone().getItemId());
+				avatar.setItemName(avatar.getClone().getItemName());
+				avatar.setEmblems(null);
+				avatar.setOptionAbility(null);
 			}
 			avatarList.add(dnfapi.auction(itemId));
 		}
-		//피부의 경우 착용하고있는 아바타로만 뽑아준다.
-//		avatarList.add(dnfapi.auction(detail.getAvatar().get(8).getItemId()));
 		
 		VelocityContext velocityContext = new VelocityContext();
 		velocityContext.put("number", number);
-		velocityContext.put("wearAvatar", detail);
-		velocityContext.put("avatarList", avatarList);
-		velocityContext.put("kind", kind);
+		velocityContext.put("wearAvatar", wearAvatar); // 착용중인 아바타
+		velocityContext.put("avatarList", avatarList); // 경매장으로 뽑은 아바타 리스트
 		velocityContext.put("server", server);
+		velocityContext.put("characterId", detail.getCharacterId());
+		velocityContext.put("characterName", detail.getCharacterName());
+		velocityContext.put("jobGrowName", detail.getJobGrowName());
 		
 		Template template = velocityEngine.getTemplate("AuctionAvatarListForm.vm");
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);
-		System.out.println(stringWriter.toString());
+//		System.out.println(stringWriter.toString());
+		
 		return stringWriter.toString();
 	}
 	
