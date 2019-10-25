@@ -1,4 +1,4 @@
-<div class="row avatarList">
+<div class="row avatarList animated fadeInDown">
 	<div class='col-md-12'>
 		<button onclick='backSearch(${number})' class='btn btn-primary py-3 px-4'>뒤로 가기</button>
 	</div>
@@ -11,6 +11,28 @@
 		</div> 
 	</div>
 	<div class='col-md-9'>
+		<!-- 테스트 -->
+          	<form action="#" class="request-form">
+          		<h2>판매 설정</h2>
+    				<div class="form-group">
+    					<label for="" class="label">판매하실 총 금액</label>
+    					<input type="text" class="form-control" placeholder="판매하실 총 금액" required>
+    				</div>
+	    			<div class="d-flex">
+		              <div class="form-group ml-2">
+		                <label for="" class="label">경매장에 조회된 아바타 종류 갯수</label>
+		                <input type="text" class="form-control" id="" value="6" readonly>
+		              </div>
+		              <div class="form-group ml-2">
+		                <label for="" class="label">선택된 최저가 아바타 가격</label>
+		                <input type="text" class="form-control" id="" value="54,651,800" readonly>
+		              </div>
+              		</div>
+
+	            <div class="form-group">
+	              <input type="button" value="등록완료" class="btn btn-primary py-3 px-4">
+	            </div>
+			</form>
 	</div>
 
 <div class="table-responsive col-md-12">
