@@ -194,6 +194,10 @@
    			    }
     		});
     	}
+    	
+    	function deleteCharBox(num){
+    		console.log(num)
+    	}
     </script>
     
   </body>

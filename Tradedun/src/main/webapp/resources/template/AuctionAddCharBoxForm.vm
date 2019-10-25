@@ -1,5 +1,6 @@
   <div id="search${number}" class="row block-9 justify-content-center mb-5">
 		<div id='charSearch${number}' class="request-form animated fadeInDown" >
+			<a onclick='deleteCharBox(${number})'><i class="ri-close-line"></i></a>
       		<h2>판매 하실 아바타가 착용된 캐릭터 조회</h2>
       		
 			<div class="d-flex">

@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="/css/flaticon.css">
     <link rel="stylesheet" href="/css/icomoon.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.remixicon.com/releases/v2.0.0/remixicon.css" rel="stylesheet">
 
  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
    <div class="container">
