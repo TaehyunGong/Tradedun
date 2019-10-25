@@ -34,7 +34,7 @@
 	    #if($Avatars.size() != 0)
 		    <td>$equipAvatar.getItemName()
 		    	## 주석 : 클로압은 옵션이 옵기때문에 제외
-			    <br>$Avatars.get(0).getAvatar().getAbility()
+			    <br>$!Avatars.get(0).getAvatar().getAbility()
 			</td>
 		    <td>
 		    	#foreach($emblem in $Avatars.get(0).getAvatar().getEmblems())
@@ -63,7 +63,7 @@
 		  	<td>$equipAvatar.getSlotName()</td>
 		  	<td><img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/></td>
 		    <td>$equipAvatar.getItemName()
-		    	<br>$avatar.getAvatar().getAbility()
+		    	<br>$!avatar.getAvatar().getAbility()
 		    </td>
 		    <td>
 		    	#foreach($emblem in $avatar.getAvatar().getEmblems())

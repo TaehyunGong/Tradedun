@@ -122,6 +122,11 @@
 			$('#charBox'+num + ' *').remove();
 		    $('#charSearch'+num).show();
 		}
+    	
+    	//charBox 삭제
+    	function deleteCharBox(num){
+    		$('#search'+num).remove();
+    	}
     
     	//캐릭터 조회창
     	function search(num){
@@ -150,9 +155,7 @@
     	}
     	
     	//아바타 가격 리스트 가져옴
-    	function avartar(num, charNum, kind){
-    		var server = $('#charServer'+charNum).val();
-    		var character = $('#charName'+charNum).val();
+    	function avartar(num, server, character, kind){
     		
     		$.ajax({
    			  	url: "/auction/charAvatarSeach",
@@ -195,9 +198,6 @@
     		});
     	}
     	
-    	function deleteCharBox(num){
-    		console.log(num)
-    	}
     </script>
     
   </body>
