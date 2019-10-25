@@ -10,4 +10,8 @@ public class ItemDetail {
 	private String slotNo;
 	private String slotColor;
 	private String itemRarity;
+	private String itemType;
+	private String itemTypeDetail;
+	private String itemAvailableLevel;
+	private String itemRarityColor;
 }

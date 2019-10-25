@@ -1,23 +1,16 @@
 package com.thkong.tradedun;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.collections.set.SynchronizedSet;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import com.thkong.tradedun.Auction.vo.Auction;
-import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
-import com.thkong.tradedun.Auction.vo.Auctions;
-import com.thkong.tradedun.Auction.vo.Avatar;
+import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Common.DnfApiLib;
+import com.thkong.tradedun.Common.httpConnection;
 
 public class main {
 
@@ -25,53 +18,26 @@ public class main {
 		
 		ApplicationContext context = new GenericXmlApplicationContext("/SpringConfig/config/root-context.xml");
 		DnfApiLib dnfapi = context.getBean("dnfapi", DnfApiLib.class);
-		String kind = "wear";
+		httpConnection conn = context.getBean("conn", httpConnection.class);
+		ObjectMapper mapper = context.getBean("mapper", ObjectMapper.class);
 		
-		AuctionCharacterDetail detail = dnfapi.charactersAvatar("bakal", "86d4ad8857d077fd4f7fb73aaf6d672c");
-		List<Auctions> avatarList = new ArrayList<Auctions>();
 		
-		//임시용
-		List<String> parts = Arrays.asList(
-				new String[]{"HEADGEAR", "HAIR", "FACE", "JACKET", "PANTS", "SHOES", "BREAST", "WAIST", "SKIN"});
+		//노란빛
+		String search = conn.URLencoder("플래티넘 엠블렘");
+		String rarity = conn.URLencoder("커먼");
 		
-		//만약 노압일경우 없는상태라면 경고창으로 반환
-		if(detail.getAvatar().size() == 0) {
-			System.err.println("노압임");
-			return;
-		}
+		String url = "https://api.neople.co.kr/df/items?itemName=" + search
+				+ "&q=rarity:" + rarity + ",trade:true"
+				+ "&limit=30"
+				+ "&wordType=front"
+				+ "&apikey=P4GiGs1KtJyD3VoMB3jkgzDsMI4tDNGi";
+		String json = conn.HttpGetConnection(url).toString();
+		TempItemDetailVo list = mapper.readValue(json, TempItemDetailVo.class);
 		
-		List<Avatar> list = new ArrayList<Avatar>();
-		for(String part : parts) {
-			Avatar avat = new Avatar(); avat.setSlotId(part);
-			
-			for(Avatar avatar : detail.getAvatar()) {
-				if(part.contains(avatar.getSlotId())) {
-					avat = avatar;
-					break;
-				}
-			}
-			list.add(avat);
-		}
-		
-		//모자 부터 피부까지 총 8부위만 조회한다.
-		//모자 부터 피부까지 총 8부위만 조회한다.
-		for(Avatar avatar : list) {
-			String itemId;
-			if(kind.equals("wear") || avatar.getSlotId().equals("SKIN")) {
-				itemId = avatar.getItemId();
-			}
-			else {
-				itemId = avatar.getClone().getItemId();
-				avatar.setItemId(avatar.getClone().getItemId());
-				avatar.setItemName(avatar.getClone().getItemName());
-			}
-			avatarList.add(dnfapi.auction(itemId));
-		}
-		
-		//피부의 경우 착용하고있는 아바타로만 뽑아준다.
-//		avatarList.add(dnfapi.auction(detail.getAvatar().get(8).getItemId()));
-		for(int num=0; num < avatarList.size(); num++) {
-			System.out.println(avatarList.get(num).getRows());
+		System.out.println("-------------------------------------------------------------------------------------");
+		for(ItemDetail d : list.getRows()) {
+			System.out.println("INSERT INTO ItemDetail (itemId, itemName, itemRarity, itemType, itemTypeDetail, itemAvailableLevel, itemRarityColor)"
+					+ "VALUES('"+d.getItemId()+"', '"+d.getItemName()+"', '"+d.getItemRarity()+"', '"+d.getItemType()+"', '"+d.getItemTypeDetail()+"', '"+d.getItemAvailableLevel()+"', NULL);");
 		}
 	}
 }
