@@ -73,6 +73,8 @@ public class auctionServiceImpl implements auctionService {
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
 		List<Auctions> avatarList = new ArrayList<Auctions>();
+		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
+		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
 		//임시용
 		List<String> parts = Arrays.asList(
@@ -110,13 +112,21 @@ public class auctionServiceImpl implements auctionService {
 				avatar.setEmblems(null);
 				avatar.setOptionAbility(null);
 			}
-			avatarList.add(dnfapi.auction(itemId));
+			Auctions auctions = dnfapi.auction(itemId);
+			//경매장에 조회된 아바타 갯수 구하기
+			if(auctions.getRows().size() != 0) {
+				availAvatar += 1;
+				minTotalSales += auctions.getRows().get(0).getCurrentPrice();
+			}
+			avatarList.add(auctions);
 		}
 		
 		VelocityContext velocityContext = new VelocityContext();
 		velocityContext.put("number", number);
-		velocityContext.put("wearAvatar", wearAvatar); // 착용중인 아바타
-		velocityContext.put("avatarList", avatarList); // 경매장으로 뽑은 아바타 리스트
+		velocityContext.put("wearAvatar", wearAvatar);		// 착용중인 아바타
+		velocityContext.put("avatarList", avatarList);		// 경매장으로 뽑은 아바타 리스트
+		velocityContext.put("availAvatar", availAvatar);	// 경매장에서 조회된 아바타 갯수
+		velocityContext.put("minTotalSales", minTotalSales);// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
 		velocityContext.put("server", server);
 		velocityContext.put("characterId", detail.getCharacterId());

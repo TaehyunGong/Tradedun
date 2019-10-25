@@ -21,11 +21,11 @@
 	    			<div class="d-flex">
 		              <div class="form-group ml-2">
 		                <label for="" class="label">경매장에 조회된 아바타 종류 갯수</label>
-		                <input type="text" class="form-control" id="" value="6" readonly>
+		                <input type="text" class="form-control" id="" value="${availAvatar}" readonly>
 		              </div>
 		              <div class="form-group ml-2">
 		                <label for="" class="label">선택된 최저가 아바타 가격</label>
-		                <input type="text" class="form-control" id="" value="54,651,800" readonly>
+		                <input type="text" class="form-control" id="" value="${minTotalSales}" readonly>
 		              </div>
               		</div>
 
