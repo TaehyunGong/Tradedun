@@ -24,7 +24,7 @@
       </div>	
     </section>
 
-	<section class="ftco-section contact-section">
+	<section id="charBoxList" class="ftco-section contact-section">
       <div class="container">
         <div class="row d-flex mb-5 contact-info justify-content-center">
         	<div class="col-md-8">
@@ -86,20 +86,25 @@
   			
       </div>
       
-	  <div class="row block-9 justify-content-center mb-5">
+
+    </section>
+    
+	  <div id='applyBox' class="row block-9 justify-content-center mb-5">
 		<div class="request-form ftco-animate">
             <div class="form-group">
+            	<input type="button" onclick='addCharBox()' value="추가하기" class="btn-success py-3 px-4">
               	<input type="button" value="등록하기" class="btn-primary py-3 px-4">
             </div>
  		</div>
 	  </div>
 
-    </section>
-
 	<c:import  url="/footer" />
 	
     <script>
     	
+    	//charBox갯수
+    	var number = 1;
+    
     	$(document).on('click', 'table tbody .trLine', function(){
             $(this).parents().next('.hide').fadeToggle();
         });
@@ -107,7 +112,7 @@
     	//엔터 이벤트
     	function enterkey(num) {
             if (window.event.keyCode == 13) {
-            	search(num)
+            	search(num);
             }
     	}
     	
@@ -144,6 +149,7 @@
     		});
     	}
     	
+    	//아바타 가격 리스트 가져옴
     	function avartar(num, charNum, kind){
     		var server = $('#charServer'+charNum).val();
     		var character = $('#charName'+charNum).val();
@@ -165,6 +171,26 @@
    			    	$('#charBox'+num).append(data);
    			    },
    			    error: function (request, status, error){        
+   			    }
+    		});
+    	}
+    	
+    	//charBox 추가
+    	function addCharBox(){
+    		number+=1;
+    		
+    		$.ajax({
+   			  	url: "/auction/addCharBox",
+   			    data: {
+   			    	number:number
+   			    },
+   			    type: "GET",
+   			 	async: false,
+   			    cache: false,
+   			    success: function(data){
+   			    	$('#charBoxList').append(data);
+   			    },
+   			    error: function (request, status, error){
    			    }
     		});
     	}

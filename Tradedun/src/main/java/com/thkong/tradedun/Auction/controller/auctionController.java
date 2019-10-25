@@ -31,4 +31,9 @@ public class auctionController {
 										  , @RequestParam(required = true) String kind) throws IOException {
 		return service.charAvatarSeach(server, character, number, kind);
 	}
+	
+	@RequestMapping(value="/auction/addCharBox", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+	public @ResponseBody String addCharBox(@RequestParam(required = true) String number) throws IOException {
+		return service.addCharBox(number);
+	}
 }

@@ -9,4 +9,6 @@ public interface auctionService {
 	public String charSeachList(String server, String character, String number) throws IOException;
 	
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException;
+	
+	public String addCharBox(String number) throws IOException;
 }

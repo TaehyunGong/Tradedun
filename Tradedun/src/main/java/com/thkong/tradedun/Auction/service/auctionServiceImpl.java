@@ -117,6 +117,7 @@ public class auctionServiceImpl implements auctionService {
 		velocityContext.put("number", number);
 		velocityContext.put("wearAvatar", wearAvatar); // 착용중인 아바타
 		velocityContext.put("avatarList", avatarList); // 경매장으로 뽑은 아바타 리스트
+		
 		velocityContext.put("server", server);
 		velocityContext.put("characterId", detail.getCharacterId());
 		velocityContext.put("characterName", detail.getCharacterName());
@@ -125,23 +126,19 @@ public class auctionServiceImpl implements auctionService {
 		Template template = velocityEngine.getTemplate("AuctionAvatarListForm.vm");
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);
-//		System.out.println(stringWriter.toString());
 		
 		return stringWriter.toString();
 	}
 	
-	public Auction minPriceAuction(String itemId) throws IOException {
-		Auctions detail = dnfapi.auction(itemId);
-
-		if(detail.getRows().size() != 0) {
-			String name = detail.getRows().get(0).getItemName();
-			int price = detail.getRows().get(0).getCurrentPrice();
-			
-			System.out.println(name + " : " + price);
-		}else {
-			System.out.println(itemId + " : 없음");
-		}
+	@Override
+	public String addCharBox(String number) throws IOException {
+		VelocityContext velocityContext = new VelocityContext();
+		velocityContext.put("number", number);
 		
-		return null;
+		Template template = velocityEngine.getTemplate("AuctionAddCharBoxForm.vm");
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+		
+		return stringWriter.toString();
 	}
 }

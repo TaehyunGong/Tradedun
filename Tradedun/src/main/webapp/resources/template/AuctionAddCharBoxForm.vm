@@ -1,0 +1,33 @@
+  <div id="search${number}" class="row block-9 justify-content-center mb-5">
+		<div id='charSearch${number}' class="request-form" >
+      		<h2>판매 하실 아바타가 착용된 캐릭터 조회</h2>
+      		
+			<div class="d-flex">
+				<div class="form-group mr-2">
+	                <label for="" class="label">서버</label>
+	                <div class="form-field">
+      					<div class="select-wrap">
+	                      <select id="server${number}" class="form-control">
+	                      	<option value="bakal">바칼</option>
+	                        <option value="cain">카인</option>
+	                        <option value="anton">안톤</option>
+	                      </select>
+	                    </div>
+	               </div>
+            	</div>
+             	<div class="form-group ml-2"></div>
+        	</div>
+			<div class="form-group">
+				<label for="" class="label">캐릭터</label>
+				<input type="text" id="character${number}" onkeyup="enterkey(${number});"  name='character' class="form-control" placeholder="Your Character Name">
+			</div>
+            <div class="form-group">
+              	<input type="button" onclick="search(${number})" value="검색" class="btn btn-primary py-3 px-4">
+            </div>
+		</div>
+		
+		<!--  수정 중 -->
+		<div id='charBox${number}' class="request-form ftco-animate container" style='display:none;'>
+		</div>
+		
+  </div>
