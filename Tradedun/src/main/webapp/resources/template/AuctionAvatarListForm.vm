@@ -56,7 +56,10 @@
 	## 주석 : 이 tbody는 경매장의 리스트
 	<tbody class="hide" style='display:none;'>
 	  #foreach($avatar in $Avatars)
-		  <tr class="auctionList">
+	  	  ## 주석 : 각 리스트의 첫번째는 selectAuction 스타일을 가지며, 선택된다.
+	  	  #if($foreach.count == 1) <tr class="auctionList selectListAuction">
+	  	  #else <tr class="auctionList">
+	  	  #end
 		  	<td>$equipAvatar.getSlotName()</td>
 		  	<td><img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/></td>
 		    <td>$equipAvatar.getItemName()

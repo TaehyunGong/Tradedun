@@ -9868,10 +9868,18 @@ textarea.form-control {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
 
+/*
+	여기서 부터는 커스텀 css
+*/
+
 .selectAuction{
 	background: antiquewhite;
 }    
 
 .auctionList:hover{
 	background: aliceblue;
+}
+
+.selectListAuction{
+	background: aquamarine;
 }
