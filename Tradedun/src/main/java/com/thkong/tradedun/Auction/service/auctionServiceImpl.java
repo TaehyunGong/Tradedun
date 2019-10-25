@@ -2,6 +2,7 @@ package com.thkong.tradedun.Auction.service;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,12 +10,12 @@ import java.util.List;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.tools.generic.NumberTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
@@ -73,6 +74,7 @@ public class auctionServiceImpl implements auctionService {
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
 		List<Auctions> avatarList = new ArrayList<Auctions>();
+		DecimalFormat formatter = new DecimalFormat("#,##0.00");
 		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
@@ -122,11 +124,12 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		VelocityContext velocityContext = new VelocityContext();
+		velocityContext.put("numberTool", new NumberTool());
 		velocityContext.put("number", number);
 		velocityContext.put("wearAvatar", wearAvatar);		// 착용중인 아바타
 		velocityContext.put("avatarList", avatarList);		// 경매장으로 뽑은 아바타 리스트
 		velocityContext.put("availAvatar", availAvatar);	// 경매장에서 조회된 아바타 갯수
-		velocityContext.put("minTotalSales", minTotalSales);// 경매장에서 조회돤 최저가 아바타의 가격 합
+		velocityContext.put("minTotalSales", formatter.format(minTotalSales));// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
 		velocityContext.put("server", server);
 		velocityContext.put("characterId", detail.getCharacterId());

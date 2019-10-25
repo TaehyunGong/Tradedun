@@ -20,12 +20,12 @@
     				</div>
 	    			<div class="d-flex">
 		              <div class="form-group ml-2">
-		                <label for="" class="label">경매장에 조회된 아바타 종류 갯수</label>
-		                <input type="text" class="form-control" id="" value="${availAvatar}" readonly>
+		                <label for="" class="label">경매장에 조회된 아바타 부위</label>
+		                <input type="text" class="form-control" id="" value="${availAvatar}부위" readonly>
 		              </div>
 		              <div class="form-group ml-2">
-		                <label for="" class="label">선택된 최저가 아바타 가격</label>
-		                <input type="text" class="form-control" id="" value="${minTotalSales}" readonly>
+		                <label for="" class="label">선택된 아바타 가격</label>
+		                <input type="text" class="form-control" id="" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
 		              </div>
               		</div>
 
@@ -63,7 +63,7 @@
 		    		$emblem.getItemName()<br>
 		    	#end
 		    </td>
-		    <td>$Avatars.get(0).getCurrentPrice()</td>
+		    <td>$numberTool.format('#,##0', $Avatars.get(0).getCurrentPrice())</td>
 	    #else
 	    	##착용한 장비를 조회해준다.
 	    	<td>$!equipAvatar.getItemName()
@@ -92,7 +92,7 @@
 			    		$emblem.getItemName()<br>
 		    	#end
 		    </td>
-		    <td>$avatar.currentPrice</td>
+		    <td>$numberTool.format('#,##0', $avatar.currentPrice)</td>
 		  </tr>
 	  #end
 	</tbody>
