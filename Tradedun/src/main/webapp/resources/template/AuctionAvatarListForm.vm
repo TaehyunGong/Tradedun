@@ -1,7 +1,11 @@
-<div class="row">
+<div class="row avatarList">
+	<div class='col-md-12'>
+		<button onclick='backSearch(${number})' class='btn btn-primary py-3 px-4'>뒤로 가기</button>
+	</div>
+
 	<div class='col-md-3'>
 		<div class="text p-4 text-center">
-			<img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/servers/bakal/characters/$wearAvatar.characterId'/>
+			<img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/servers/${server}/characters/$wearAvatar.characterId'/>
 			<h2 class="mb-0">$wearAvatar.characterName</h2>
 			<span>$wearAvatar.jobGrowName</span>
 		</div> 

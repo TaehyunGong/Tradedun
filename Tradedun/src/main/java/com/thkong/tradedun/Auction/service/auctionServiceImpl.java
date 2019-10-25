@@ -72,10 +72,16 @@ public class auctionServiceImpl implements auctionService {
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
 		List<Auctions> avatarList = new ArrayList<Auctions>();
+		System.out.println(detail);
+		
+		//만약 노압일경우 없는상태라면 경고창으로 반환
+		if(detail.getAvatar().size() == 0)
+			return "noAvatar";
 		
 		//모자 부터 피부까지 총 8부위만 조회한다.
-		for(int n=0; n<8; n++) {
-			Avatar avatar = detail.getAvatar().get(n);
+		for(Avatar avatar : detail.getAvatar()) {
+			
+//			Avatar avatar = detail.getAvatar().get(n);
 			String itemId;
 			if(kind.equals("wear")) {
 				itemId = avatar.getItemId();
@@ -90,17 +96,20 @@ public class auctionServiceImpl implements auctionService {
 				cloneAvatar.setSlotId(avatar.getSlotId());
 				cloneAvatar.setSlotName(avatar.getSlotName());
 				cloneAvatar.setItemName(avatar.getClone().getItemName());
-				detail.getAvatar().set(n, cloneAvatar);
+//				detail.getAvatar().set(n, cloneAvatar);
+				avatar = cloneAvatar;
 			}
 			avatarList.add(dnfapi.auction(itemId));
 		}
 		//피부의 경우 착용하고있는 아바타로만 뽑아준다.
-		avatarList.add(dnfapi.auction(detail.getAvatar().get(8).getItemId()));
+//		avatarList.add(dnfapi.auction(detail.getAvatar().get(8).getItemId()));
 		
-		VelocityContext velocityContext = new VelocityContext(); 
+		VelocityContext velocityContext = new VelocityContext();
+		velocityContext.put("number", number);
 		velocityContext.put("wearAvatar", detail);
 		velocityContext.put("avatarList", avatarList);
 		velocityContext.put("kind", kind);
+		velocityContext.put("server", server);
 		
 		Template template = velocityEngine.getTemplate("AuctionAvatarListForm.vm");
 		StringWriter stringWriter = new StringWriter(); 

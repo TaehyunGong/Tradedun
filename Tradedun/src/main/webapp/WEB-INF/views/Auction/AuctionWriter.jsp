@@ -82,8 +82,6 @@
   			
   			<!--  수정 중 -->
   			<div id='charBox1' class="request-form ftco-animate container" style='display:none;'>
-          		<div class="row">
-	    		</div>
   			</div>
   			
       </div>
@@ -112,8 +110,15 @@
             	search(num)
             }
     	}
-
+    	
+    	//캐릭터 선택창에서 뒤로가기
+		function backSearch(num){
+		    $('#charBox'+num).hide();
+			$('#charBox'+num + ' *').remove();
+		    $('#charSearch'+num).show();
+		}
     
+    	//캐릭터 조회창
     	function search(num){
     		var server = $('#server'+num).val();
     		var character = $('#character'+num).val();
@@ -132,7 +137,7 @@
    			    	$('#charSearch'+num).hide();
    			    	$('#charBox'+num).show();
    			    	
-   			    	$('#charBox'+num+' .row').append(data);	
+   			    	$('#charBox'+num).append(data);	
    			    },
    			    error: function (request, status, error){        
    			    }
@@ -155,7 +160,7 @@
    			 	async: false,
    			    cache: false,
    			    success: function(data){
-   			    	$('#charBox'+num+' .row').remove();
+   			    	$('#charBox'+num+' .row').hide();
    			    	
    			    	$('#charBox'+num).append(data);
    			    },
