@@ -1,5 +1,5 @@
   <div id="search${number}" class="row block-9 justify-content-center mb-5">
-		<div id='charSearch${number}' class="request-form" >
+		<div id='charSearch${number}' class="request-form animated fadeInDown" >
       		<h2>판매 하실 아바타가 착용된 캐릭터 조회</h2>
       		
 			<div class="d-flex">
@@ -27,7 +27,7 @@
 		</div>
 		
 		<!--  수정 중 -->
-		<div id='charBox${number}' class="request-form ftco-animate container" style='display:none;'>
+		<div id='charBox${number}' class="request-form animated fadeInDown container" style='display:none;'>
 		</div>
 		
   </div>
