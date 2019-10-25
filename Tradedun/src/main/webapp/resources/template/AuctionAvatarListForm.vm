@@ -11,20 +11,27 @@
 
 <div class="table-responsive col-md-12">
 	<table class="table table-condensed " >
-	
+
+## 주석 : 모자, 머리, 얼굴, 상의 순으로 신발까지 8번 반복	
 #foreach($index in [0..8])
 	#set($Avatars = $avatarList.get($index).getRows())
+	#set($equipAvatar = $wearAvatar.getAvatar().get($index))
 	
 	## 주석 : 경매장에서 뽑은 첫번째(최저가) 하나만 보여줌
 	<tbody id='test' class="selectAuction auctionList">
 	  <tr class='trLine'>
-	    <td>$wearAvatar.getAvatar().get($index).getSlotName()</td>
-	    
+	    <td>$equipAvatar.getSlotName()</td>
+	    <td><img class="img-c d-flex text-center align-items-end" 
+	    	#if($equipAvatar.getItemId())
+	    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/>
+	    	#end
+	    </td>
 	    ## 주석 : 경매장 아바타가 하나도 없다면 조회한 아바타의 옵션을 보여줌
 	    #if($Avatars.size() != 0)
-	    <td>$wearAvatar.getAvatar().get($index).getItemName()<br>
-	    	($Avatars.get(0).getAvatar().getAbility())
-	    </td>
+		    <td>$equipAvatar.getItemName()
+		    	## 주석 : 클로압은 옵션이 옵기때문에 제외
+			    <br>$Avatars.get(0).getAvatar().getAbility()
+			</td>
 		    <td>
 		    	#foreach($emblem in $Avatars.get(0).getAvatar().getEmblems())
 		    		$emblem.getItemName()<br>
@@ -32,9 +39,16 @@
 		    </td>
 		    <td>$Avatars.get(0).getCurrentPrice()</td>
 	    #else
-	    	<td>$wearAvatar.getAvatar().get($index).getItemName()</td>
-		    <td></td>
-		    <td></td>
+	    	##착용한 장비를 조회해준다.
+	    	<td>$!equipAvatar.getItemName()
+    			<br>$!equipAvatar.getOptionAbility()
+	    	</td>
+	    	<td>
+		    	#foreach($emblem in $equipAvatar.getEmblems())
+		    		$emblem.getItemName()<br>
+		    	#end
+		    </td>
+		    <td>-</td>
 	    #end
 	  </tr>
 	</tbody>
@@ -42,16 +56,19 @@
 	## 주석 : 이 tbody는 경매장의 리스트
 	<tbody class="hide" style='display:none;'>
 	  #foreach($avatar in $Avatars)
-	  <tr class="auctionList">
-	  	<td>$wearAvatar.getAvatar().get($index).getSlotName()</td>
-	    <td>$wearAvatar.getAvatar().get($index).getItemName()</td>
-	    <td>
-	    	#foreach($emblem in $avatar.getAvatar().getEmblems())
-		    		$emblem.getItemName()<br>
-	    	#end
-	    </td>
-	    <td>$avatar.currentPrice</td>
-	  </tr>
+		  <tr class="auctionList">
+		  	<td>$equipAvatar.getSlotName()</td>
+		  	<td><img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/></td>
+		    <td>$equipAvatar.getItemName()
+		    	<br>$avatar.getAvatar().getAbility()
+		    </td>
+		    <td>
+		    	#foreach($emblem in $avatar.getAvatar().getEmblems())
+			    		$emblem.getItemName()<br>
+		    	#end
+		    </td>
+		    <td>$avatar.currentPrice</td>
+		  </tr>
 	  #end
 	</tbody>
 	

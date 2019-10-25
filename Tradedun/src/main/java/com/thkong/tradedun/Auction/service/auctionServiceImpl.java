@@ -69,29 +69,40 @@ public class auctionServiceImpl implements auctionService {
 	 * @throws IOException
 	 */
 	@Override
-	public String charAvatarSeach(String server, String character, String number) throws IOException {
+	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
-
 		List<Auctions> avatarList = new ArrayList<Auctions>();
-		List<Auctions> cloneAvatarList = new ArrayList<Auctions>();
 		
-		//모자 부터 피부까지 총 9부위만 조회한다.
-		for(int n=0; n<9; n++) {
+		//모자 부터 피부까지 총 8부위만 조회한다.
+		for(int n=0; n<8; n++) {
 			Avatar avatar = detail.getAvatar().get(n);
-			String itemId = avatar.getItemId();
-			String cloneItemId = avatar.getClone().getItemId();
-			
+			String itemId;
+			if(kind.equals("wear")) {
+				itemId = avatar.getItemId();
+			}
+			else {
+				itemId = avatar.getClone().getItemId();
+				
+				//클론 아바타로 선택하게 된다면 화면상 에서도 클론아바타만 보여준다.
+				Avatar cloneAvatar = new Avatar();
+				
+				cloneAvatar.setItemId(itemId);
+				cloneAvatar.setSlotId(avatar.getSlotId());
+				cloneAvatar.setSlotName(avatar.getSlotName());
+				cloneAvatar.setItemName(avatar.getClone().getItemName());
+				detail.getAvatar().set(n, cloneAvatar);
+			}
 			avatarList.add(dnfapi.auction(itemId));
-			cloneAvatarList.add(dnfapi.auction(cloneItemId));
 		}
+		//피부의 경우 착용하고있는 아바타로만 뽑아준다.
+		avatarList.add(dnfapi.auction(detail.getAvatar().get(8).getItemId()));
 		
-		Template template = velocityEngine.getTemplate("AuctionAvatarListForm.vm");
-        
 		VelocityContext velocityContext = new VelocityContext(); 
 		velocityContext.put("wearAvatar", detail);
 		velocityContext.put("avatarList", avatarList);
-		velocityContext.put("cloneAvatarList", cloneAvatarList);
+		velocityContext.put("kind", kind);
 		
+		Template template = velocityEngine.getTemplate("AuctionAvatarListForm.vm");
 		StringWriter stringWriter = new StringWriter(); 
 		template.merge(velocityContext, stringWriter);
 		System.out.println(stringWriter.toString());

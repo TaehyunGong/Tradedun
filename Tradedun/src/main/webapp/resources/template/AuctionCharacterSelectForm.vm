@@ -9,7 +9,8 @@
 			<p class="d-flex mb-0 d-block-c">
 				<input type="hidden" id='charName$velocityCount' value="$character.characterId">
 				<input type="hidden" id="charServer$velocityCount" value="${server}">
-				<a onclick='avartar(${number}, $velocityCount)' class="btn btn-black btn-outline-black mr-1">선택</a> 
+				<a onclick='avartar(${number}, $velocityCount, "wear")' class="btn btn-black btn-outline-black mr-1">착용압</a>
+				<a onclick='avartar(${number}, $velocityCount, "clone")' class="btn btn-black btn-outline-black mr-1">클론압 </a>
 			</p>
 		</div>
 	</div>

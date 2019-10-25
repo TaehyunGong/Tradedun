@@ -73,7 +73,7 @@
             	</div>
    				<div class="form-group">
    					<label for="" class="label">캐릭터</label>
-   					<input type="text" id="character1" name='character' class="form-control" placeholder="Your Character Name">
+   					<input type="text" id="character1" onkeyup="enterkey(1);"  name='character' class="form-control" placeholder="Your Character Name">
    				</div>
 	            <div class="form-group">
 	              	<input type="button" onclick="search(1)" value="검색" class="btn btn-primary py-3 px-4">
@@ -105,6 +105,14 @@
     	$(document).on('click', 'table tbody .trLine', function(){
             $(this).parents().next('.hide').fadeToggle();
         });
+
+    	//엔터 이벤트
+    	function enterkey(num) {
+            if (window.event.keyCode == 13) {
+            	search(num)
+            }
+    	}
+
     
     	function search(num){
     		var server = $('#server'+num).val();
@@ -131,7 +139,7 @@
     		});
     	}
     	
-    	function avartar(num, charNum){
+    	function avartar(num, charNum, kind){
     		var server = $('#charServer'+charNum).val();
     		var character = $('#charName'+charNum).val();
     		
@@ -140,7 +148,8 @@
    			    data: {
    			    	server:server,
    			    	character:character,
-   			    	number:num
+   			    	number:num,
+   			    	kind:kind
    			    },
    			    type: "GET",
    			 	async: false,

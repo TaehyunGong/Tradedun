@@ -27,7 +27,8 @@ public class auctionController {
 	@RequestMapping(value="/auction/charAvatarSeach", method = RequestMethod.GET, produces = "application/text; charset=utf8")
 	public @ResponseBody String charAvatarSeach(@RequestParam(required = true) String server
 										  , @RequestParam(required = true) String character
-										  , @RequestParam(required = true) String number) throws IOException {
-		return service.charAvatarSeach(server, character, number);
+										  , @RequestParam(required = true) String number
+										  , @RequestParam(required = true) String kind) throws IOException {
+		return service.charAvatarSeach(server, character, number, kind);
 	}
 }
