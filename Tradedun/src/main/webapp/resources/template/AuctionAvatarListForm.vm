@@ -1,16 +1,38 @@
-<div class="row avatarList animated fadeInDown">
+<div class="row avatarList animated fadeInDown" style='font-size: 13px;'>
 	<div class='col-md-12'>
 		<button onclick='backSearch(${number})' class='btn btn-primary py-3 px-4'>뒤로 가기</button>
 	</div>
 
-	<div class='col-md-3'>
+	<div class='col-md-4'>
 		<div class="text p-4 text-center">
 			<img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/servers/${server}/characters/${characterId}'/>
 			<h2 class="mb-0">${characterName}</h2>
 			<span>${jobGrowName}</span>
 		</div> 
 	</div>
-	<div class='col-md-9'>
+	<div class='col-md-8'>
+		<div class="row" >
+			#foreach($index in [0..8])
+				#set($equipAvatar = $wearAvatar.get($index))
+				<div class='col-md-4'>
+					<div>$equipAvatar.getSlotId()</div>
+				    <div><img class="img-c d-flex text-center align-items-end" 
+				    	#if($equipAvatar.getItemId())
+				    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/>
+				    	#end
+				    	#foreach($emblem in $equipAvatar.getEmblems())
+				    		<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+				    	#end
+				    </div>
+					<div>
+						$!equipAvatar.getItemName()
+						($!equipAvatar.getOptionAbility())
+					</div>
+				</div>
+			#end
+		</div>
+	</div>
+	<div class='col-md-12'>
 		<!-- 테스트 -->
           	<form action="#" class="request-form">
           		<h2>판매 설정</h2>
@@ -34,7 +56,7 @@
 	            </div>
 			</form>
 	</div>
-
+	
 <div class="table-responsive col-md-12">
 	<table class="table table-condensed " >
 
