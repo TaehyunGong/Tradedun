@@ -5,8 +5,11 @@ import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
@@ -35,7 +39,14 @@ public class auctionServiceImpl implements auctionService {
 	
 	@Autowired
 	private DnfApiLib dnfapi;
+	
+	@Autowired
+	private SqlSession session;
 
+	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다.
+	private List<String> parts = Arrays.asList(
+			new String[]{"HEADGEAR", "HAIR", "FACE", "JACKET", "PANTS", "SHOES", "BREAST", "WAIST", "SKIN"});
+	
 	/**
 	 * @description 캐릭터명으로 조회후 해당 캐릭에 match되는 리스트 뿌려줌, 리펙토링 필요
 	 * @createDate 2019. 10. 23.
@@ -79,15 +90,11 @@ public class auctionServiceImpl implements auctionService {
 		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
-		//임시용
-		List<String> parts = Arrays.asList(
-				new String[]{"HEADGEAR", "HAIR", "FACE", "JACKET", "PANTS", "SHOES", "BREAST", "WAIST", "SKIN"});
-		
 		//만약 노압일경우 없는상태라면 경고창으로 반환
 		if(detail.getAvatar().size() == 0)
 			return "noAvatar";
 		
-		//아바타가 9피스가 아닐경우 슬롯을 자동 삽입
+		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
 		List<Avatar> wearAvatar = new ArrayList<Avatar>();
 		for(String part : parts) {
 			Avatar avat = new Avatar(); 
@@ -121,11 +128,16 @@ public class auctionServiceImpl implements auctionService {
 				avatar.setOptionAbility(null);
 			}
 			Auctions auctions = dnfapi.auction(itemId);
+			
+			//엠블렘을 매핑시켜주기 위한 별도의 메소드 작성
+			getMatchEmblem(auctions);
+			
 			//경매장에 조회된 아바타 갯수 구하기
 			if(auctions.getRows().size() != 0) {
 				availAvatar += 1;
 				minTotalSales += auctions.getRows().get(0).getCurrentPrice();
 			}
+			
 			avatarList.add(auctions);
 		}
 		
@@ -147,6 +159,40 @@ public class auctionServiceImpl implements auctionService {
 		template.merge(velocityContext, stringWriter);
 		
 		return stringWriter.toString();
+	}
+	
+	/**
+	 * @description DB에서 itemDetail의 엠블렘을 가져와 매핑시켜준다. 리펙토링 필요
+	 * @createDate 2019. 10. 28.
+	 * @param auctions
+	 * @return
+	 */
+	public Auctions getMatchEmblem(Auctions auctions) {
+		//엠블렘 map 리스트
+		List<ItemDetail> emblems = session.selectList("selectItemDetailList");
+		Map<String, ItemDetail> emblemMap = new HashMap<String, ItemDetail>();
+		for(ItemDetail avatarEmblem : emblems) {
+			emblemMap.put(avatarEmblem.getItemName(), avatarEmblem);
+		}
+		
+		//auctions의 rows size만큼 반복
+		for(int auctionIndex=0; auctionIndex < auctions.getRows().size(); auctionIndex++) {
+			Avatar avatar = auctions.getRows().get(auctionIndex).getAvatar();
+			
+			//avatar의 엠블렘의 수 만큼 반복 
+			for(int emblemIndex=0; emblemIndex < avatar.getEmblems().size(); emblemIndex++) {
+				ItemDetail emblem = avatar.getEmblems().get(emblemIndex);
+				
+				//DB에서 가져온 엠블렘이랑 일치하는 엠블렘 객체를 대입해준다.
+				ItemDetail newEmblem = emblemMap.get(emblem.getItemName());
+				
+				//만약 map에 없는 엠블렘이라면 패스한다.
+				if(newEmblem != null)
+					avatar.getEmblems().set(emblemIndex, newEmblem);
+			}
+		}
+		
+		return auctions;
 	}
 	
 	@Override

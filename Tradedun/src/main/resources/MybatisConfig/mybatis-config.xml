@@ -3,5 +3,6 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="User" type="com.thkong.tradedun.User.vo.User"/>
+		<typeAlias alias="ItemDetail" type="com.thkong.tradedun.Auction.vo.ItemDetail"/>
 	</typeAliases>
 </configuration>

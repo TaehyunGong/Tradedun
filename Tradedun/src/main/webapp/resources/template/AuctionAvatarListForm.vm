@@ -52,7 +52,7 @@
 	    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/>
 	    	#end
 	    </td>
-	    ## 주석 : 경매장에 아바타가 있다면, 경매장에 올라와 있는 최저가 한개만 뽑아 보여준다.
+	    ## 주석 : 경매장에 아바타가 있 다면, 경매장에 올라와 있는 최저가 한개만 뽑아 보여준다.
 	    #if($Avatars.size() != 0)
 		    <td>$equipAvatar.getItemName()
 		    	## 주석 : 클로압은 옵션이 옵기때문에 제외
@@ -60,7 +60,7 @@
 			</td>
 		    <td>
 		    	#foreach($emblem in $Avatars.get(0).getAvatar().getEmblems())
-		    		$emblem.getItemName()<br>
+		    		<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
 		    	#end
 		    </td>
 		    <td>$numberTool.format('#,##0', $Avatars.get(0).getCurrentPrice())</td>
