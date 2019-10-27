@@ -20,6 +20,7 @@ import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Characters;
+import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Common.DnfApiLib;
 
 @Transactional
@@ -98,6 +99,11 @@ public class auctionServiceImpl implements auctionService {
 					break;
 				}
 			}
+			//클론압 선택시 아바타가 부위별로만 있다면 비어있는 객체를 넣어준다.
+			if(kind.equals("clone") && avat.getClone() == null) {
+				avat.setClone(new ItemDetail());
+			}
+			
 			wearAvatar.add(avat);
 		}
 		
