@@ -45,7 +45,7 @@ public class auctionServiceImpl implements auctionService {
 
 	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다.
 	private List<String> parts = Arrays.asList(
-			new String[]{"HEADGEAR", "HAIR", "FACE", "JACKET", "PANTS", "SHOES", "BREAST", "WAIST", "SKIN"});
+			new String[]{"모자", "머리", "얼굴", "상의", "하의", "신발", "목가슴", "허리", "스킨"});
 	
 	/**
 	 * @description 캐릭터명으로 조회후 해당 캐릭에 match되는 리스트 뿌려줌, 리펙토링 필요
@@ -100,12 +100,16 @@ public class auctionServiceImpl implements auctionService {
 			Avatar avat = new Avatar(); 
 			avat.setSlotId(part);
 			
-			for(Avatar avatar : detail.getAvatar()) {
-				if(part.contains(avatar.getSlotId())) {
+			for(int avatarIndex=0; avatarIndex < detail.getAvatar().size(); avatarIndex++) {
+				Avatar avatar = detail.getAvatar().get(avatarIndex);
+				if(part.contains(avatar.getSlotName().split(" ")[0])) {
 					avat = avatar;
+					avat.setSlotName(avat.getSlotName().split(" ")[0]);
+					getMatchAvatarEmblem(avat);
 					break;
 				}
 			}
+			
 			//클론압 선택시 아바타가 부위별로만 있다면 비어있는 객체를 넣어준다.
 			if(kind.equals("clone") && avat.getClone() == null) {
 				avat.setClone(new ItemDetail());
@@ -117,7 +121,7 @@ public class auctionServiceImpl implements auctionService {
 		//모자 부터 피부까지 총 8부위만 조회한다.
 		for(Avatar avatar : wearAvatar) {
 			String itemId;
-			if(kind.equals("wear") || avatar.getSlotId().equals("SKIN")) {
+			if(kind.equals("wear") || avatar.getSlotId().equals("스킨")) {
 				itemId = avatar.getItemId();
 			}
 			else {
@@ -168,6 +172,21 @@ public class auctionServiceImpl implements auctionService {
 	 * @return
 	 */
 	public Auctions getMatchEmblem(Auctions auctions) {
+		//auctions의 rows size만큼 반복
+		for(int auctionIndex=0; auctionIndex < auctions.getRows().size(); auctionIndex++) {
+			Avatar avatar = auctions.getRows().get(auctionIndex).getAvatar();
+			getMatchAvatarEmblem(avatar);
+		}
+		
+		return auctions;
+	}
+	
+	/**
+	 * @description DB에서 itemDetail의 엠블렘을 가져와 매핑시켜준다. 리펙토링 필요
+	 * @param avatar
+	 * @return
+	 */
+	public Avatar getMatchAvatarEmblem(Avatar avatar) {
 		//엠블렘 map 리스트
 		List<ItemDetail> emblems = session.selectList("selectItemDetailList");
 		Map<String, ItemDetail> emblemMap = new HashMap<String, ItemDetail>();
@@ -175,24 +194,19 @@ public class auctionServiceImpl implements auctionService {
 			emblemMap.put(avatarEmblem.getItemName(), avatarEmblem);
 		}
 		
-		//auctions의 rows size만큼 반복
-		for(int auctionIndex=0; auctionIndex < auctions.getRows().size(); auctionIndex++) {
-			Avatar avatar = auctions.getRows().get(auctionIndex).getAvatar();
+		//avatar의 엠블렘의 수 만큼 반복 
+		for(int emblemIndex=0; emblemIndex < avatar.getEmblems().size(); emblemIndex++) {
+			ItemDetail emblem = avatar.getEmblems().get(emblemIndex);
 			
-			//avatar의 엠블렘의 수 만큼 반복 
-			for(int emblemIndex=0; emblemIndex < avatar.getEmblems().size(); emblemIndex++) {
-				ItemDetail emblem = avatar.getEmblems().get(emblemIndex);
-				
-				//DB에서 가져온 엠블렘이랑 일치하는 엠블렘 객체를 대입해준다.
-				ItemDetail newEmblem = emblemMap.get(emblem.getItemName());
-				
-				//만약 map에 없는 엠블렘이라면 패스한다.
-				if(newEmblem != null)
-					avatar.getEmblems().set(emblemIndex, newEmblem);
-			}
+			//DB에서 가져온 엠블렘이랑 일치하는 엠블렘 객체를 대입해준다.
+			ItemDetail newEmblem = emblemMap.get(emblem.getItemName());
+			
+			//만약 map에 없는 엠블렘이라면 패스한다.
+			if(newEmblem != null)
+				avatar.getEmblems().set(emblemIndex, newEmblem);
 		}
 		
-		return auctions;
+		return avatar;
 	}
 	
 	@Override

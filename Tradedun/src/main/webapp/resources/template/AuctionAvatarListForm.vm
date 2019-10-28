@@ -10,27 +10,29 @@
 			<span>${jobGrowName}</span>
 		</div> 
 	</div>
-	<div class='col-md-8'>
-		<div class="row" >
+	<div class='table-responsive col-md-8'>
+		<table class="table table-condensed " >
 			#foreach($index in [0..8])
 				#set($equipAvatar = $wearAvatar.get($index))
-				<div class='col-md-4'>
-					<div>$equipAvatar.getSlotId()</div>
-				    <div><img class="img-c d-flex text-center align-items-end" 
+				<tr>
+					<td style='width:60px;'>$equipAvatar.getSlotName()</td>
+				    <td><img class="pr-3" 
 				    	#if($equipAvatar.getItemId())
-				    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/>
+				    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()' title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
 				    	#end
 				    	#foreach($emblem in $equipAvatar.getEmblems())
-				    		<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+				    		#if($emblem.getItemId())
+				    			<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+				    		#else
+				    			<font class='pl-2' style='font-weight: bold;'>$emblem.getItemName()</font>
+				    			<br>
+				    		#end
 				    	#end
-				    </div>
-					<div>
-						$!equipAvatar.getItemName()
-						($!equipAvatar.getOptionAbility())
-					</div>
-				</div>
+			    		<font class='pl-2' style='font-weight: bold;'>$!equipAvatar.getOptionAbility()</font>
+				    </td>
+				</tr>
 			#end
-		</div>
+		</table>
 	</div>
 	<div class='col-md-12'>
 		<!-- 테스트 -->
