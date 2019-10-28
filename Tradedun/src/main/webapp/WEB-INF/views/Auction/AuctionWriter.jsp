@@ -109,6 +109,11 @@
             $(this).parents().next('.hide').fadeToggle();
         });
 
+    	//jquery ui tooltip
+   	    $(function () {
+    	    $( document ).tooltip();
+   		});
+    	
     	//엔터 이벤트
     	function enterkey(num) {
             if (window.event.keyCode == 13) {
