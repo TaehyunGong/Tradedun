@@ -16,16 +16,17 @@
 				#set($equipAvatar = $wearAvatar.get($index))
 				<tr>
 					<td style='width:60px;'>$equipAvatar.getSlotName()</td>
-				    <td><img class="pr-3" 
-				    	#if($equipAvatar.getItemId())
+				    <td>#if($equipAvatar.getItemId())
+				    	<img class="pr-3"
 				    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()' title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
 				    	#end
 				    	#foreach($emblem in $equipAvatar.getEmblems())
+				    		## 주석 : 엠블렘 ID 매핑에 성공하여 엠블렘 id를 가져왔을때
 				    		#if($emblem.getItemId())
 				    			<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+				    		## 주석 : 엠블렘 ID 매핑에 실패시 엠블렘명만 출력
 				    		#else
 				    			<font class='pl-2' style='font-weight: bold;'>$emblem.getItemName()</font>
-				    			<br>
 				    		#end
 				    	#end
 			    		<font class='pl-2' style='font-weight: bold;'>$!equipAvatar.getOptionAbility()</font>
@@ -70,8 +71,8 @@
 	## 주석 : 경매장에서 뽑은 첫번째(최저가) 하나만 보여줌
 	<tbody id='test' class="selectAuction auctionList">
 	  <tr class='trLine'>
-	    <td>$equipAvatar.getSlotName()</td>
-	    <td><img class="img-c d-flex text-center align-items-end" 
+	    <td style='width:8%;'>$equipAvatar.getSlotName()</td>
+	    <td style='width:5%;'><img class="img-c d-flex text-center align-items-end" 
 	    	#if($equipAvatar.getItemId())
 	    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/>
 	    	#end
@@ -79,18 +80,18 @@
 	    ## 주석 : 경매장에 아바타가 있 다면, 경매장에 올라와 있는 최저가 한개만 뽑아 보여준다.
 	    #if($Avatars.size() != 0)
 		    ## 주석 : 클로압은 옵션이 옵기때문에 제외
-			<td>$!Avatars.get(0).getAvatar().getAbility()</td>
-		    <td>
+			<td style='width:30%;'>$!Avatars.get(0).getAvatar().getAbility()</td>
+		    <td style='width:27%;'>
 		    	#foreach($emblem in $Avatars.get(0).getAvatar().getEmblems())
-		    		<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+		    		<img class='pl-1' src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
 		    	#end
 		    </td>
-		    <td>$numberTool.format('#,##0', $Avatars.get(0).getCurrentPrice()) Gold</td>
+		    <td style='width:30%;'>$numberTool.format('#,##0', $Avatars.get(0).getCurrentPrice()) Gold</td>
 	    #else
 	    	##착용한 장비를 조회해준다.
-	    	<td>$!equipAvatar.getOptionAbility()</td>
-	    	<td></td>
-		    <td>없음</td>
+	    	<td style='width:30%;'>$!equipAvatar.getOptionAbility()</td>
+	    	<td style='width:27%;'></td>
+		    <td style='width:30%;'> - </td>
 	    #end
 	  </tr>
 	</tbody>
@@ -102,17 +103,17 @@
 	  	  #if($foreach.count == 1) <tr class="auctionList selectListAuction">
 	  	  #else <tr class="auctionList">
 	  	  #end
-		  	<td>$equipAvatar.getSlotName()</td>
-		  	<td><img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'
+		  	<td style='width:8%;'>$equipAvatar.getSlotName()</td>
+		  	<td style='width:5%;'><img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'
 		  			 title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
 		  	</td>
-		    <td>$!avatar.getAvatar().getAbility()</td>
-		    <td>
+		    <td style='width:30%;'>$!avatar.getAvatar().getAbility()</td>
+		    <td style='width:27%;'>
 		    	#foreach($emblem in $avatar.getAvatar().getEmblems())
-	    			<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+	    			<img class='pl-1' src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
 		    	#end
 		    </td>
-		    <td>$numberTool.format('#,##0', $avatar.currentPrice) Gold</td>
+		    <td style='width:30%;'>$numberTool.format('#,##0', $avatar.currentPrice) Gold</td>
 		  </tr>
 	  #end
 	</tbody>

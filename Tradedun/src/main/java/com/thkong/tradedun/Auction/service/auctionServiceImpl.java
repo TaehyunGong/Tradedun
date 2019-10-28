@@ -98,10 +98,11 @@ public class auctionServiceImpl implements auctionService {
 		List<Avatar> wearAvatar = new ArrayList<Avatar>();
 		for(String part : parts) {
 			Avatar avat = new Avatar(); 
-			avat.setSlotId(part);
+			avat.setSlotName(part);
 			
 			for(int avatarIndex=0; avatarIndex < detail.getAvatar().size(); avatarIndex++) {
 				Avatar avatar = detail.getAvatar().get(avatarIndex);
+				//avatar.getSlotName().split(" ")[0]) ex) "모자 아바타" -> "모자"
 				if(part.contains(avatar.getSlotName().split(" ")[0])) {
 					avat = avatar;
 					avat.setSlotName(avat.getSlotName().split(" ")[0]);
