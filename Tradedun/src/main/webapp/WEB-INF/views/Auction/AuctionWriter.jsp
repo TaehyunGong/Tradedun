@@ -93,7 +93,7 @@
 		<div class="request-form ftco-animate">
             <div class="form-group">
             	<input type="button" onclick='addCharBox()' value="추가하기" class="btn-success py-3 px-4">
-              	<input type="button" value="등록하기" class="btn-primary py-3 px-4">
+              	<input type="button" onclick='salesBoardSubmit()' value="등록하기" class="btn-primary py-3 px-4">
             </div>
  		</div>
 	  </div>
@@ -104,6 +104,7 @@
     	
     	//charBox갯수
     	var number = 1;
+    	var numberList = new Array();
     
     	//경매장 리스트 클릭시 테이블 down 
     	$(document).on('click', 'table tbody .trLine', function(){
@@ -165,6 +166,7 @@
     	
     	//charBox 삭제
     	function deleteCharBox(num){
+    		numberList.pop();
     		$('#search'+num).remove();
     	}
     
@@ -221,6 +223,7 @@
     	//charBox 추가
     	function addCharBox(){
     		number+=1;
+    		numberList.push(number);
     		
     		$.ajax({
    			  	url: "/auction/addCharBox",
@@ -236,6 +239,18 @@
    			    error: function (request, status, error){
    			    }
     		});
+    	}
+    	
+    	//테스트중
+    	function salesBoardSubmit(){
+			numberList.forEach(function (num, index, array) {
+	    		for(var i=1; i<10; i++){
+	    			var charBoxAvatarList = $('#charBoxAvatarList'+num+i).data()
+					console.log(charBoxAvatarList)
+	    		}
+	    		var resultPrice = $('#resultPrice'+num).val();
+				console.log(num + '번째 : ' + resultPrice)
+			});
     	}
     	
     </script>
