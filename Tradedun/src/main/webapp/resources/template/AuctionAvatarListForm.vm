@@ -50,7 +50,7 @@
 		              </div>
 		              <div class="form-group ml-2">
 		                <label for="" class="label">선택된 아바타 가격</label>
-		                <input type="text" class="form-control" id="" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
+		                <input type="text" class="form-control" id="auctionSumPrice" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
 		              </div>
               		</div>
 
@@ -86,12 +86,12 @@
 		    		<img class='pl-1' src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
 		    	#end
 		    </td>
-		    <td style='width:30%;'>$numberTool.format('#,##0', $Avatars.get(0).getCurrentPrice()) Gold</td>
+		    <td style='width:30%;' data-price='auctionSelectPiece'>$numberTool.format('#,##0', $Avatars.get(0).getCurrentPrice()) Gold</td>
 	    #else
 	    	##착용한 장비를 조회해준다.
 	    	<td style='width:30%;'>$!equipAvatar.getOptionAbility()</td>
 	    	<td style='width:27%;'></td>
-		    <td style='width:30%;'> - </td>
+		    <td style='width:30%;' data-price='auctionSelectPiece'> - </td>
 	    #end
 	  </tr>
 	</tbody>

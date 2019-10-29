@@ -105,10 +105,45 @@
     	//charBox갯수
     	var number = 1;
     
+    	//경매장 리스트 클릭시 테이블 down 
     	$(document).on('click', 'table tbody .trLine', function(){
             $(this).parents().next('.hide').fadeToggle();
         });
 
+		//경매장 리스트 선택시 이펙트 및 텍스트 수정
+    	$(document).on('click', 'table tbody .auctionList', function(){
+    		var tbody = $(this).parents().prev('.selectAuction')[0];
+
+			//옵션 부터 가격까지 수정
+			for(var i=2; i<5; i++){
+				var prev = $(this).children('td').eq(i).html();
+				var next = $(tbody).children().children('td').eq(i).html(prev);
+			}
+			$(this).siblings().removeClass('selectListAuction');
+			$(this).addClass('selectListAuction')
+			$(tbody).finish().effect( "highlight", {}, 1000 );
+			
+			var test = $('*[data-price="auctionSelectPiece"]');
+			var price = 0;
+			test.each(function(i, item){
+				price += Number(fn(item.textContent));
+			});
+			
+			$('#auctionSumPrice').val(numberWithCommas(price));
+        });
+    	
+    	//정규식을 사용해 숫자만 출력
+		function fn(str){
+			var res;
+			res = str.replace(/[^0-9]/g,"");
+			return res;
+		}
+
+    	//정규식을 사용해 숫자의 3자리마다 콤마 찍기
+		function numberWithCommas(x) {
+		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+		
     	//jquery ui tooltip
    	    $(function () {
     	    $( document ).tooltip();
