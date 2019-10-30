@@ -85,65 +85,34 @@ public class auctionServiceImpl implements auctionService {
 	@Override
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
-		List<Auctions> avatarList = new ArrayList<Auctions>();
 		DecimalFormat formatter = new DecimalFormat("#,##0.00");
 		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
 		//만약 노압일경우 없는상태라면 경고창으로 반환
-		if(detail.getAvatar().size() == 0)
-			return "noAvatar";
-		
-		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
-		List<Avatar> wearAvatar = new ArrayList<Avatar>();
-		for(String part : parts) {
-			Avatar avat = new Avatar(); 
-			avat.setSlotName(part);
+		if(detail.getAvatar().size() == 0) {
+			Template template = velocityEngine.getTemplate("AuctionCharacterNoAvatar.vm");
+			VelocityContext velocityContext = new VelocityContext();
+			velocityContext.put("number", number);
 			
-			for(int avatarIndex=0; avatarIndex < detail.getAvatar().size(); avatarIndex++) {
-				Avatar avatar = detail.getAvatar().get(avatarIndex);
-				//avatar.getSlotName().split(" ")[0]) ex) "모자 아바타" -> "모자"
-				if(part.contains(avatar.getSlotName().split(" ")[0])) {
-					avat = avatar;
-					avat.setSlotName(avat.getSlotName().split(" ")[0]);
-					getMatchAvatarEmblem(avat);
-					break;
-				}
-			}
+			StringWriter stringWriter = new StringWriter(); 
+			template.merge(velocityContext, stringWriter);
 			
-			//클론압 선택시 아바타가 부위별로만 있다면 비어있는 객체를 넣어준다.
-			if(kind.equals("clone") && avat.getClone() == null) {
-				avat.setClone(new ItemDetail());
-			}
-			
-			wearAvatar.add(avat);
+			return stringWriter.toString();
 		}
 		
+		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
+		List<Avatar> wearAvatar = fixNinePieceAvatar(detail, kind);
+		
 		//모자 부터 피부까지 총 8부위만 조회한다.
-		for(Avatar avatar : wearAvatar) {
-			String itemId;
-			if(kind.equals("wear") || avatar.getSlotId().equals("스킨")) {
-				itemId = avatar.getItemId();
-			}
-			else {
-				itemId = avatar.getClone().getItemId();
-				avatar.setItemId(avatar.getClone().getItemId());
-				avatar.setItemName(avatar.getClone().getItemName());
-				avatar.setEmblems(null);
-				avatar.setOptionAbility(null);
-			}
-			Auctions auctions = dnfapi.auction(itemId);
-			
-			//엠블렘을 매핑시켜주기 위한 별도의 메소드 작성
-			getMatchEmblem(auctions);
-			
-			//경매장에 조회된 아바타 갯수 구하기
+		List<Auctions> avatarList = searchAuctionAvatarList(wearAvatar, kind);
+		
+		//경매장에 조회된 아바타 갯수 구하기
+		for(Auctions auctions : avatarList) {
 			if(auctions.getRows().size() != 0) {
 				availAvatar += 1;
 				minTotalSales += auctions.getRows().get(0).getCurrentPrice();
 			}
-			
-			avatarList.add(auctions);
 		}
 		
 		VelocityContext velocityContext = new VelocityContext();
@@ -208,6 +177,74 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		return avatar;
+	}
+	
+	/**
+	 * @description 아바타가 없는 부위도 비어있는 객체를 주어 9개의 객체로 고정시킨다.
+	 * @createDate 2019. 10. 30.
+	 * @param detail
+	 * @param kind
+	 */
+	public List<Avatar> fixNinePieceAvatar(AuctionCharacterDetail detail, String kind) {
+		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
+		List<Avatar> wearAvatar = new ArrayList<Avatar>();
+		for(String part : parts) {
+			Avatar avat = new Avatar(); 
+			avat.setSlotName(part);
+			
+			for(int avatarIndex=0; avatarIndex < detail.getAvatar().size(); avatarIndex++) {
+				Avatar avatar = detail.getAvatar().get(avatarIndex);
+				//avatar.getSlotName().split(" ")[0]) ex) "모자 아바타" -> "모자"
+				if(part.contains(avatar.getSlotName().split(" ")[0])) {
+					avat = avatar;
+					avat.setSlotName(avat.getSlotName().split(" ")[0]);
+					getMatchAvatarEmblem(avat);
+					break;
+				}
+			}
+			
+			//클론압 선택시 아바타가 부위별로만 있다면 비어있는 객체를 넣어준다.
+			if(kind.equals("clone") && avat.getClone() == null) {
+				avat.setClone(new ItemDetail());
+			}
+			
+			wearAvatar.add(avat);
+		}
+		
+		return wearAvatar;
+	}
+	
+	/**
+	 * @description 아바타 리스트를 가져와 경매장에 검색하여 나온 리스트들을 반환시킨다.
+	 * @createDate 2019. 10. 30.
+	 * @param wearAvatar
+	 * @param kind
+	 * @throws IOException 
+	 */
+	public List<Auctions> searchAuctionAvatarList(List<Avatar> wearAvatar, String kind) throws IOException {
+		List<Auctions> avatarList = new ArrayList<Auctions>();
+		
+		for(Avatar avatar : wearAvatar) {
+			String itemId;
+			if(kind.equals("wear") || avatar.getSlotId().equals("스킨")) {
+				itemId = avatar.getItemId();
+			}
+			else {
+				itemId = avatar.getClone().getItemId();
+				avatar.setItemId(avatar.getClone().getItemId());
+				avatar.setItemName(avatar.getClone().getItemName());
+				avatar.setEmblems(null);
+				avatar.setOptionAbility(null);
+			}
+			Auctions auctions = dnfapi.auction(itemId);
+			
+			//엠블렘을 매핑시켜주기 위한 별도의 메소드 작성
+			getMatchEmblem(auctions);
+			
+			avatarList.add(auctions);
+		}
+		
+		return avatarList;
 	}
 	
 	@Override

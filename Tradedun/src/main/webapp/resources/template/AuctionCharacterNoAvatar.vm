@@ -1,0 +1,12 @@
+<div class="row">
+<div class='col-md-12'>
+	<button onclick='backSearch(${number})' class='btn btn-primary py-3 px-4'>뒤로 가기</button>
+</div>
+
+<div class="col-md-12">
+	<div class="car-wrap ftco-animate fadeInUp ftco-animated">
+		<h2 class="mb-0">착용한 아바타가 없습니다.</h2>
+	</div>
+</div>
+
+</div>
