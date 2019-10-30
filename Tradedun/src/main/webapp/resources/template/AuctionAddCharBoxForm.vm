@@ -12,6 +12,11 @@
 	                      	<option value="bakal">바칼</option>
 	                        <option value="cain">카인</option>
 	                        <option value="anton">안톤</option>
+	                        <option value="diregie">디레지에</option>
+		                    <option value="siroco">시로코</option>
+		                    <option value="prey">프레이</option>
+		                    <option value="casillas">카시야스</option>
+		                    <option value="hilder">힐더</option>
 	                      </select>
 	                    </div>
 	               </div>
