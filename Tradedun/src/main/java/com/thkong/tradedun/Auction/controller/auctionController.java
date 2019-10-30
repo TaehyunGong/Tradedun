@@ -37,9 +37,8 @@ public class auctionController {
 		return service.addCharBox(number);
 	}
 	
-	@RequestMapping(value="/auction/salesBoardWrite", method = RequestMethod.POST, produces = "application/json; charset=utf8")
-	public @ResponseBody String salesBoardWrite(@RequestParam(required = true) String submitJson) throws IOException {
-		System.out.println(submitJson);
-		return submitJson;
+	@RequestMapping(value="/auction/insertBoardWrite", method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	public @ResponseBody String insertBoardWrite(@RequestParam(required = true) String submitJson) throws IOException {
+		return service.insertBoardWrite(submitJson);
 	}
 }

@@ -26,7 +26,7 @@
 				<tr id='charBoxAvatarList${number}$foreach.count' 
 					data-slotName='$!equipAvatar.getSlotName()' data-itemId='$!equipAvatar.getItemId()'
 					data-itemName='$!equipAvatar.getItemName()' data-optionAbility='$!equipAvatar.getOptionAbility()' 
-					data-emblems='#foreach($emblem in $equipAvatar.getEmblems())$emblem.getItemName(),#end'>
+					data-emblemName='#foreach($emblem in $equipAvatar.getEmblems())$emblem.getItemName(),#end'>
 					
 					<td style='width:60px;'>$equipAvatar.getSlotName()</td>
 				    <td>#if($equipAvatar.getItemId())

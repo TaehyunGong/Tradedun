@@ -14,13 +14,14 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.generic.NumberTool;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
+import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Characters;
@@ -39,6 +40,9 @@ public class auctionServiceImpl implements auctionService {
 	
 	@Autowired
 	private DnfApiLib dnfapi;
+	
+	@Autowired
+	private ObjectMapper mapper;
 	
 	@Autowired
 	private SqlSession session;
@@ -247,6 +251,13 @@ public class auctionServiceImpl implements auctionService {
 		return avatarList;
 	}
 	
+	/**
+	 * @description charBox를 템플릿 엔진으로 랜더링 후 넘겨준다.
+	 * @createDate 2019. 10. 30.
+	 * @param number
+	 * @return
+	 * @throws IOException
+	 */
 	@Override
 	public String addCharBox(String number) throws IOException {
 		VelocityContext velocityContext = new VelocityContext();
@@ -257,5 +268,19 @@ public class auctionServiceImpl implements auctionService {
 		template.merge(velocityContext, stringWriter);
 		
 		return stringWriter.toString();
+	}
+
+	/**
+	 * @description AuctionWriter.jsp에서 작성한 charBox 리스트들을 받고 보스에 insert 한다.
+	 * @createDate 2019. 10. 30.
+	 * @param submitJson
+	 * @return
+	 * @throws IOException
+	 */
+	@Override
+	public String insertBoardWrite(String submitJson) throws IOException {
+		List<AuctionSalesCharacterList> salesList = mapper.readValue(submitJson, List.class);
+		System.out.println(salesList);
+		return salesList.toString();
 	}
 }

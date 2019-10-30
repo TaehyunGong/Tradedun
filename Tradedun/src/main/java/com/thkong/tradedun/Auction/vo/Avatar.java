@@ -18,4 +18,7 @@ public class Avatar {
 	private String ability;
 	private List<ItemDetail> emblems;
 	
+	//data-emblemName에서 가져오는 전용 필드
+	private String emblemName;
+	
 }

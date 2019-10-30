@@ -254,6 +254,7 @@
     	function salesBoardSubmit(){
     		var totalJsonArray = new Array();
 
+    		//유효한 charBox 번호 를 반복
 			numberList.forEach(function (num, index, array) {
 
     			var jsonArray = new Array();
@@ -277,7 +278,7 @@
 			
 			//동적 form submit Post
 			var form = $(document.createElement('form'));
-		    $(form).attr("action", "/auction/salesBoardWrite");
+		    $(form).attr("action", "/auction/insertBoardWrite");
 		    $(form).attr("method", "POST");
 
 		    var input = $("<input>").attr("type", "hidden").attr("name", "submitJson").val(json);

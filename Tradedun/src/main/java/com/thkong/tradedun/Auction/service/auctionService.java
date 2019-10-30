@@ -11,4 +11,6 @@ public interface auctionService {
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException;
 	
 	public String addCharBox(String number) throws IOException;
+	
+	public String insertBoardWrite(String submitJson) throws IOException;
 }
