@@ -36,4 +36,10 @@ public class auctionController {
 	public @ResponseBody String addCharBox(@RequestParam(required = true) String number) throws IOException {
 		return service.addCharBox(number);
 	}
+	
+	@RequestMapping(value="/auction/salesBoardWrite", method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	public @ResponseBody String salesBoardWrite(@RequestParam(required = true) String submitJson) throws IOException {
+		System.out.println(submitJson);
+		return submitJson;
+	}
 }

@@ -110,6 +110,12 @@
     	//charBox갯수
     	var number = 1;
     	var numberList = new Array();
+		
+    	//jquery ui tooltip, init
+   	    $(function () {
+    	    $( document ).tooltip();
+	    	numberList.push(number);
+   		});
     
     	//경매장 리스트 클릭시 테이블 down 
     	$(document).on('click', 'table tbody .trLine', function(){
@@ -149,11 +155,6 @@
 		function numberWithCommas(x) {
 		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
-		
-    	//jquery ui tooltip
-   	    $(function () {
-    	    $( document ).tooltip();
-   		});
     	
     	//엔터 이벤트
     	function enterkey(num) {
@@ -196,7 +197,8 @@
    			    	
    			    	$('#charBox'+num).append(data);	
    			    },
-   			    error: function (request, status, error){        
+   			    error: function (request, status, error){       
+   			    	alert(request)
    			    }
     		});
     	}
@@ -220,7 +222,8 @@
    			    	
    			    	$('#charBox'+num).append(data);
    			    },
-   			    error: function (request, status, error){        
+   			    error: function (request, status, error){     
+   			    	alert(request)
    			    }
     		});
     	}
@@ -242,20 +245,45 @@
    			    	$('#charBoxList').append(data);
    			    },
    			    error: function (request, status, error){
+   			    	alert(request)
    			    }
     		});
     	}
     	
-    	//테스트중
+    	//charBox의 모든 리스트를 가져와 JSON으로 변환 후 서버에 submit
     	function salesBoardSubmit(){
+    		var totalJsonArray = new Array();
+
 			numberList.forEach(function (num, index, array) {
+
+    			var jsonArray = new Array();
 	    		for(var i=1; i<10; i++){
 	    			var charBoxAvatarList = $('#charBoxAvatarList'+num+i).data()
-					console.log(charBoxAvatarList)
+					jsonArray.push(charBoxAvatarList);
 	    		}
-	    		var resultPrice = $('#resultPrice'+num).val();
-				console.log(num + '번째 : ' + resultPrice)
+	    		
+				var jsonObj = {
+					'server' : $('#charInfo'+num).data('server'),
+					'charId' : $('#charInfo'+num).data('charid'),
+					'charName' : $('#charInfo'+num).data('charname'),
+					'avatar' : jsonArray,
+					'resultPrice' : $('#resultPrice'+num).val()
+				};
+
+				totalJsonArray.push(jsonObj);
 			});
+			
+			var json = JSON.stringify(totalJsonArray);
+			
+			//동적 form submit Post
+			var form = $(document.createElement('form'));
+		    $(form).attr("action", "/auction/salesBoardWrite");
+		    $(form).attr("method", "POST");
+
+		    var input = $("<input>").attr("type", "hidden").attr("name", "submitJson").val(json);
+		    $(document.body).append(form);
+		    $(form).append($(input));
+		    $(form).submit();
     	}
     	
     </script>
