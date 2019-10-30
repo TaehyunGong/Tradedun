@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSession;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thkong.tradedun.Auction.dao.auctionDao;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
@@ -45,7 +45,7 @@ public class auctionServiceImpl implements auctionService {
 	private ObjectMapper mapper;
 	
 	@Autowired
-	private SqlSession session;
+	private auctionDao dao;
 
 	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다.
 	private List<String> parts = Arrays.asList(
@@ -162,7 +162,7 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	public Avatar getMatchAvatarEmblem(Avatar avatar) {
 		//엠블렘 map 리스트
-		List<ItemDetail> emblems = session.selectList("selectItemDetailList");
+		List<ItemDetail> emblems = dao.selectItemDetailList();
 		Map<String, ItemDetail> emblemMap = new HashMap<String, ItemDetail>();
 		for(ItemDetail avatarEmblem : emblems) {
 			emblemMap.put(avatarEmblem.getItemName(), avatarEmblem);
