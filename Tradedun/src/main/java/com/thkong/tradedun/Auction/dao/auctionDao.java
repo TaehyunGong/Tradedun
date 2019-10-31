@@ -13,7 +13,7 @@ public interface auctionDao {
 
 	public int selectBoardNo();
 
-	public int insertAuctionBoard(AuctionBoard auctionBoard);
+	public void insertAuctionBoard(AuctionBoard auctionBoard);
 
 	public void insertAuctionBoardCharBox(AuctionBoardCharBox auctionBoardCharBox);
 

@@ -294,35 +294,33 @@ public class auctionServiceImpl implements auctionService {
 		auctionBoard.setUserNo("");
 		auctionBoard.setCreateDT(sysdate);
 		
-		int result = dao.insertAuctionBoard(auctionBoard);
-		System.out.println("boardNo : " + boardNo);
-		System.out.println("결과 : " + result);
+		//글 번호 가져오기 (boardNo max +1)
+		dao.insertAuctionBoard(auctionBoard);
 		
 		int charBoxNumber = 1;
 		for(AuctionSalesCharacterList list : salesList) {
-			AuctionBoardCharBox auctionBoardCharBox = new AuctionBoardCharBox();
-			auctionBoardCharBox.setBoardNo(boardNo);
-			auctionBoardCharBox.setCharBox(charBoxNumber);
-			auctionBoardCharBox.setCategory("guitar");
-			auctionBoardCharBox.setSaleYN('N');
-			auctionBoardCharBox.setTotalPrice(list.getResultPrice());
-			auctionBoardCharBox.setCharId(list.getCharId());
-			auctionBoardCharBox.setCreateDT(sysdate);
+			AuctionBoardCharBox auctionBoardCharBox = AuctionBoardCharBox.builder()
+														.boardNo(boardNo)
+														.charBox(charBoxNumber)
+														.category("guitar")
+														.saleYN('N')
+														.totalPrice(list.getResultPrice())
+														.charId(list.getCharId())
+														.createDT(sysdate).build();
 			
 			List<AuctionAvatarList> auctionAvatarList = new ArrayList<AuctionAvatarList>();
 			for(Avatar avatar : list.getAvatar()) {
-				AuctionAvatarList AuctionAvatar = new AuctionAvatarList();
-				AuctionAvatar.setBoardNo(boardNo);
-				AuctionAvatar.setCharBox(charBoxNumber);
-				AuctionAvatar.setSlotName(avatar.getSlotName());
-				
-				AuctionAvatar.setAvatarNo(avatar.getItemId());
-				AuctionAvatar.setAvatarName(avatar.getItemName());
-				AuctionAvatar.setOptionAbility(avatar.getOptionAbility());
-				AuctionAvatar.setCreateDT(sysdate);
+				AuctionAvatarList AuctionAvatar = AuctionAvatarList.builder()
+													.boardNo(boardNo)
+													.charBox(charBoxNumber)
+													.slotName(avatar.getSlotName())
+													.avatarNo(avatar.getItemId())
+													.avatarName(avatar.getItemName())
+													.optionAbility(avatar.getOptionAbility())
+													.createDT(sysdate)
+													.build();
 				
 				auctionAvatarList.add(AuctionAvatar);
-				System.out.println(AuctionAvatar);
 			}
 			dao.insertAuctionAvatarList(auctionAvatarList);	// 아바타 리스트 insert
 			dao.insertAuctionBoardCharBox(auctionBoardCharBox);	// charBox insert

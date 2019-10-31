@@ -2,9 +2,11 @@ package com.thkong.tradedun.Auction.vo;
 
 import java.util.Date;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class AuctionAvatarList {
 
 	private int boardNo;
