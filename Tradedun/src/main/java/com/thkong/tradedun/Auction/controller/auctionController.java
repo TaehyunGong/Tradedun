@@ -38,7 +38,8 @@ public class auctionController {
 	}
 	
 	@RequestMapping(value="/auction/insertBoardWrite", method = RequestMethod.POST, produces = "application/json; charset=utf8")
-	public @ResponseBody String insertBoardWrite(@RequestParam(required = true) String submitJson) throws IOException {
+	public @ResponseBody String insertBoardWrite(@RequestParam(required = true) String submitJson
+											, @RequestParam(required = true) String subject) throws IOException {
 		return service.insertBoardWrite(submitJson);
 	}
 }

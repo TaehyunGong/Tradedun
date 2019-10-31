@@ -96,6 +96,10 @@
     
 	  <div id='applyBox' class="row block-9 justify-content-center mb-5">
 		<div class="request-form ftco-animate">
+			<div class="form-group">
+				<label for="" class="label">제목</label>
+   				<input type="text" id="subject" name='subject' class="form-control" placeholder="글 제목을 입력하세요.">
+			</div>
             <div class="form-group">
             	<input type="button" onclick='addCharBox()' value="추가하기" class="btn-success py-3 px-4">
               	<input type="button" onclick='salesBoardSubmit()' value="등록하기" class="btn-primary py-3 px-4">
@@ -114,7 +118,6 @@
     	//jquery ui tooltip, init
    	    $(function () {
     	    $( document ).tooltip();
-	    	numberList.push(number);
    		});
     
     	//경매장 리스트 클릭시 테이블 down 
@@ -167,12 +170,16 @@
 		function backSearch(num){
 		    $('#charBox'+num).hide();
 			$('#charBox'+num + ' *').remove();
+		    numberList = numberList.filter(function(numberList) {
+		    	  return numberList !== num
+	    	})
+		    
+		    console.log(numberList)
 		    $('#charSearch'+num).show();
 		}
     	
     	//charBox 삭제
     	function deleteCharBox(num){
-    		numberList.pop();
     		$('#search'+num).remove();
     	}
     
@@ -221,6 +228,8 @@
    			    	$('#charBox'+num+' .row').hide();
    			    	
    			    	$('#charBox'+num).append(data);
+   			    	numberList.push(num);
+   			    	console.log(numberList)
    			    },
    			    error: function (request, status, error){     
    			    	alert(request)
@@ -231,7 +240,6 @@
     	//charBox 추가
     	function addCharBox(){
     		number+=1;
-    		numberList.push(number);
     		
     		$.ajax({
    			  	url: "/auction/addCharBox",
@@ -252,6 +260,13 @@
     	
     	//charBox의 모든 리스트를 가져와 JSON으로 변환 후 서버에 submit
     	function salesBoardSubmit(){
+			var subject = $('#subject').val();
+			if(subject.length == 0){
+				alert('판매 글의 제목을 입력하셔야 합니다.');
+				$('#subject').focus();
+				return false;
+			}
+    		
     		var totalJsonArray = new Array();
 
     		//유효한 charBox 번호 를 반복
@@ -288,9 +303,13 @@
 		    $(form).attr("action", "/auction/insertBoardWrite");
 		    $(form).attr("method", "POST");
 
-		    var input = $("<input>").attr("type", "hidden").attr("name", "submitJson").val(json);
+		    var jsonInput = $("<input>").attr("type", "hidden").attr("name", "submitJson").val(json);
+		    var subjectInput = $("<input>").attr("type", "hidden").attr("name", "subject").val(subject);
+		    
 		    $(document.body).append(form);
-		    $(form).append($(input));
+		    $(form).append($(jsonInput));
+		    $(form).append($(subjectInput));
+		    
 		    $(form).submit();
     	}
     	
