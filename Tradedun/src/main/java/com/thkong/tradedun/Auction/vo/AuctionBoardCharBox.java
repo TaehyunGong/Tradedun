@@ -17,6 +17,4 @@ public class AuctionBoardCharBox {
 	private Date comment;
 	private Date createDT;
 	private Date modifyDT;
-	
-	private List<AuctionAvatarList> avatarList;
 }

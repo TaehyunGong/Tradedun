@@ -9,6 +9,7 @@ public class AuctionAvatarList {
 
 	private int boardNo;
 	private int charBox;
+	private String slotName;
 	private String avatarNo;
 	private String avatarName;
 	private String optionAbility;

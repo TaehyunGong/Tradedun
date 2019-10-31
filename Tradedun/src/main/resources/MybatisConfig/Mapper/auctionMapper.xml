@@ -17,6 +17,14 @@
 		VALUES(#{boardNo}, #{subject}, #{userNo}, #{createDT})
 	</insert>
 	
+	<insert id='insertAuctionAvatarList' parameterType="java.util.Map">
+		INSERT INTO AuctionAvatarList(boardNo, charBox, slotName, avatarNo, avatarName, optionAbility, createDT)
+		VALUES
+		<foreach collection="list" item="item" separator=" , ">
+            (#{item.boardNo}, #{item.charBox}, #{item.slotName}, #{item.avatarNo}, #{item.avatarName}, #{item.optionAbility}, #{item.createDT})
+        </foreach>
+	</insert>
+	
 	<insert id='insertAuctionBoardCharBox' parameterType="AuctionBoardCharBox">
 		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, totalPrice, saleYN, category, comment, createDT)
 		VALUES(#{boardNo}, #{charBox}, #{charId}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})

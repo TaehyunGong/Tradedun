@@ -6,5 +6,6 @@
 		<typeAlias alias="ItemDetail" type="com.thkong.tradedun.Auction.vo.ItemDetail"/>
 		<typeAlias alias="AuctionBoard" type="com.thkong.tradedun.Auction.vo.AuctionBoard"/>
 		<typeAlias alias="AuctionBoardCharBox" type="com.thkong.tradedun.Auction.vo.AuctionBoardCharBox"/>
+		<typeAlias alias="AuctionAvatarList" type="com.thkong.tradedun.Auction.vo.AuctionAvatarList"/>
 	</typeAliases>
 </configuration>

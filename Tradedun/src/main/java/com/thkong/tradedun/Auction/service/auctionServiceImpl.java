@@ -15,6 +15,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.generic.NumberTool;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -297,7 +298,7 @@ public class auctionServiceImpl implements auctionService {
 		System.out.println("boardNo : " + boardNo);
 		System.out.println("결과 : " + result);
 		
-		int charBoxNumber = 0;
+		int charBoxNumber = 1;
 		for(AuctionSalesCharacterList list : salesList) {
 			AuctionBoardCharBox auctionBoardCharBox = new AuctionBoardCharBox();
 			auctionBoardCharBox.setBoardNo(boardNo);
@@ -313,16 +314,18 @@ public class auctionServiceImpl implements auctionService {
 				AuctionAvatarList AuctionAvatar = new AuctionAvatarList();
 				AuctionAvatar.setBoardNo(boardNo);
 				AuctionAvatar.setCharBox(charBoxNumber);
+				AuctionAvatar.setSlotName(avatar.getSlotName());
+				
 				AuctionAvatar.setAvatarNo(avatar.getItemId());
 				AuctionAvatar.setAvatarName(avatar.getItemName());
 				AuctionAvatar.setOptionAbility(avatar.getOptionAbility());
 				AuctionAvatar.setCreateDT(sysdate);
 				
 				auctionAvatarList.add(AuctionAvatar);
+				System.out.println(AuctionAvatar);
 			}
-			auctionBoardCharBox.setAvatarList(auctionAvatarList);
-			
-			dao.insertAuctionBoardCharBox(auctionBoardCharBox);
+			dao.insertAuctionAvatarList(auctionAvatarList);	// 아바타 리스트 insert
+			dao.insertAuctionBoardCharBox(auctionBoardCharBox);	// charBox insert
 			charBoxNumber+=1;
 		}
 		

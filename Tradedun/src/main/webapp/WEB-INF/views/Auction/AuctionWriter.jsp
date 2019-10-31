@@ -259,15 +259,22 @@
 
     			var jsonArray = new Array();
 	    		for(var i=1; i<10; i++){
-	    			var charBoxAvatarList = $('#charBoxAvatarList'+num+i).data()
-					jsonArray.push(charBoxAvatarList);
+	    			var jsonObj = new Object();
+	    			jsonObj.slotName = $('#charBoxAvatarList'+num+i).data('slotname');
+	    			jsonObj.emblemName = $('#charBoxAvatarList'+num+i).data('emblemname');
+	    			jsonObj.optionAbility = $('#charBoxAvatarList'+num+i).data('optionability');
+	    			jsonObj.itemId = $('#charBoxAvatarList'+num+i).data('itemid');
+	    			jsonObj.itemName = $('#charBoxAvatarList'+num+i).data('itemname');
+	    			
+					jsonArray.push(jsonObj);
 	    		}
 	    		
 				var jsonObj = {
-					'server' : $('#charInfo'+num).data('server'),
-					'charId' : $('#charInfo'+num).data('charid'),
-					'charName' : $('#charInfo'+num).data('charname'),
-					'avatar' : jsonArray,
+					'server'  : $('#charInfo'+num).data('server'),
+					'slotName': $('#charInfo'+num).data('slotName'),
+					'charId'  : $('#charInfo'+num).data('charid'),
+					'charName': $('#charInfo'+num).data('charname'),
+					'avatar'  : jsonArray,
 					'resultPrice' : $('#resultPrice'+num).val()
 				};
 
