@@ -4,5 +4,7 @@
 	<typeAliases>
 		<typeAlias alias="User" type="com.thkong.tradedun.User.vo.User"/>
 		<typeAlias alias="ItemDetail" type="com.thkong.tradedun.Auction.vo.ItemDetail"/>
+		<typeAlias alias="AuctionBoard" type="com.thkong.tradedun.Auction.vo.AuctionBoard"/>
+		<typeAlias alias="AuctionBoardCharBox" type="com.thkong.tradedun.Auction.vo.AuctionBoardCharBox"/>
 	</typeAliases>
 </configuration>

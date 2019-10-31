@@ -8,4 +8,18 @@
 		FROM  ItemDetail
 	</select>
 	
+	<select id='selectBoardNo' resultType="Int">
+		SELECT IFNULL(max(boardNo)+1,1) AS boardNo FROM AuctionBoard
+	</select>
+	
+	<insert id='insertAuctionBoard' parameterType="AuctionBoard">
+		INSERT INTO AuctionBoard(boardNo, subject, userNo, createDT)
+		VALUES(#{boardNo}, #{subject}, #{userNo}, #{createDT})
+	</insert>
+	
+	<insert id='insertAuctionBoardCharBox' parameterType="AuctionBoardCharBox">
+		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, totalPrice, saleYN, category, comment, createDT)
+		VALUES(#{boardNo}, #{charBox}, #{charId}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
+	</insert>
+	
 </mapper>

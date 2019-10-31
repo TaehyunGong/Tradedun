@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thkong.tradedun.Auction.dao.auctionDao;
+import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
+import com.thkong.tradedun.Auction.vo.AuctionBoard;
+import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
@@ -279,8 +283,49 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String insertBoardWrite(String submitJson) throws IOException {
-		List<AuctionSalesCharacterList> salesList = mapper.readValue(submitJson, List.class);
-		System.out.println(salesList);
+		AuctionSalesCharacterList[] salesList = mapper.readValue(submitJson, AuctionSalesCharacterList[].class);
+		
+		Date sysdate = new Date();
+		int boardNo = dao.selectBoardNo();
+		AuctionBoard auctionBoard = new AuctionBoard();
+		auctionBoard.setBoardNo(boardNo);
+		auctionBoard.setSubject("");
+		auctionBoard.setUserNo("");
+		auctionBoard.setCreateDT(sysdate);
+		
+		int result = dao.insertAuctionBoard(auctionBoard);
+		System.out.println("boardNo : " + boardNo);
+		System.out.println("결과 : " + result);
+		
+		int charBoxNumber = 0;
+		for(AuctionSalesCharacterList list : salesList) {
+			AuctionBoardCharBox auctionBoardCharBox = new AuctionBoardCharBox();
+			auctionBoardCharBox.setBoardNo(boardNo);
+			auctionBoardCharBox.setCharBox(charBoxNumber);
+			auctionBoardCharBox.setCategory("guitar");
+			auctionBoardCharBox.setSaleYN('N');
+			auctionBoardCharBox.setTotalPrice(list.getResultPrice());
+			auctionBoardCharBox.setCharId(list.getCharId());
+			auctionBoardCharBox.setCreateDT(sysdate);
+			
+			List<AuctionAvatarList> auctionAvatarList = new ArrayList<AuctionAvatarList>();
+			for(Avatar avatar : list.getAvatar()) {
+				AuctionAvatarList AuctionAvatar = new AuctionAvatarList();
+				AuctionAvatar.setBoardNo(boardNo);
+				AuctionAvatar.setCharBox(charBoxNumber);
+				AuctionAvatar.setAvatarNo(avatar.getItemId());
+				AuctionAvatar.setAvatarName(avatar.getItemName());
+				AuctionAvatar.setOptionAbility(avatar.getOptionAbility());
+				AuctionAvatar.setCreateDT(sysdate);
+				
+				auctionAvatarList.add(AuctionAvatar);
+			}
+			auctionBoardCharBox.setAvatarList(auctionAvatarList);
+			
+			dao.insertAuctionBoardCharBox(auctionBoardCharBox);
+			charBoxNumber+=1;
+		}
+		
 		return salesList.toString();
 	}
 }
