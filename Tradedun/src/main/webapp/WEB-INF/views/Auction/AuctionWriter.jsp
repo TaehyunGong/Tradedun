@@ -95,7 +95,7 @@
     </section>
     
 	  <div id='applyBox' class="row block-9 justify-content-center mb-5">
-		<div class="request-form ftco-animate">
+		<div class="request-form">
 			<div class="form-group">
 				<label for="" class="label">제목</label>
    				<input type="text" id="subject" name='subject' class="form-control" placeholder="글 제목을 입력하세요.">
