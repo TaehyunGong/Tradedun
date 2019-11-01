@@ -47,7 +47,7 @@ public class auctionController {
 		User user = (User)session.getAttribute("user");
 		String page = "404";
 		if(user != null) {
-			page = service.insertBoardWrite(submitJson, subject);
+			page = service.insertBoardWrite(submitJson, subject, user);
 		}
 		return page;
 	}

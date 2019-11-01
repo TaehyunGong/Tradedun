@@ -15,7 +15,6 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.generic.NumberTool;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,6 +31,7 @@ import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Common.DnfApiLib;
+import com.thkong.tradedun.User.vo.User;
 
 @Transactional
 @Service
@@ -283,15 +283,15 @@ public class auctionServiceImpl implements auctionService {
 	 * @throws IOException
 	 */
 	@Override
-	public String insertBoardWrite(String submitJson, String subject) throws IOException {
+	public String insertBoardWrite(String submitJson, String subject, User user) throws IOException {
 		AuctionSalesCharacterList[] salesList = mapper.readValue(submitJson, AuctionSalesCharacterList[].class);
-		
 		Date sysdate = new Date();
 		int boardNo = dao.selectBoardNo();
+		
 		AuctionBoard auctionBoard = new AuctionBoard();
 		auctionBoard.setBoardNo(boardNo);
 		auctionBoard.setSubject(subject);
-		auctionBoard.setUserNo("");
+		auctionBoard.setUserNo(user.getUserNo());
 		auctionBoard.setCreateDT(sysdate);
 		
 		//글 번호 가져오기 (boardNo max +1)
