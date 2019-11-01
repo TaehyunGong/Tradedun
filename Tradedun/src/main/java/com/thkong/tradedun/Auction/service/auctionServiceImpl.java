@@ -69,17 +69,11 @@ public class auctionServiceImpl implements auctionService {
 	public String charSeachList(String server, String character, String number) throws IOException {
 		Characters characters = dnfapi.characters(server,character);
 		
-		Template template = velocityEngine.getTemplate("AuctionCharacterSelectForm.vm");
-        
-		VelocityContext velocityContext = new VelocityContext(); 
-		velocityContext.put("list", characters.getRows());
-		velocityContext.put("server", server);
-		velocityContext.put("number", number);
-
-		StringWriter stringWriter = new StringWriter(); 
-		template.merge(velocityContext, stringWriter);
-		
-		return stringWriter.toString();
+		Map<String, Object> contextValialbe = new HashMap<String, Object>();
+		contextValialbe.put("list", characters.getRows());
+		contextValialbe.put("server", server);
+		contextValialbe.put("number", number);
+		return renderTemplate(contextValialbe, "AuctionCharacterSelectForm.vm");
 	}
 
 	/**
@@ -100,14 +94,9 @@ public class auctionServiceImpl implements auctionService {
 		
 		//만약 노압일경우 없는상태라면 경고창으로 반환
 		if(detail.getAvatar().size() == 0) {
-			Template template = velocityEngine.getTemplate("AuctionCharacterNoAvatar.vm");
-			VelocityContext velocityContext = new VelocityContext();
-			velocityContext.put("number", number);
-			
-			StringWriter stringWriter = new StringWriter(); 
-			template.merge(velocityContext, stringWriter);
-			
-			return stringWriter.toString();
+			Map<String, Object> contextValialbe = new HashMap<String, Object>();
+			contextValialbe.put("number", number);
+			return renderTemplate(contextValialbe, "AuctionCharacterNoAvatar.vm");
 		}
 		
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
@@ -124,24 +113,20 @@ public class auctionServiceImpl implements auctionService {
 			}
 		}
 		
-		VelocityContext velocityContext = new VelocityContext();
-		velocityContext.put("numberTool", new NumberTool());
-		velocityContext.put("number", number);
-		velocityContext.put("wearAvatar", wearAvatar);		// 착용중인 아바타
-		velocityContext.put("avatarList", avatarList);		// 경매장으로 뽑은 아바타 리스트
-		velocityContext.put("availAvatar", availAvatar);	// 경매장에서 조회된 아바타 갯수
-		velocityContext.put("minTotalSales", formatter.format(minTotalSales));// 경매장에서 조회돤 최저가 아바타의 가격 합
+		Map<String, Object> contextValialbe = new HashMap<String, Object>();
+		contextValialbe.put("numberTool", new NumberTool());
+		contextValialbe.put("number", number);
+		contextValialbe.put("wearAvatar", wearAvatar);		// 착용중인 아바타
+		contextValialbe.put("avatarList", avatarList);		// 경매장으로 뽑은 아바타 리스트
+		contextValialbe.put("availAvatar", availAvatar);	// 경매장에서 조회된 아바타 갯수
+		contextValialbe.put("minTotalSales", formatter.format(minTotalSales));// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
-		velocityContext.put("server", server);
-		velocityContext.put("characterId", detail.getCharacterId());
-		velocityContext.put("characterName", detail.getCharacterName());
-		velocityContext.put("jobGrowName", detail.getJobGrowName());
+		contextValialbe.put("server", server);
+		contextValialbe.put("characterId", detail.getCharacterId());
+		contextValialbe.put("characterName", detail.getCharacterName());
+		contextValialbe.put("jobGrowName", detail.getJobGrowName());
 		
-		Template template = velocityEngine.getTemplate("AuctionAvatarListForm.vm");
-		StringWriter stringWriter = new StringWriter(); 
-		template.merge(velocityContext, stringWriter);
-		
-		return stringWriter.toString();
+		return renderTemplate(contextValialbe, "AuctionAvatarListForm.vm");
 	}
 	
 	/**
@@ -265,14 +250,9 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String addCharBox(String number) throws IOException {
-		VelocityContext velocityContext = new VelocityContext();
-		velocityContext.put("number", number);
-		
-		Template template = velocityEngine.getTemplate("AuctionAddCharBoxForm.vm");
-		StringWriter stringWriter = new StringWriter(); 
-		template.merge(velocityContext, stringWriter);
-		
-		return stringWriter.toString();
+		Map<String, Object> contextValialbe = new HashMap<String, Object>();
+		contextValialbe.put("number", number);
+		return renderTemplate(contextValialbe, "AuctionAddCharBoxForm.vm");
 	}
 
 	/**
@@ -328,5 +308,27 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		return salesList.toString();
+	}
+	
+	/**
+	 * @description 템플릿 context를 받고 랜더링 후 Template 객체로 반환한다.
+	 * @createDate 2019. 11. 1.
+	 * @param context
+	 * @param templateName
+	 * @return
+	 */
+	public String renderTemplate(Map<String, Object> contextValiable, String templateName) {
+		VelocityContext velocityContext = new VelocityContext();
+		
+		//map의 키+값 의갯수 만큼 context에 삽입
+		for( Map.Entry<String, Object> elem : contextValiable.entrySet() ){
+			velocityContext.put(elem.getKey(), elem.getValue());
+        }
+		
+		Template template = velocityEngine.getTemplate(templateName);
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+		
+		return stringWriter.toString();
 	}
 }
