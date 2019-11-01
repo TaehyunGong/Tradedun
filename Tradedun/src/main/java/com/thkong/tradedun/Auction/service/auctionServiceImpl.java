@@ -126,7 +126,15 @@ public class auctionServiceImpl implements auctionService {
 		contextValialbe.put("characterName", detail.getCharacterName());
 		contextValialbe.put("jobGrowName", detail.getJobGrowName());
 		
-		return renderTemplate(contextValialbe, "AuctionAvatarListForm.vm");
+		//유저가 선택한 항목에 따라 다른 템플릿을 돌린다.
+		String templateName = null;
+		switch(kind) {
+			case "clone" : templateName = "AuctionCloneAvatarListForm.vm"; break; //코디아바타
+			case "buff" : templateName = "AuctionBuffAvatarListForm.vm"; break; //버프강화 아바타
+			default : templateName = "AuctionAvatarListForm.vm"; // 기본값은 착용압
+		}
+		
+		return renderTemplate(contextValialbe, templateName);
 	}
 	
 	/**
