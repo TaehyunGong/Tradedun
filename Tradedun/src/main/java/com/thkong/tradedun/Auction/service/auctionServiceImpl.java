@@ -1,14 +1,20 @@
 package com.thkong.tradedun.Auction.service;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URL;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -17,6 +23,7 @@ import org.apache.velocity.tools.generic.NumberTool;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +56,9 @@ public class auctionServiceImpl implements auctionService {
 	@Autowired
 	private ObjectMapper mapper;
 	
+	@Autowired 
+	private ResourceLoader resourceLoader;
+
 	@Autowired
 	private auctionDao dao;
 
@@ -299,6 +309,7 @@ public class auctionServiceImpl implements auctionService {
 														.jobGrowName(list.getJobGrowName())
 														.createDT(sysdate).build();
 			
+			//charBox의 아바타 리스트를 list로 만들어줌
 			List<AuctionAvatarList> auctionAvatarList = new ArrayList<AuctionAvatarList>();
 			for(Avatar avatar : list.getAvatar()) {
 				AuctionAvatarList AuctionAvatar = AuctionAvatarList.builder()
@@ -313,6 +324,8 @@ public class auctionServiceImpl implements auctionService {
 				
 				auctionAvatarList.add(AuctionAvatar);
 			}
+			auctionBoardCharBox.setImageName(saveCharacterImage(list.getCharId()));	//캐릭터 이미지 저장
+			
 			dao.insertAuctionAvatarList(auctionAvatarList);	// 아바타 리스트 insert
 			dao.insertAuctionBoardCharBox(auctionBoardCharBox);	// charBox insert
 			charBoxNumber+=1;
@@ -341,5 +354,40 @@ public class auctionServiceImpl implements auctionService {
 		template.merge(velocityContext, stringWriter);
 		
 		return stringWriter.toString();
+	}
+	
+	/**
+	 * @description 캐릭터 id를 가져와 이미지로 저장한다.
+	 * @createDate 2019. 11. 1.
+	 * @param charId
+	 * @return 
+	 * @throws IOException 
+	 */
+	public String saveCharacterImage(String charId) throws IOException {
+		String path = resourceLoader.getResource("classpath:CharacterImages\\").getURI().getPath();
+		String uploadFileName = fileNameGenerater(charId+".png");
+		File outputFile = new File(path+uploadFileName);
+		 
+		URL url = new URL("https://img-api.neople.co.kr/df/servers/bakal/characters/"+charId);
+		BufferedImage bi = ImageIO.read(url);
+	    ImageIO.write(bi, "png", outputFile);
+	    
+		return uploadFileName;
+	}
+	
+	/**
+	 * @return String
+	 * @description 업로드 하기 위해 랜덤한 파일명을 생성
+	 */
+	public String fileNameGenerater(String originFileName) {
+		//업로드 이름 랜덤으로 생성
+		String random = String.valueOf((Math.random()*1000000) + System.currentTimeMillis());
+		String fileName = random + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		
+		//확장자를 업로드 이름에 삽입
+		String ext = originFileName.substring( originFileName.lastIndexOf(".") + 1 );
+		fileName = fileName + "." + ext; //확장자
+		
+		return fileName;
 	}
 }
