@@ -304,6 +304,8 @@
 					'slotName': $('#charInfo'+num).data('slotName'),
 					'charId'  : $('#charInfo'+num).data('charid'),
 					'charName': $('#charInfo'+num).data('charname'),
+					'jobName': $('#charInfo'+num).data('jobname'),
+					'jobGrowName': $('#charInfo'+num).data('jobgrowname'),
 					'avatar'  : jsonArray,
 					'resultPrice' : $('#resultPrice'+num).val()
 				};

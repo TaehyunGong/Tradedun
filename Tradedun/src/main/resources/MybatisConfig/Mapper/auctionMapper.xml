@@ -26,8 +26,8 @@
 	</insert>
 	
 	<insert id='insertAuctionBoardCharBox' parameterType="AuctionBoardCharBox">
-		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, totalPrice, saleYN, category, comment, createDT)
-		VALUES(#{boardNo}, #{charBox}, #{charId}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
+		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, jobName, jobGrowName, totalPrice, saleYN, category, comment, createDT)
+		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobName}, #{jobGrowName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
 	</insert>
 	
 </mapper>

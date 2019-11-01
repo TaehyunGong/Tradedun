@@ -11,7 +11,9 @@
 	##################
 
 	<div class='col-md-5 pb-3'>
-		<div class="text p-4 text-center" id='charInfo${number}' data-server="${server}" data-charId="${characterId}" data-charName="${characterName}">
+		<div class="text p-4 text-center" id='charInfo${number}' data-server="${server}" 
+								data-charId="${characterId}" data-charName="${characterName}"
+								data-jobName="${jobName}" data-jobGrowName="${jobGrowName}">
 			<img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/servers/${server}/characters/${characterId}'/>
 			<h2 class="mb-0">${characterName}</h2>
 			<span>${jobGrowName}</span>

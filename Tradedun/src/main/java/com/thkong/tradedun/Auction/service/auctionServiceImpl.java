@@ -124,6 +124,7 @@ public class auctionServiceImpl implements auctionService {
 		contextValialbe.put("server", server);
 		contextValialbe.put("characterId", detail.getCharacterId());
 		contextValialbe.put("characterName", detail.getCharacterName());
+		contextValialbe.put("jobName", detail.getJobName());
 		contextValialbe.put("jobGrowName", detail.getJobGrowName());
 		
 		//유저가 선택한 항목에 따라 다른 템플릿을 돌린다.
@@ -294,6 +295,8 @@ public class auctionServiceImpl implements auctionService {
 														.saleYN('N')
 														.totalPrice(list.getResultPrice())
 														.charId(list.getCharId())
+														.jobName(list.getJobName())
+														.jobGrowName(list.getJobGrowName())
 														.createDT(sysdate).build();
 			
 			List<AuctionAvatarList> auctionAvatarList = new ArrayList<AuctionAvatarList>();
