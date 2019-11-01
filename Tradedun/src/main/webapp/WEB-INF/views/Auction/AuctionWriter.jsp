@@ -146,6 +146,11 @@
 			
 			$('#auctionSumPrice').val(numberWithCommas(price));
         });
+		
+		//input type[text] 의 onlyNumber는 무조건 onlyNumber이다.
+    	$(document).on("keyup", "input:text[onlyNumber]", function() {
+            $(this).val( $(this).val().replace(/[^0-9]/gi,"") );
+        });
     	
     	//정규식을 사용해 숫자만 출력
 		function fn(str){
@@ -261,14 +266,24 @@
     	//charBox의 모든 리스트를 가져와 JSON으로 변환 후 서버에 submit
     	function salesBoardSubmit(){
 			var subject = $('#subject').val();
+			
+			//제목을 필수로 입력받는다.
 			if(subject.length == 0){
 				alert('판매 글의 제목을 입력하셔야 합니다.');
 				$('#subject').focus();
 				return false;
 			}
     		
+			//판매가격을 안적은 input으로 포커싱
+			for(var index=0; index < numberList.length; index++){
+                if($('#resultPrice'+numberList[index]).val().length == 0){
+					alert('판매 가격을 설정해 주세요.');
+					$('#resultPrice'+numberList[index]).focus();
+					return false;
+				}
+            }
+			
     		var totalJsonArray = new Array();
-
     		//유효한 charBox 번호 를 반복
 			numberList.forEach(function (num, index, array) {
 

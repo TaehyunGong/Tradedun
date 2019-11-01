@@ -26,6 +26,7 @@
 		<table class="table table-condensed " >
 			#foreach($index in [0..8])
 				#set($equipAvatar = $wearAvatar.get($index))
+				
 				<tr id='charBoxAvatarList${number}$foreach.count' 
 					data-slotName='$!equipAvatar.getSlotName()' data-itemId='$!equipAvatar.getItemId()'
 					data-itemName='$!equipAvatar.getItemName()' data-optionAbility='$!equipAvatar.getOptionAbility()' 
@@ -33,19 +34,9 @@
 					
 					<td style='width:60px;'>$equipAvatar.getSlotName()</td>
 				    <td>#if($equipAvatar.getItemId())
-				    	<img class="pr-3"
-				    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()' title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
+				    	<img class="pr-3" src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()' title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
+				    	<font class='pl-2' style='font-weight: bold;'>$!equipAvatar.getItemName()</font>
 				    	#end
-				    	#foreach($emblem in $equipAvatar.getEmblems())
-				    		## 주석 : 엠블렘 ID 매핑에 성공하여 엠블렘 id를 가져왔을때
-				    		#if($emblem.getItemId())
-				    			<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
-				    		## 주석 : 엠블렘 ID 매핑에 실패시 엠블렘명만 출력
-				    		#else
-				    			<font class='pl-2' style='font-weight: bold;'>$emblem.getItemName()</font>
-				    		#end
-				    	#end
-			    		<font class='pl-2' style='font-weight: bold;'>$!equipAvatar.getOptionAbility()</font>
 				    </td>
 				</tr>
 			#end
@@ -62,7 +53,7 @@
           		<h2>판매 설정</h2>
     				<div class="form-group">
     					<label for="" class="label">판매하실 금액</label>
-    					<input type="text" id='resultPrice${number}' class="form-control" placeholder="판매하실 금액" required>
+    					<input type="text" id='resultPrice${number}' class="form-control" placeholder="판매하실 금액" onlyNumber>
     				</div>
 	    			<div class="d-flex">
 		              <div class="form-group ml-2">
