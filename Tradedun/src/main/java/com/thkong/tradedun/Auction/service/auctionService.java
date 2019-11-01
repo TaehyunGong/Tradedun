@@ -12,5 +12,5 @@ public interface auctionService {
 	
 	public String addCharBox(String number) throws IOException;
 	
-	public String insertBoardWrite(String submitJson) throws IOException;
+	public String insertBoardWrite(String submitJson, String subject) throws IOException;
 }

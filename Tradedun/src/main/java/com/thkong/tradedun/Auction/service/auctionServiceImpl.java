@@ -283,14 +283,14 @@ public class auctionServiceImpl implements auctionService {
 	 * @throws IOException
 	 */
 	@Override
-	public String insertBoardWrite(String submitJson) throws IOException {
+	public String insertBoardWrite(String submitJson, String subject) throws IOException {
 		AuctionSalesCharacterList[] salesList = mapper.readValue(submitJson, AuctionSalesCharacterList[].class);
 		
 		Date sysdate = new Date();
 		int boardNo = dao.selectBoardNo();
 		AuctionBoard auctionBoard = new AuctionBoard();
 		auctionBoard.setBoardNo(boardNo);
-		auctionBoard.setSubject("");
+		auctionBoard.setSubject(subject);
 		auctionBoard.setUserNo("");
 		auctionBoard.setCreateDT(sysdate);
 		

@@ -2,6 +2,8 @@ package com.thkong.tradedun.Auction.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thkong.tradedun.Auction.service.auctionService;
+import com.thkong.tradedun.User.vo.User;
 
 @Controller
 public class auctionController {
@@ -39,7 +42,13 @@ public class auctionController {
 	
 	@RequestMapping(value="/auction/insertBoardWrite", method = RequestMethod.POST, produces = "application/json; charset=utf8")
 	public @ResponseBody String insertBoardWrite(@RequestParam(required = true) String submitJson
-											, @RequestParam(required = true) String subject) throws IOException {
-		return service.insertBoardWrite(submitJson);
+											, @RequestParam(required = true) String subject
+											, HttpSession session) throws IOException {
+		User user = (User)session.getAttribute("user");
+		String page = "404";
+		if(user != null) {
+			page = service.insertBoardWrite(submitJson, subject);
+		}
+		return page;
 	}
 }
