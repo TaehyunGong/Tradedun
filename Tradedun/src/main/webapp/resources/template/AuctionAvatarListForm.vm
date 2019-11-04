@@ -59,28 +59,40 @@
 	##################
 	
 	<div class='col-md-5 pr-3'>
-		<!-- 테스트 -->
-          	<form action="#" class="request-form">
-          		<h2>판매 설정</h2>
-    				<div class="form-group">
-    					<label for="" class="label">판매하실 금액</label>
-    					<input type="text" id='resultPrice${number}' class="form-control" placeholder="판매하실 금액" onlyNumber>
-    				</div>
-	    			<div class="d-flex">
-		              <div class="form-group ml-2">
-		                <label for="" class="label">경매장에 조회된 아바타 부위</label>
-		                <input type="text" class="form-control" id="" value="${availAvatar}부위" readonly>
-		              </div>
-		              <div class="form-group ml-2">
-		                <label for="" class="label">선택된 아바타 가격</label>
-		                <input type="text" class="form-control" id="auctionSumPrice" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
-		              </div>
-              		</div>
-
-	            <div class="form-group">
-	              <input type="button" value="등록완료" class="btn btn-primary py-3 px-4">
-	            </div>
-			</form>
+		<!-- 판매 설정 -->
+      	<form action="#" class="request-form">
+      		<h3>판매 설정</h3>
+      		<div class="form-group">
+              	<label class="label">카테고리</label>
+				<div class="form-field">
+  					<div class="select-wrap">
+                      <select id="category${number}" class="form-control">
+                      	#foreach($category in $categoryList)
+	                      	<option value="$category.categoryCode">$category.categoryName</option>
+	                    #end
+                      </select>
+                    </div>
+               </div>
+            </div>
+			<div class="form-group">
+				<label for="" class="label">판매하실 금액</label>
+				<input type="text" id='resultPrice${number}' class="form-control" placeholder="판매하실 금액" onlyNumber>
+			</div>
+			<div class="d-flex">
+              <div class="form-group ml-2">
+                <label for="" class="label">경매장에 조회된 아바타 부위</label>
+                <input type="text" class="form-control" id="" value="${availAvatar}부위" readonly>
+              </div>
+              <div class="form-group ml-2">
+                <label for="" class="label">선택된 아바타 가격</label>
+                <input type="text" class="form-control" id="auctionSumPrice" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
+              </div>
+      		</div>
+            <div class="form-group">
+              	<label for="" class="label">짧은 코멘트(최대 30자)</label>
+				<input type="text" id='comment${number}' class="form-control" placeholder="" maxlength="30">
+            </div>
+		</form>
 	</div>
 	
 	##################

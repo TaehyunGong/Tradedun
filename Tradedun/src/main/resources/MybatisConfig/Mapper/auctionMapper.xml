@@ -30,4 +30,12 @@
 		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobName}, #{jobGrowName}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
 	</insert>
 	
+	<select id="selectAvatarCategory" resultType="Category">
+		SELECT categoryCode, categoryKind, categoryName, sort
+		FROM Category
+		WHERE deleteDT IS NULL
+		AND categoryKind IN ('event', 'rare')
+		ORDER BY sort
+	</select>
+	
 </mapper>

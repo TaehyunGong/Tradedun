@@ -35,6 +35,7 @@ import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
+import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Common.DnfApiLib;
@@ -98,6 +99,7 @@ public class auctionServiceImpl implements auctionService {
 	@Override
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
+		List<Category> category = dao.selectAvatarCategory();	//아바타의 카테고리 리스트
 		DecimalFormat formatter = new DecimalFormat("#,##0.00");
 		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
@@ -125,6 +127,7 @@ public class auctionServiceImpl implements auctionService {
 		
 		Map<String, Object> contextValialbe = new HashMap<String, Object>();
 		contextValialbe.put("numberTool", new NumberTool());
+		contextValialbe.put("categoryList", category);
 		contextValialbe.put("number", number);
 		contextValialbe.put("wearAvatar", wearAvatar);		// 착용중인 아바타
 		contextValialbe.put("avatarList", avatarList);		// 경매장으로 뽑은 아바타 리스트
