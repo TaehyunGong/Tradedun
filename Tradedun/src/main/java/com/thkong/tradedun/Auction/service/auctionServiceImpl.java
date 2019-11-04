@@ -310,6 +310,8 @@ public class auctionServiceImpl implements auctionService {
 														.charId(list.getCharId())
 														.jobName(list.getJobName())
 														.jobGrowName(list.getJobGrowName())
+														.category(list.getCategory())
+														.comment(list.getComment())
 														.createDT(sysdate).build();
 			
 			//charBox의 아바타 리스트를 list로 만들어줌

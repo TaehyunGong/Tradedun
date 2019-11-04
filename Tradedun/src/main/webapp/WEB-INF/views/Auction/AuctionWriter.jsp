@@ -307,7 +307,9 @@
 					'jobName': $('#charInfo'+num).data('jobname'),
 					'jobGrowName': $('#charInfo'+num).data('jobgrowname'),
 					'avatar'  : jsonArray,
-					'resultPrice' : $('#resultPrice'+num).val()
+					'resultPrice' : $('#resultPrice'+num).val(),
+					'category' : $('#category'+num).val(),
+					'comment' : $('#comment'+num).val()
 				};
 
 				totalJsonArray.push(jsonObj);

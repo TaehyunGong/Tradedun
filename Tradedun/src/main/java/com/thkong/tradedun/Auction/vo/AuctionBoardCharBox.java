@@ -18,7 +18,7 @@ public class AuctionBoardCharBox {
 	private int totalPrice;
 	private char saleYN;
 	private String category;
-	private Date comment;
+	private String comment;
 	private Date createDT;
 	private Date modifyDT;
 }
