@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +43,9 @@ public class auctionController {
 	 * @return
 	 */
 	@RequestMapping(value="/avatarSetSearch")
-	public String avatarSetSearch() {
+	public String avatarSetSearch(Model model) {
+		
+		model.addAttribute("", "");
 		return "/Auction/AvatarSetSearch";
 	}
 	

@@ -395,4 +395,9 @@ public class auctionServiceImpl implements auctionService {
 		
 		return fileName;
 	}
+	
+	public Map<String, Object> selectCategoryAvatar(String jobId) {
+		
+		return null;
+	}
 }
