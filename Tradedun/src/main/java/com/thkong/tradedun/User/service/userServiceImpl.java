@@ -36,7 +36,8 @@ public class userServiceImpl implements userService {
 	@Autowired
 	private ObjectMapper mapper;
 	
-	private httpConnection conn = httpConnection.getInstance();
+	@Autowired
+	private httpConnection conn;
 	
 	/**
 	 * @description 카카오톡 로그인을 하기위해 카카오 로그인 페이지로 리다이렉트 url를 생성해준다.

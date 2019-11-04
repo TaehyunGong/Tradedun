@@ -1330,7 +1330,7 @@ pre {
   background-color: transparent; }
   .table th,
   .table td {
-    padding: 0.75rem;
+    padding: 0.2rem;
     vertical-align: top;
     border-top: 1px solid #dee2e6; }
   .table thead th {
@@ -8599,6 +8599,9 @@ h1, h2, h3, h4, h5,
   .car-wrap .img {
     width: 100%;
     height: 200px; }
+  .car-wrap .img-c {
+    width: 100%;
+    height: 300px; }
   .car-wrap .price-wrap {
     padding: 10px;
     position: relative;
@@ -8642,7 +8645,9 @@ h1, h2, h3, h4, h5,
       width: 100%; }
       .car-wrap .text p.d-block a {
         width: 50%; }
-
+	.car-wrap .text p.d-block-c a {
+        width: 100%; }
+        
 .ftco-car-details .services .media-body .icon span {
   color: rgba(0, 0, 0, 0.8); }
 
@@ -8765,6 +8770,7 @@ h1, h2, h3, h4, h5,
 .car-list {
   overflow-x: scroll; }
 
+/*
 .table {
   min-width: 1000px !important;
   width: 100%; }
@@ -8875,7 +8881,7 @@ h1, h2, h3, h4, h5,
         opacity: 1; }
       .table tbody tr td.price:hover .price-rate {
         opacity: 0; }
-
+*/
 @media (max-width: 767.98px) {
   .img-2 {
     height: 600px; } }
@@ -9861,3 +9867,23 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+/*
+	여기서 부터는 커스텀 css
+*/
+
+.selectAuction{
+	background: antiquewhite;
+}    
+
+.auctionList:hover{
+	background: aliceblue;
+}
+
+.selectListAuction{
+	background: aquamarine;
+}
+
+.emblemBox{
+	width:2rem;
+}

@@ -5,6 +5,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 	
+	<!-- 기존의 싱글톤 라이브러리를 빈으로 변경 -->
+	<bean id='conn' class='com.thkong.tradedun.Common.httpConnection' />
+	
 	<util:properties id="props" location="classpath:APIKEY.properties" />
 
 	<bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
@@ -18,5 +21,25 @@
 	        </list>
 	    </property>
 	</bean>
+	
+	<!-- 별도로 생성한 던파 API Common 라이브러리를 빈으로 등록 후 mapper와 httpconnection을 필수로 DI받는다. -->
+	<bean id='dnfapi' class='com.thkong.tradedun.Common.DnfApiLib'>
+		<constructor-arg name="mapper" ref='mapper'/>
+		<constructor-arg name="conn" ref='conn'/>
+		<constructor-arg name="dnfRestKey" value="#{props['dnf.RestKey']}"/>
+	</bean>
 	     		
+	<!-- 템플릿 엔진을 빈으로 올리고 path경로를 webapp/resources/template/으로 고정시키고 인코딩 설정해준다. -->
+	<bean id='velocityEngine' class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+	       <property name="resourceLoaderPath">
+	             <value>/resources/template/</value>
+	       </property>
+	       <property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+
 </beans>

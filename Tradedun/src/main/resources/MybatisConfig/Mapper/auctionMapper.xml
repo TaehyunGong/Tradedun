@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.thkong.tradedun.Auction.dao.auctionDao">
+
+	<select id="selectItemDetailList" resultType="ItemDetail">
+		SELECT itemId, itemName, itemRarity, itemType, itemTypeDetail, itemAvailableLevel, itemRarityColor
+		FROM  ItemDetail
+	</select>
+	
+	<select id='selectBoardNo' resultType="Int">
+		SELECT IFNULL(max(boardNo)+1,1) AS boardNo FROM AuctionBoard
+	</select>
+	
+	<insert id='insertAuctionBoard' parameterType="AuctionBoard">
+		INSERT INTO AuctionBoard(boardNo, subject, userNo, createDT)
+		VALUES(#{boardNo}, #{subject}, #{userNo}, #{createDT})
+	</insert>
+	
+	<insert id='insertAuctionAvatarList' parameterType="java.util.Map">
+		INSERT INTO AuctionAvatarList(boardNo, charBox, slotName, avatarNo, avatarName, optionAbility, createDT)
+		VALUES
+		<foreach collection="list" item="item" separator=" , ">
+            (#{item.boardNo}, #{item.charBox}, #{item.slotName}, #{item.avatarNo}, #{item.avatarName}, #{item.optionAbility}, #{item.createDT})
+        </foreach>
+	</insert>
+	
+	<insert id='insertAuctionBoardCharBox' parameterType="AuctionBoardCharBox">
+		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, jobName, jobGrowName, imageName, totalPrice, saleYN, category, comment, createDT)
+		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobName}, #{jobGrowName}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
+	</insert>
+	
+	<select id="selectAvatarCategory" resultType="Category">
+		SELECT categoryCode, categoryKind, categoryName, sort
+		FROM Category
+		WHERE deleteDT IS NULL
+		AND categoryKind IN ('event', 'rare')
+		ORDER BY sort
+	</select>
+	
+</mapper>

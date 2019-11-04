@@ -15,16 +15,6 @@ public class httpConnection {
 
 	private final String ENCODING = "UTF-8";
 
-	private httpConnection(){}
-	
-	private static class httpConnection_Singieton{
-		private static final httpConnection instance = new httpConnection();
-	}
-	
-	public static httpConnection getInstance(){
-		return httpConnection_Singieton.instance;
-	}
-	
 	//get방식 rest 호출시 사용
 	public StringBuffer HttpGetConnection(String apiURL) throws IOException {
 		StringBuffer response = new StringBuffer();
