@@ -44,9 +44,18 @@ public class auctionController {
 	 */
 	@RequestMapping(value="/avatarSetSearch")
 	public String avatarSetSearch(Model model) {
-		
 		model.addAttribute("", "");
 		return "/Auction/AvatarSetSearch";
+	}
+	
+	/**
+	 * @description 포워딩) 아바타 세트 검색 페이지로 포워딩 
+	 * @return
+	 */
+	@RequestMapping(value="/avatarShowroomSearch")
+	public String avatarShowroomSearch(Model model) {
+		model.addAttribute("", "");
+		return "/Auction/AvatarShowroomSearch";
 	}
 	
 	@RequestMapping(value="/charSeachList", method = RequestMethod.GET, produces = "application/text; charset=utf8")

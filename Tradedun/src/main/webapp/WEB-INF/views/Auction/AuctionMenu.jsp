@@ -29,6 +29,7 @@
 		<div class="request-form">
            	<a href='/auction/AuctionWriter' class="btn-success py-3 px-3">판매 글 작성</a>
            	<a href='/auction/avatarSetSearch' class="btn-success py-3 px-3">아바타 세트 검색</a>
+           	<a href='/auction/avatarShowroomSearch' class="btn-success py-3 px-3">던파 쇼룸 아바타 검색</a>
 	  	</div>
 	  </div>
 
