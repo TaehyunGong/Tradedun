@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thkong.tradedun.Auction.service.auctionService;
+import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
 
@@ -96,8 +97,8 @@ public class auctionController {
 	@RequestMapping(value="/avatarShowroomSearch", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String avatarShowroomSearch(@RequestParam(required = true) String jobId
 									 , @RequestParam(required = true) String showroom) throws IOException {
-		System.out.println(jobId);
-		System.out.println(showroom);
+		
+		List<Auctions> list = service.avatarShowroomSearch(jobId, showroom);
 		return "/";
 	}
 }

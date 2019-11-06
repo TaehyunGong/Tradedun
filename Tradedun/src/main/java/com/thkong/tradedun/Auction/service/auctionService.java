@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
 
@@ -20,4 +21,6 @@ public interface auctionService {
 	public Map<String, Object> selectCategoryAvatar(String jobId);
 
 	public List<CodeTB> selectAllJobList();
+
+	public List<Auctions> avatarShowroomSearch(String jobId, String showroom) throws IOException;
 }

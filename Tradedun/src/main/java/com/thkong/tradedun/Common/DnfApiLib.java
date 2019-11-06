@@ -91,8 +91,26 @@ public class DnfApiLib {
 	 * @throws IOException
 	 */
 	public Auctions auction(String itemId) throws IOException {
-		String url = String.format("https://api.neople.co.kr/df/auction?itemId=%s&sort=unitPrice:asc&limit=10&apikey=%s"
+		String url = String.format("https://api.neople.co.kr/df/auction?itemId=%s&sort=unitPrice:asc&limit=30&apikey=%s"
 				, itemId, dnfRestKey);
+		String json = conn.HttpGetConnection(url).toString();
+		Auctions auctions = mapper.readValue(json, Auctions.class);
+		
+		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
+		isResponseError(json);		
+		
+		return auctions;
+	}
+	
+	/**
+	 * @description 경매장 검색 : 아이템 Name를 가져와 경매장에서 최저가 기준으로 최대 10개 까지만 해당하는 vo로 반환
+	 * @param itemName
+	 * @return
+	 * @throws IOException
+	 */
+	public Auctions auctionItemName(String itemName) throws IOException {
+		String url = String.format("https://api.neople.co.kr/df/auction?itemName=%s&sort=unitPrice:asc&limit=30&apikey=%s"
+				, conn.URLencoder(itemName), dnfRestKey);
 		String json = conn.HttpGetConnection(url).toString();
 		Auctions auctions = mapper.readValue(json, Auctions.class);
 		

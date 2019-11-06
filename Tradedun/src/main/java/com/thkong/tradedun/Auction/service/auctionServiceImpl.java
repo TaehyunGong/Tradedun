@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thkong.tradedun.Auction.dao.auctionDao;
+import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
@@ -67,6 +68,10 @@ public class auctionServiceImpl implements auctionService {
 	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다.
 	private List<String> parts = Arrays.asList(
 			new String[]{"모자", "머리", "얼굴", "상의", "하의", "신발", "목가슴", "허리", "스킨"});
+
+	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다. 쇼룸의 경우 피부, 무기, 배경이 추가된다.
+	private List<String> showRoomParts = Arrays.asList(
+			new String[]{"모자", "머리", "얼굴", "상의", "하의", "신발", "목가슴", "허리", "피부", "무기", "배경"});
 	
 	/**
 	 * @description 캐릭터명으로 조회후 해당 캐릭에 match되는 리스트 뿌려줌, 리펙토링 필요
@@ -409,5 +414,62 @@ public class auctionServiceImpl implements auctionService {
 	@Override
 	public List<CodeTB> selectAllJobList() {
 		return dao.selectAllJobList();
+	}
+
+	/**
+	 * @description 직군과 쇼룸의 복붙 정보을 가지고 경매장에서 검색하여 리스트를 반환해준다.
+	 * @param jobId
+	 * @param showroom
+	 * @return
+	 * @throws IOException 
+	 */
+	@Override
+	public List<Auctions> avatarShowroomSearch(String jobId, String showroom) throws IOException {
+		
+		List<Avatar> list = new ArrayList<Avatar>();
+		
+		boolean vaildate = false;
+		for(String token : showroom.trim().split("\\n")){
+			token = token.trim();
+			
+			if(token.length() == 0)
+				continue;
+			
+			if(vaildate && !showRoomParts.contains(token)) {
+				Avatar avatar = new Avatar();
+				avatar.setItemName(token);
+				list.add(avatar);
+			}else if(showRoomParts.contains(token)) 
+				vaildate = true;
+		}
+		
+		return searchAuctionAvatarNameList(list, jobId);
+	}
+	
+	/**
+	 * @description 아이템 이름을 리스트로 보내 경매장에서 응답요청을 리스트로 반환
+	 * @param wearAvatar
+	 * @param kind
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Auctions> searchAuctionAvatarNameList(List<Avatar> Avatar, String jobId) throws IOException {
+		List<Auctions> avatarList = new ArrayList<Auctions>();
+		
+		for(Avatar avatar : Avatar) {
+			Auctions auctions = dnfapi.auctionItemName(avatar.getItemName());
+			List<Auction> auction = auctions.getRows();
+			
+			//해당 직군과 일치도록 필터링
+			for(int index=0; index < auction.size(); index++) {
+				if(!auction.get(index).getJobId().equals(jobId)) {
+					auction.remove(index);
+				}
+			}
+			
+			avatarList.add(auctions);
+		}
+		
+		return avatarList;
 	}
 }
