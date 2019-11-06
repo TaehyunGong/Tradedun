@@ -38,4 +38,12 @@
 		ORDER BY sort
 	</select>
 	
+	<select id="selectAllJobList" resultType="CodeTB">
+		SELECT code, codeKind, codeName, sort 
+		FROM CodeTB
+		WHERE deleteDT IS NULL
+		AND  codeKind = 'jobId'
+		ORDER BY sort
+	</select>
+	
 </mapper>

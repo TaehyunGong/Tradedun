@@ -6,6 +6,7 @@ import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
 import com.thkong.tradedun.Auction.vo.Category;
+import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 
 public interface auctionDao {
@@ -21,4 +22,6 @@ public interface auctionDao {
 	public void insertAuctionAvatarList(List<AuctionAvatarList> auctionAvatarList);
 	
 	public List<Category> selectAvatarCategory();
+
+	public List<CodeTB> selectAllJobList();
 }

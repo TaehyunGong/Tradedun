@@ -37,6 +37,7 @@ import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
+import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Common.DnfApiLib;
 import com.thkong.tradedun.User.vo.User;
@@ -399,5 +400,14 @@ public class auctionServiceImpl implements auctionService {
 	public Map<String, Object> selectCategoryAvatar(String jobId) {
 		
 		return null;
+	}
+
+	/**
+	 * @description jobId직군을 Code테이블에서 다 가져온다.
+	 * @return List<CodeTB>
+	 */
+	@Override
+	public List<CodeTB> selectAllJobList() {
+		return dao.selectAllJobList();
 	}
 }

@@ -1,7 +1,9 @@
 package com.thkong.tradedun.Auction.controller;
 
 import java.io.IOException;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thkong.tradedun.Auction.service.auctionService;
+import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
 
 @Controller
@@ -42,20 +45,20 @@ public class auctionController {
 	 * @description 포워딩) 아바타 세트 검색 페이지로 포워딩 
 	 * @return
 	 */
-	@RequestMapping(value="/avatarSetSearch")
-	public String avatarSetSearch(Model model) {
-		model.addAttribute("", "");
-		return "/Auction/AvatarSetSearch";
+	@RequestMapping(value="/avatarCharacterSet")
+	public String avatarCharacterSet(Model model, HttpServletRequest req) {
+		return "/Auction/AvatarCharacterSet";
 	}
 	
 	/**
 	 * @description 포워딩) 아바타 세트 검색 페이지로 포워딩 
 	 * @return
 	 */
-	@RequestMapping(value="/avatarShowroomSearch")
-	public String avatarShowroomSearch(Model model) {
-		model.addAttribute("", "");
-		return "/Auction/AvatarShowroomSearch";
+	@RequestMapping(value="/avatarShowroom")
+	public String avatarShowroom(Model model) {
+		List<CodeTB> jobList = service.selectAllJobList();
+		model.addAttribute("jobList", jobList);
+		return "/Auction/AvatarShowroom";
 	}
 	
 	@RequestMapping(value="/charSeachList", method = RequestMethod.GET, produces = "application/text; charset=utf8")
@@ -88,5 +91,13 @@ public class auctionController {
 			page = service.insertBoardWrite(submitJson, subject, user);
 		}
 		return page;
+	}
+	
+	@RequestMapping(value="/avatarShowroomSearch", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	public String avatarShowroomSearch(@RequestParam(required = true) String jobId
+									 , @RequestParam(required = true) String showroom) throws IOException {
+		System.out.println(jobId);
+		System.out.println(showroom);
+		return "/";
 	}
 }

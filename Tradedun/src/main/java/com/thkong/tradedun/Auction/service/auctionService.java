@@ -1,8 +1,10 @@
 package com.thkong.tradedun.Auction.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
+import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
 
 public interface auctionService {
@@ -16,4 +18,6 @@ public interface auctionService {
 	public String insertBoardWrite(String submitJson, String subject, User user) throws IOException;
 	
 	public Map<String, Object> selectCategoryAvatar(String jobId);
+
+	public List<CodeTB> selectAllJobList();
 }
