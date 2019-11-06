@@ -458,14 +458,15 @@ public class auctionServiceImpl implements auctionService {
 		
 		for(Avatar avatar : Avatar) {
 			Auctions auctions = dnfapi.auctionItemName(avatar.getItemName());
-			List<Auction> auction = auctions.getRows();
+			List<Auction> temp = new ArrayList<Auction>();
 			
 			//해당 직군과 일치도록 필터링
-			for(int index=0; index < auction.size(); index++) {
-				if(!auction.get(index).getJobId().equals(jobId)) {
-					auction.remove(index);
+			for(Auction auction : auctions.getRows()) {
+				if(auction.getJobId().equals(jobId)) {
+					temp.add(auction);
 				}
 			}
+			auctions.setRows(temp);
 			
 			avatarList.add(auctions);
 		}

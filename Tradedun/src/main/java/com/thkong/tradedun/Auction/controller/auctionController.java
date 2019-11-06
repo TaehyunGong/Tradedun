@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thkong.tradedun.Auction.service.auctionService;
+import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
@@ -99,6 +100,11 @@ public class auctionController {
 									 , @RequestParam(required = true) String showroom) throws IOException {
 		
 		List<Auctions> list = service.avatarShowroomSearch(jobId, showroom);
+		for(Auctions auction : list) {
+			for(Auction auc : auction.getRows()) {
+				System.out.println("아이디 : " + auc.getItemId() + ", 이름 : " + auc.getItemName() + ", 파츠 : " + auc.getItemTypeDetail() +", 가격 : " + auc.getCurrentPrice() + ", 직업 : " + auc.getJobName());
+			}
+		}
 		return "/";
 	}
 }
