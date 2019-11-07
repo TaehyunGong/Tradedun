@@ -1,14 +1,17 @@
 package com.thkong.tradedun.Common;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.DnfApiError;
+import com.thkong.tradedun.Auction.vo.ItemDetail;
+import com.thkong.tradedun.Auction.vo.ItemDetails;
 
 public class DnfApiLib {
 	
@@ -118,6 +121,24 @@ public class DnfApiLib {
 		isResponseError(json);		
 		
 		return auctions;
+	}
+
+	/**
+	 * @description 17. 아이템 검색 : 아이템 Name을 가져와 검색 후 반환 
+	 * @param itemName
+	 * @return
+	 * @throws IOException
+	 */
+	public List<ItemDetail> searchItems(String itemName, boolean auctionYN) throws IOException {
+		String url = String.format("https://api.neople.co.kr/df/items?itemName=%s&wordType=match&q=trade:%s&apikey=%s"
+				, conn.URLencoder(itemName), auctionYN, dnfRestKey);
+		String json = conn.HttpGetConnection(url).toString();
+		ItemDetails detailList = mapper.readValue(json, ItemDetails.class);
+		
+		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
+		isResponseError(json);		
+		
+		return detailList.getRows();
 	}
 
 }

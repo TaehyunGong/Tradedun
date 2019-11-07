@@ -98,13 +98,7 @@ public class auctionController {
 	@RequestMapping(value="/avatarShowroomSearch", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String avatarShowroomSearch(@RequestParam(required = true) String jobId
 									 , @RequestParam(required = true) String showroom) throws IOException {
-		
 		List<Auctions> list = service.avatarShowroomSearch(jobId, showroom);
-		for(Auctions auction : list) {
-			for(Auction auc : auction.getRows()) {
-				System.out.println("아이디 : " + auc.getItemId() + ", 이름 : " + auc.getItemName() + ", 파츠 : " + auc.getItemTypeDetail() +", 가격 : " + auc.getCurrentPrice() + ", 직업 : " + auc.getJobName());
-			}
-		}
-		return "/";
+		return "";
 	}
 }

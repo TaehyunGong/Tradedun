@@ -443,7 +443,15 @@ public class auctionServiceImpl implements auctionService {
 				vaildate = true;
 		}
 		
-		return searchAuctionAvatarNameList(list, jobId);
+		for(Avatar avatar : list) {
+			List<ItemDetail> detailList = searchItems(avatar.getItemName());
+			for(ItemDetail detail : detailList) {
+				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
+				break;
+			}
+		}
+		
+		return null;//searchAuctionAvatarNameList(list, jobId);
 	}
 	
 	/**
@@ -472,5 +480,9 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		return avatarList;
+	}
+	
+	public List<ItemDetail> searchItems(String itemName) throws IOException{
+		return dnfapi.searchItems(itemName, true);
 	}
 }
