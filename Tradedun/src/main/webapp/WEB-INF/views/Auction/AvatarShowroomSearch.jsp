@@ -35,7 +35,13 @@
 				  	<td>${item.itemTypeDetail}</td>
 				  	<td><img src="https://img-api.neople.co.kr/df/items/${item.itemId}"></td>
 				  	<td>${item.itemName}</td>
-				  	<td>${item.itemTypeDetail}</td>
+				  	<td>
+				  		<c:if test="${!empty item.avatar}">
+					  		<c:forEach var="emblem" items="${item.avatar.emblems}">
+					  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+					  		</c:forEach>
+				  		</c:if>
+				  	</td>
 				  	<td>${item.currentPrice}</td>
 				  </tr>
 				</c:forEach>

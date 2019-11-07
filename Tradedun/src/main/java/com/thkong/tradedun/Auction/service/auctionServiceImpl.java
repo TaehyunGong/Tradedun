@@ -401,11 +401,6 @@ public class auctionServiceImpl implements auctionService {
 		
 		return fileName;
 	}
-	
-	public Map<String, Object> selectCategoryAvatar(String jobId) {
-		
-		return null;
-	}
 
 	/**
 	 * @description jobId직군을 Code테이블에서 다 가져온다.
@@ -444,14 +439,18 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 //		for(Avatar avatar : list) {
-//			List<ItemDetail> detailList = searchItems(avatar.getItemName());
+//			List<ItemDetail> detailList = dnfapi.searchItems(avatar.getItemName(), true);
 //			for(ItemDetail detail : detailList) {
 //				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
 //				break;
 //			}
 //		}
+		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
+		//경매장에서 가져온 엠블렘을 매핑시켜서 돌려준다.
+		for(Auctions auction : auctions) 
+			getMatchEmblem(auction);
 		
-		return searchAuctionAvatarNameList(list, jobId);
+		return auctions;
 	}
 	
 	/**
@@ -482,7 +481,9 @@ public class auctionServiceImpl implements auctionService {
 		return avatarList;
 	}
 	
-	public List<ItemDetail> searchItems(String itemName) throws IOException{
-		return dnfapi.searchItems(itemName, true);
+	@Override
+	public Map<String, Object> selectCategoryAvatar(String jobId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
