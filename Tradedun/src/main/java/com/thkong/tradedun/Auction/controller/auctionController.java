@@ -97,8 +97,10 @@ public class auctionController {
 	
 	@RequestMapping(value="/avatarShowroomSearch", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String avatarShowroomSearch(@RequestParam(required = true) String jobId
-									 , @RequestParam(required = true) String showroom) throws IOException {
+									 , @RequestParam(required = true) String showroom
+									 , Model model) throws IOException {
 		List<Auctions> list = service.avatarShowroomSearch(jobId, showroom);
-		return "";
+		model.addAttribute("auctions", list);
+		return "/Auction/AvatarShowroomSearch";
 	}
 }

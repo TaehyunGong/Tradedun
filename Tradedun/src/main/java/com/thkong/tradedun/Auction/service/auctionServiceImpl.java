@@ -443,15 +443,15 @@ public class auctionServiceImpl implements auctionService {
 				vaildate = true;
 		}
 		
-		for(Avatar avatar : list) {
-			List<ItemDetail> detailList = searchItems(avatar.getItemName());
-			for(ItemDetail detail : detailList) {
-				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
-				break;
-			}
-		}
+//		for(Avatar avatar : list) {
+//			List<ItemDetail> detailList = searchItems(avatar.getItemName());
+//			for(ItemDetail detail : detailList) {
+//				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
+//				break;
+//			}
+//		}
 		
-		return null;//searchAuctionAvatarNameList(list, jobId);
+		return searchAuctionAvatarNameList(list, jobId);
 	}
 	
 	/**

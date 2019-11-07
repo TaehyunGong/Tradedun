@@ -14,18 +14,18 @@ public class HomeController {
 		return page;
 	}
 	
-	@RequestMapping(value = "/header", method = RequestMethod.GET)
+	@RequestMapping(value = "/header", method = {RequestMethod.GET, RequestMethod.POST})
 	public String header() {
 		return "/common/header";
 	}
 	
-	@RequestMapping(value = "/footer", method = RequestMethod.GET)
+	@RequestMapping(value = "/footer", method = {RequestMethod.GET, RequestMethod.POST})
 	public String footer() {
 		return "/common/footer";
 	}
 	
 	//템플릿 jsp 적용을 위한 임시용 매핑
-	@RequestMapping(value = "/AuctionMenu", method = RequestMethod.GET)
+	@RequestMapping(value = "/AuctionMenu", method = {RequestMethod.GET, RequestMethod.POST})
 	public String auction() {
 		return "/Auction/AuctionMenu";
 	}
