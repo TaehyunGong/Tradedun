@@ -9,7 +9,7 @@
   </head>
   <body>
 
-	<c:import  url="/header" />    
+	<c:import  url="/header" />
     <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -27,35 +27,106 @@
     
 	<section class="ftco-section contact-section">
       <div class="container">
+      
+      	<div class='row justify-content-center'>
+      		<div class="col-md-12 heading-section text-center ftco-animate mb-5 fadeInUp ftco-animated">
+          	<span class="subheading">조회 결과</span>
+            <h2 class="mb-2">쇼룸 리스트 경매장 조회 결과</h2>
+          </div>
+      	</div>
+      	
+      	<div class='row'>
+     		<div class='col-md-5 pr-3'>
+				<!-- 판매 설정 -->
+		      	<div class="request-form">
+		      		<h3>판매 설정</h3>
+		      		<div class="form-group">
+		              	<label class="label">카테고리</label>
+						<div class="form-field">
+		  					<div class="select-wrap">
+		                      <select id="category${number}" class="form-control">
+			                      <option value="$category.categoryCode">$category.categoryName</option>
+		                      </select>
+		                    </div>
+		               </div>
+		            </div>
+					<div class="form-group">
+						<label for="" class="label">판매하실 금액</label>
+						<input type="text" id='resultPrice${number}' class="form-control" placeholder="판매하실 금액" onlyNumber>
+					</div>
+					<div class="d-flex">
+		              <div class="form-group ml-2">
+		                <label for="" class="label">경매장에 조회된 아바타 부위</label>
+		                <input type="text" class="form-control" id="" value="${availAvatar}부위" readonly>
+		              </div>
+		              <div class="form-group ml-2">
+		                <label for="" class="label">선택된 아바타 가격</label>
+		                <input type="text" class="form-control" id="auctionSumPrice1" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
+		              </div>
+		      		</div>
+		            <div class="form-group">
+		              	<label for="" class="label">짧은 코멘트(최대 30자)</label>
+						<input type="text" id='comment${number}' class="form-control" placeholder="" maxlength="30">
+		            </div>
+				</div>
+			</div>
+      		
+      		<div class='col-md-7'>
+      		</div>
+      	</div>
+      	
+      	
 		 <table class="table" >
-			<c:forEach var="auction" items="${auctions}">
-				<tbody id='' class="selectAuction auctionList">
-				<c:forEach var="item" items="${auction.rows}">
-				  <tr class='trLine'>
-				  	<td>${item.itemTypeDetail}</td>
-				  	<td><img src="https://img-api.neople.co.kr/df/items/${item.itemId}"></td>
-				  	<td>${item.itemName}</td>
-				  	<td>
-				  		<c:if test="${!empty item.avatar}">
-					  		<c:forEach var="emblem" items="${item.avatar.emblems}">
-					  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
-					  		</c:forEach>
-				  		</c:if>
-				  	</td>
-				  	<td>${item.currentPrice}</td>
-				  </tr>
+		 	<c:forEach var="auction" items="${auctions}">
+		 		<c:if test="${!empty auction.rows[0]}">
+		 		
+					<tbody id='' class="selectAuction auctionList">
+					  <tr class='trLine'>
+					  	<td>${auction.rows[0].itemTypeDetail}</td>
+					  	<td><img src="https://img-api.neople.co.kr/df/items/${auction.rows[0].itemId}"></td>
+					  	<td>${auction.rows[0].itemName}</td>
+					  	<td>
+					  		<c:if test="${!empty auction.rows[0].avatar}">
+						  		<c:forEach var="emblem" items="${auction.rows[0].avatar.emblems}">
+						  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+						  		</c:forEach>
+					  		</c:if>
+					  	</td>
+					  	<td>${auction.rows[0].currentPrice}</td>
+					  </tr>
+					</tbody>
+				</c:if>
+			
+				<tbody class="hide" style='display:none;'>
+				<c:forEach var="item" items="${auction.rows}" varStatus="itemNum">
+					<c:choose>
+						<c:when test="${itemNum.count == 1}">
+							<tr class='trLine selectListAuction'>
+						</c:when>
+						<c:otherwise>
+							<tr class='trLine'>
+						</c:otherwise>
+					</c:choose>
+					  	<td>${item.itemTypeDetail}</td>
+					  	<td><img src="https://img-api.neople.co.kr/df/items/${item.itemId}"></td>
+					  	<td>${item.itemName}</td>
+					  	<td>
+					  		<c:if test="${!empty item.avatar}">
+						  		<c:forEach var="emblem" items="${item.avatar.emblems}">
+						  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+						  		</c:forEach>
+					  		</c:if>
+					  	</td>
+					  	<td>${item.currentPrice}</td>
+					  </tr>
 				</c:forEach>
 				</tbody>
 			</c:forEach>
-			
-			<tbody class="hide" style='display:none;'>
-				<tr>
-		 		</tr>
-			</tbody>
 		 </table>
       </div>
     </section>
 
 	<c:import  url="/footer" />
+	<script src="/js/tradedun.js" ></script>
   </body>
 </html>
