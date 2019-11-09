@@ -64,65 +64,72 @@
 		                <input type="text" class="form-control" id="auctionSumPrice1" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
 		              </div>
 		      		</div>
-		            <div class="form-group">
-		              	<label for="" class="label">짧은 코멘트(최대 30자)</label>
-						<input type="text" id='comment${number}' class="form-control" placeholder="" maxlength="30">
-		            </div>
 				</div>
 			</div>
       		
       		<div class='col-md-7'>
+      			<table class="table table-condensed " >
+      				<c:forEach var="avatar" items="${choiceAvatar}">
+						<tr>
+							<td style='width:60px;'>${avatar.slotName}</td>
+						    <td><img class="pr-3" src='https://img-api.neople.co.kr/df/items/${avatar.itemId}' title='${avatar.itemName}' alt='${avatar.itemName}'/>
+						    </td>
+						    <td><font class='pl-2' style='font-weight: bold;'>${avatar.itemName}</font></td>
+						</tr>
+					</c:forEach>
+				</table>
       		</div>
       	</div>
       	
-      	
-		 <table class="table" >
-		 	<c:forEach var="auction" items="${auctions}">
-		 		<c:if test="${!empty auction.rows[0]}">
-		 		
-					<tbody id='' class="selectAuction auctionList">
-					  <tr class='trLine'>
-					  	<td>${auction.rows[0].itemTypeDetail}</td>
-					  	<td><img src="https://img-api.neople.co.kr/df/items/${auction.rows[0].itemId}"></td>
-					  	<td>${auction.rows[0].itemName}</td>
-					  	<td>
-					  		<c:if test="${!empty auction.rows[0].avatar}">
-						  		<c:forEach var="emblem" items="${auction.rows[0].avatar.emblems}">
-						  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
-						  		</c:forEach>
-					  		</c:if>
-					  	</td>
-					  	<td>${auction.rows[0].currentPrice}</td>
-					  </tr>
+      	<div class='pt-5'>
+			 <table class="table" >
+			 	<c:forEach var="auction" items="${auctions}">
+			 		<c:if test="${!empty auction.rows[0]}">
+			 		
+						<tbody id='' class="selectAuction auctionList">
+						  <tr class='trLine'>
+						  	<td>${auction.rows[0].itemTypeDetail}</td>
+						  	<td><img src="https://img-api.neople.co.kr/df/items/${auction.rows[0].itemId}"></td>
+						  	<td>${auction.rows[0].itemName}</td>
+						  	<td>
+						  		<c:if test="${!empty auction.rows[0].avatar}">
+							  		<c:forEach var="emblem" items="${auction.rows[0].avatar.emblems}">
+							  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+							  		</c:forEach>
+						  		</c:if>
+						  	</td>
+						  	<td>${auction.rows[0].currentPrice}</td>
+						  </tr>
+						</tbody>
+					</c:if>
+				
+					<tbody class="hide" style='display:none;'>
+					<c:forEach var="item" items="${auction.rows}" varStatus="itemNum">
+						<c:choose>
+							<c:when test="${itemNum.count == 1}">
+								<tr class='trLine selectListAuction'>
+							</c:when>
+							<c:otherwise>
+								<tr class='trLine'>
+							</c:otherwise>
+						</c:choose>
+						  	<td>${item.itemTypeDetail}</td>
+						  	<td><img src="https://img-api.neople.co.kr/df/items/${item.itemId}"></td>
+						  	<td>${item.itemName}</td>
+						  	<td>
+						  		<c:if test="${!empty item.avatar}">
+							  		<c:forEach var="emblem" items="${item.avatar.emblems}">
+							  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+							  		</c:forEach>
+						  		</c:if>
+						  	</td>
+						  	<td>${item.currentPrice}</td>
+						  </tr>
+					</c:forEach>
 					</tbody>
-				</c:if>
-			
-				<tbody class="hide" style='display:none;'>
-				<c:forEach var="item" items="${auction.rows}" varStatus="itemNum">
-					<c:choose>
-						<c:when test="${itemNum.count == 1}">
-							<tr class='trLine selectListAuction'>
-						</c:when>
-						<c:otherwise>
-							<tr class='trLine'>
-						</c:otherwise>
-					</c:choose>
-					  	<td>${item.itemTypeDetail}</td>
-					  	<td><img src="https://img-api.neople.co.kr/df/items/${item.itemId}"></td>
-					  	<td>${item.itemName}</td>
-					  	<td>
-					  		<c:if test="${!empty item.avatar}">
-						  		<c:forEach var="emblem" items="${item.avatar.emblems}">
-						  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
-						  		</c:forEach>
-					  		</c:if>
-					  	</td>
-					  	<td>${item.currentPrice}</td>
-					  </tr>
 				</c:forEach>
-				</tbody>
-			</c:forEach>
-		 </table>
+			 </table>
+		 </div>
       </div>
     </section>
 

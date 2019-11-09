@@ -2,6 +2,7 @@ package com.thkong.tradedun.Auction.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -99,8 +100,10 @@ public class auctionController {
 	public String avatarShowroomSearch(@RequestParam(required = true) String jobId
 									 , @RequestParam(required = true) String showroom
 									 , Model model) throws IOException {
-		List<Auctions> list = service.avatarShowroomSearch(jobId, showroom);
-		model.addAttribute("auctions", list);
+		Map<String, Object> mapList = service.avatarShowroomSearch(jobId, showroom);
+		model.addAttribute("auctions", mapList.get("auctions"));
+		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
+		
 		return "/Auction/AvatarShowroomSearch";
 	}
 }

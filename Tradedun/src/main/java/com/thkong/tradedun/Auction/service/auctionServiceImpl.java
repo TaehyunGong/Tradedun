@@ -9,9 +9,12 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -118,7 +121,7 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
-		List<Avatar> wearAvatar = fixNinePieceAvatar(detail, kind);
+		List<Avatar> wearAvatar = fixNinePieceAvatar(detail.getAvatar(), kind, parts);
 		
 		//모자 부터 피부까지 총 8부위만 조회한다.
 		List<Auctions> avatarList = searchAuctionAvatarList(wearAvatar, kind);
@@ -207,15 +210,15 @@ public class auctionServiceImpl implements auctionService {
 	 * @param detail
 	 * @param kind
 	 */
-	public List<Avatar> fixNinePieceAvatar(AuctionCharacterDetail detail, String kind) {
+	public List<Avatar> fixNinePieceAvatar(List<Avatar> detail, String kind, List<String> fixParts) {
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
 		List<Avatar> wearAvatar = new ArrayList<Avatar>();
-		for(String part : parts) {
+		for(String part : fixParts) {
 			Avatar avat = new Avatar(); 
 			avat.setSlotName(part);
 			
-			for(int avatarIndex=0; avatarIndex < detail.getAvatar().size(); avatarIndex++) {
-				Avatar avatar = detail.getAvatar().get(avatarIndex);
+			for(int avatarIndex=0; avatarIndex < detail.size(); avatarIndex++) {
+				Avatar avatar = detail.get(avatarIndex);
 				//avatar.getSlotName().split(" ")[0]) ex) "모자 아바타" -> "모자"
 				if(part.contains(avatar.getSlotName().split(" ")[0])) {
 					avat = avatar;
@@ -419,7 +422,7 @@ public class auctionServiceImpl implements auctionService {
 	 * @throws IOException 
 	 */
 	@Override
-	public List<Auctions> avatarShowroomSearch(String jobId, String showroom) throws IOException {
+	public Map<String, Object> avatarShowroomSearch(String jobId, String showroom) throws IOException {
 		
 		List<Avatar> list = new ArrayList<Avatar>();
 		
@@ -446,11 +449,25 @@ public class auctionServiceImpl implements auctionService {
 //			}
 //		}
 		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
-		//경매장에서 가져온 엠블렘을 매핑시켜서 돌려준다.
-		for(Auctions auction : auctions) 
-			getMatchEmblem(auction);
+		List<Avatar> avatarList = new ArrayList<Avatar>();
 		
-		return auctions;
+		//경매장에서 가져온 엠블렘을 매핑시켜서 돌려준다.
+		for(Auctions auction : auctions) {
+			getMatchEmblem(auction);
+			
+			if(auction.getRows().size() != 0) {
+				avatarList.add(convertAuctionToAvatar(auction.getRows().get(0)));
+			}
+		}
+		
+		//경매장에서 조회된 아바타 파츠 마다 가져와 9파츠로 고정
+		List<Avatar> choiceAvatar = fixNinePieceAvatar(avatarList, "null", showRoomParts);
+		
+		Map<String, Object> mapList = new HashMap<String, Object>();
+		mapList.put("auctions", auctions);
+		mapList.put("choiceAvatar", choiceAvatar);
+		
+		return mapList;
 	}
 	
 	/**
@@ -479,6 +496,24 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		return avatarList;
+	}
+	
+	/**
+	 * @description 경매장에서 추출한 데이터를 avatar vo로 변환
+	 * @param auctions
+	 * @return
+	 */
+	public Avatar convertAuctionToAvatar(Auction auction){
+		Avatar avatar = new Avatar();
+		
+		//파츠 정보
+		avatar.setSlotName(auction.getItemTypeDetail());
+		avatar.setItemId(auction.getItemId());
+		avatar.setItemName(auction.getItemName());
+		
+		avatar.setEmblems(new ArrayList<ItemDetail>());
+		
+		return avatar;
 	}
 	
 	@Override

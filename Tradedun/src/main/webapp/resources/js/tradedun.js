@@ -26,7 +26,11 @@ $(document).on('click', 'table tbody .auctionList', function(){
 		price += Number(fn(item.textContent));
 	});
 	
-	$('#auctionSumPrice').val(numberWithCommas(price));
+	var charBox = $(this).parents()[4];
+	var charBoxId = $(charBox).attr('id');
+	var charBoxNumber = charBoxId.substr(charBoxId.length - 1);
+	
+	$('#auctionSumPrice' + charBoxNumber).val(numberWithCommas(price));
 });
 
 //input type[text] 의 onlyNumber는 무조건 onlyNumber이다.

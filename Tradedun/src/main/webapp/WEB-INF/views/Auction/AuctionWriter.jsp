@@ -148,7 +148,6 @@
 			var charBoxId = $(charBox).attr('id');
 			var charBoxNumber = charBoxId.substr(charBoxId.length - 1);
 			
-			console.log(charBoxNumber)
 			$('#auctionSumPrice' + charBoxNumber).val(numberWithCommas(price));
         });
 		

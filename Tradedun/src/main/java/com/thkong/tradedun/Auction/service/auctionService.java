@@ -22,5 +22,5 @@ public interface auctionService {
 
 	public List<CodeTB> selectAllJobList();
 
-	public List<Auctions> avatarShowroomSearch(String jobId, String showroom) throws IOException;
+	public Map<String, Object> avatarShowroomSearch(String jobId, String showroom) throws IOException;
 }
