@@ -103,6 +103,7 @@ public class auctionController {
 		Map<String, Object> mapList = service.avatarShowroomSearch(jobId, showroom);
 		model.addAttribute("auctions", mapList.get("auctions"));
 		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
+		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
 		
 		return "/Auction/AvatarShowroomSearch";
 	}

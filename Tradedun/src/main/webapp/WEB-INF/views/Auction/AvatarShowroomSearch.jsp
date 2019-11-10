@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -39,31 +40,16 @@
      		<div class='col-md-5 pr-3'>
 				<!-- 판매 설정 -->
 		      	<div class="request-form">
-		      		<h3>판매 설정</h3>
+		      		<h3>조회 결과</h3>
 		      		<div class="form-group">
-		              	<label class="label">카테고리</label>
-						<div class="form-field">
-		  					<div class="select-wrap">
-		                      <select id="category${number}" class="form-control">
-			                      <option value="$category.categoryCode">$category.categoryName</option>
-		                      </select>
-		                    </div>
-		               </div>
-		            </div>
-					<div class="form-group">
-						<label for="" class="label">판매하실 금액</label>
-						<input type="text" id='resultPrice${number}' class="form-control" placeholder="판매하실 금액" onlyNumber>
-					</div>
-					<div class="d-flex">
-		              <div class="form-group ml-2">
 		                <label for="" class="label">경매장에 조회된 아바타 부위</label>
-		                <input type="text" class="form-control" id="" value="${availAvatar}부위" readonly>
-		              </div>
-		              <div class="form-group ml-2">
+		                <input type="text" class="form-control" id="" value="${searchCount}부위" readonly>
+		            </div>
+		            
+		            <div class="form-group">
 		                <label for="" class="label">선택된 아바타 가격</label>
-		                <input type="text" class="form-control" id="auctionSumPrice1" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
-		              </div>
-		      		</div>
+		                <input type="text" class="form-control" id="auctionSumPrice1" value="<fmt:formatNumber value="${rowPriceSum}" pattern="#,###" />" readonly>
+		            </div>
 				</div>
 			</div>
       		
@@ -98,7 +84,7 @@
 							  		</c:forEach>
 						  		</c:if>
 						  	</td>
-						  	<td>${auction.rows[0].currentPrice}</td>
+						  	<td><fmt:formatNumber value="${auction.rows[0].currentPrice}" pattern="#,###" /></td>
 						  </tr>
 						</tbody>
 					</c:if>
@@ -123,7 +109,7 @@
 							  		</c:forEach>
 						  		</c:if>
 						  	</td>
-						  	<td>${item.currentPrice}</td>
+						  	<td><fmt:formatNumber value="${item.currentPrice}" pattern="#,###" /></td>
 						  </tr>
 					</c:forEach>
 					</tbody>

@@ -425,7 +425,7 @@ public class auctionServiceImpl implements auctionService {
 	public Map<String, Object> avatarShowroomSearch(String jobId, String showroom) throws IOException {
 		
 		List<Avatar> list = new ArrayList<Avatar>();
-		
+		int rowPriceSum = 0;
 		boolean vaildate = false;
 		for(String token : showroom.trim().split("\\n")){
 			token = token.trim();
@@ -457,7 +457,11 @@ public class auctionServiceImpl implements auctionService {
 			
 			if(auction.getRows().size() != 0) {
 				avatarList.add(convertAuctionToAvatar(auction.getRows().get(0)));
+				
+				//각 파츠별 최저가의 합
+				rowPriceSum += auction.getRows().get(0).getCurrentPrice();
 			}
+			
 		}
 		
 		//경매장에서 조회된 아바타 파츠 마다 가져와 9파츠로 고정
@@ -466,6 +470,7 @@ public class auctionServiceImpl implements auctionService {
 		Map<String, Object> mapList = new HashMap<String, Object>();
 		mapList.put("auctions", auctions);
 		mapList.put("choiceAvatar", choiceAvatar);
+		mapList.put("rowPriceSum", rowPriceSum);
 		
 		return mapList;
 	}
