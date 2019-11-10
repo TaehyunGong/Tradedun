@@ -426,6 +426,8 @@ public class auctionServiceImpl implements auctionService {
 		
 		List<Avatar> list = new ArrayList<Avatar>();
 		int rowPriceSum = 0;
+		
+		//쇼룸 복붙 파싱 로직
 		boolean vaildate = false;
 		for(String token : showroom.trim().split("\\n")){
 			token = token.trim();
@@ -465,7 +467,7 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		//경매장에서 조회된 아바타 파츠 마다 가져와 9파츠로 고정
-		List<Avatar> choiceAvatar = fixNinePieceAvatar(avatarList, "null", showRoomParts);
+		List<Avatar> choiceAvatar = fixNinePieceAvatar(avatarList, "null", parts);
 		
 		Map<String, Object> mapList = new HashMap<String, Object>();
 		mapList.put("auctions", auctions);
