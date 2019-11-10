@@ -4,7 +4,7 @@
 
 //경매장 리스트 클릭시 테이블 down 
 $(document).on('click', 'table tbody .trLine', function(){
-    $(this).parents().next('.hide').fadeToggle();
+    $(this).parents().next('.hide').fadeToggle(); 
 });
 
 //input type[text] 의 onlyNumber는 무조건 onlyNumber이다.
