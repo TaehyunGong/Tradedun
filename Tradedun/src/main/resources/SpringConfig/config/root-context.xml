@@ -22,10 +22,8 @@
 	    </property>
 	</bean>
 	
-	<!-- 별도로 생성한 던파 API Common 라이브러리를 빈으로 등록 후 mapper와 httpconnection을 필수로 DI받는다. -->
+	<!-- 별도로 생성한 던파 API Common 라이브러리를 빈으로 등록 후 APIKEY.properties의 REST KEY을 필수로 DI받는다. -->
 	<bean id='dnfapi' class='com.thkong.tradedun.Common.DnfApiLib'>
-		<constructor-arg name="mapper" ref='mapper'/>
-		<constructor-arg name="conn" ref='conn'/>
 		<constructor-arg name="dnfRestKey" value="#{props['dnf.RestKey']}"/>
 	</bean>
 	     		
