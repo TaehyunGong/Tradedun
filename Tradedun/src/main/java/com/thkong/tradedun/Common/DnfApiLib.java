@@ -1,47 +1,43 @@
 package com.thkong.tradedun.Common;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
 
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Characters;
-import com.thkong.tradedun.Auction.vo.DnfApiError;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Auction.vo.ItemDetails;
 
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+
 public class DnfApiLib {
 	
-	private ObjectMapper mapper;
-	private httpConnection conn;
+	//DNF REST KEY
 	private String dnfRestKey;
 	
 	/**
 	 * @description 이 모듈을 사용하기 위해서는 해당 생성자의 파라메터를 필수로 받아야함
-	 * @param mapper
-	 * @param conn
 	 * @param dnfRestKey
 	 */
-	public DnfApiLib(ObjectMapper mapper, httpConnection conn, String dnfRestKey) {
-		this.mapper = mapper;
-		this.conn = conn;
+	public DnfApiLib(String dnfRestKey) {
 		this.dnfRestKey = dnfRestKey;
 	}
 	
 	/**
-	 * @description 만약 response에서 error를 반환시 response 에러 json으로 throw 던진다. 
-	 * @param obj
-	 * @param json
-	 * @throws IOException
+	 * @description rest Response가 200이 아니라면 이 메소드를 실행하여 에러 메세지를 출력한다.
+	 * @param <T>
+	 * @param res
 	 */
-	public void isResponseError(String json) throws IOException {
-		DnfApiError error = mapper.readValue(json, DnfApiError.class);
-		if(error.getError() != null) {
-			throw new IOException(json);
-		}
+	public <T> void exceptionMethod(HttpResponse<T> res) {
+		System.out.println("Oh No! Status " + res.getStatus());
+    	System.out.println("Parsing Exception: "+ res.getStatusText());
+    	
+    	res.getParsingError().ifPresent(e -> {
+    		System.out.println("ifPresent Exception: "+ e);
+    		System.out.println("Original body: " + e.getOriginalBody());
+    	});
 	}
 	
 	/**
@@ -52,38 +48,35 @@ public class DnfApiLib {
 	 * @return
 	 * @throws IOException
 	 */
-	public Characters characters(String server, String character) throws IOException {
-		character = conn.URLencoder(character);
-		
-		String url = String.format("https://api.neople.co.kr/df/servers/%s/characters?characterName=%s&wordType=full&apikey=%s"
-				, server, character, dnfRestKey);
-		String json = conn.HttpGetConnection(url).toString();
-		Characters list = mapper.readValue(json, Characters.class);
-		
-		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
-		isResponseError(json);
-		
-		return list;
+	public Characters characters(String server, String characterName) {
+		// Response to Object
+		Characters character = Unirest.get("https://api.neople.co.kr/df/servers/{server}/characters?characterName={name}&wordType=full&apikey={dnfKey}")
+								.routeParam("server", server)
+								.routeParam("name", characterName)
+								.routeParam("dnfKey", dnfRestKey)
+								.asObject(Characters.class)
+								.ifFailure(res -> exceptionMethod(res))
+								.getBody();
+		 
+		return character;
 	}
 	
 	/**
-	 * @description 아바타 검색 : 서버와 캐릭터명을 가져와 착용한 아바타를 해당하는 VO로 반환
+	 * @description 아바타 검색 : 서버와 캐릭터Id을 가져와 착용한 아바타를 해당하는 VO로 반환
 	 * @param server
 	 * @param character
 	 * @return
 	 * @throws IOException
 	 */
-	public AuctionCharacterDetail charactersAvatar(String server, String character) throws IOException {
-		character = conn.URLencoder(character);
+	public AuctionCharacterDetail charactersAvatar(String server, String characterId) throws IOException {
 		
-		String url = String.format("https://api.neople.co.kr/df/servers/%s/characters/%s/equip/avatar?apikey=%s"
-				, server, character, dnfRestKey);
-		String json = conn.HttpGetConnection(url).toString();
-		AuctionCharacterDetail detail = mapper.readValue(json, AuctionCharacterDetail.class);
-		
-		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
-		isResponseError(json);		
-		
+		AuctionCharacterDetail detail = Unirest.get("https://api.neople.co.kr/df/servers/{server}/characters/{characterId}/equip/avatar?apikey={dnfKey}")
+												.routeParam("server", server)
+												.routeParam("characterId", characterId)
+												.routeParam("dnfKey", dnfRestKey)
+												.asObject(AuctionCharacterDetail.class)
+												.ifFailure(res -> exceptionMethod(res))
+												.getBody();
 		return detail;
 	}
 	
@@ -94,32 +87,28 @@ public class DnfApiLib {
 	 * @throws IOException
 	 */
 	public Auctions auction(String itemId) throws IOException {
-		String url = String.format("https://api.neople.co.kr/df/auction?itemId=%s&sort=unitPrice:asc&limit=30&apikey=%s"
-				, itemId, dnfRestKey);
-		String json = conn.HttpGetConnection(url).toString();
-		Auctions auctions = mapper.readValue(json, Auctions.class);
-		
-		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
-		isResponseError(json);		
-		
+		Auctions auctions = Unirest.get("https://api.neople.co.kr/df/auction?itemId={itemId}&sort=unitPrice:asc&limit=30&apikey={dnfKey}")
+									.routeParam("itemId", itemId)
+									.routeParam("dnfKey", dnfRestKey)
+									.asObject(Auctions.class)
+									.ifFailure(res -> exceptionMethod(res))
+									.getBody();
 		return auctions;
 	}
 	
 	/**
-	 * @description 경매장 검색 : 아이템 Name를 가져와 경매장에서 최저가 기준으로 최대 10개 까지만 해당하는 vo로 반환
+	 * @description 경매장 검색 : 아이템 Name를 가져와 경매장에서 최저가 기준으로 최대 30개 까지만 해당하는 vo로 반환
 	 * @param itemName
 	 * @return
 	 * @throws IOException
 	 */
 	public Auctions auctionItemName(String itemName) throws IOException {
-		String url = String.format("https://api.neople.co.kr/df/auction?itemName=%s&sort=unitPrice:asc&limit=30&apikey=%s"
-				, conn.URLencoder(itemName), dnfRestKey);
-		String json = conn.HttpGetConnection(url).toString();
-		Auctions auctions = mapper.readValue(json, Auctions.class);
-		
-		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
-		isResponseError(json);		
-		
+		Auctions auctions = Unirest.get("https://api.neople.co.kr/df/auction?itemName={itemName}&sort=unitPrice:asc&limit=30&apikey={dnfKey}")
+									.routeParam("itemName", itemName)
+									.routeParam("dnfKey", dnfRestKey)
+									.asObject(Auctions.class)
+									.ifFailure(res -> exceptionMethod(res))
+									.getBody();
 		return auctions;
 	}
 
@@ -130,14 +119,13 @@ public class DnfApiLib {
 	 * @throws IOException
 	 */
 	public List<ItemDetail> searchItems(String itemName, boolean auctionYN) throws IOException {
-		String url = String.format("https://api.neople.co.kr/df/items?itemName=%s&wordType=match&q=trade:%s&apikey=%s"
-				, conn.URLencoder(itemName), auctionYN, dnfRestKey);
-		String json = conn.HttpGetConnection(url).toString();
-		ItemDetails detailList = mapper.readValue(json, ItemDetails.class);
-		
-		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
-		isResponseError(json);		
-		
+		ItemDetails detailList = Unirest.get("https://api.neople.co.kr/df/items?itemName={itemName}&wordType=match&q=trade:{auctionYN}&apikey={dnfKey}")
+										.routeParam("itemName", itemName)
+										.routeParam("auctionYN", String.valueOf(auctionYN))
+										.routeParam("dnfKey", dnfRestKey)
+										.asObject(ItemDetails.class)
+										.ifFailure(res -> exceptionMethod(res))
+										.getBody();
 		return detailList.getRows();
 	}
 
