@@ -1,14 +1,17 @@
 package com.thkong.tradedun.Common;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.DnfApiError;
+import com.thkong.tradedun.Auction.vo.ItemDetail;
+import com.thkong.tradedun.Auction.vo.ItemDetails;
 
 public class DnfApiLib {
 	
@@ -91,7 +94,7 @@ public class DnfApiLib {
 	 * @throws IOException
 	 */
 	public Auctions auction(String itemId) throws IOException {
-		String url = String.format("https://api.neople.co.kr/df/auction?itemId=%s&sort=unitPrice:asc&limit=10&apikey=%s"
+		String url = String.format("https://api.neople.co.kr/df/auction?itemId=%s&sort=unitPrice:asc&limit=30&apikey=%s"
 				, itemId, dnfRestKey);
 		String json = conn.HttpGetConnection(url).toString();
 		Auctions auctions = mapper.readValue(json, Auctions.class);
@@ -100,6 +103,42 @@ public class DnfApiLib {
 		isResponseError(json);		
 		
 		return auctions;
+	}
+	
+	/**
+	 * @description 경매장 검색 : 아이템 Name를 가져와 경매장에서 최저가 기준으로 최대 10개 까지만 해당하는 vo로 반환
+	 * @param itemName
+	 * @return
+	 * @throws IOException
+	 */
+	public Auctions auctionItemName(String itemName) throws IOException {
+		String url = String.format("https://api.neople.co.kr/df/auction?itemName=%s&sort=unitPrice:asc&limit=30&apikey=%s"
+				, conn.URLencoder(itemName), dnfRestKey);
+		String json = conn.HttpGetConnection(url).toString();
+		Auctions auctions = mapper.readValue(json, Auctions.class);
+		
+		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
+		isResponseError(json);		
+		
+		return auctions;
+	}
+
+	/**
+	 * @description 17. 아이템 검색 : 아이템 Name을 가져와 검색 후 반환 
+	 * @param itemName
+	 * @return
+	 * @throws IOException
+	 */
+	public List<ItemDetail> searchItems(String itemName, boolean auctionYN) throws IOException {
+		String url = String.format("https://api.neople.co.kr/df/items?itemName=%s&wordType=match&q=trade:%s&apikey=%s"
+				, conn.URLencoder(itemName), auctionYN, dnfRestKey);
+		String json = conn.HttpGetConnection(url).toString();
+		ItemDetails detailList = mapper.readValue(json, ItemDetails.class);
+		
+		//json을 던져 eror json인지 체크 후 Error 라면 IOException throw 반환
+		isResponseError(json);		
+		
+		return detailList.getRows();
 	}
 
 }

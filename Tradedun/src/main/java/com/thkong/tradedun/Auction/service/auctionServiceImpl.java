@@ -9,9 +9,12 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -28,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thkong.tradedun.Auction.dao.auctionDao;
+import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
@@ -37,6 +41,7 @@ import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
+import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Common.DnfApiLib;
 import com.thkong.tradedun.User.vo.User;
@@ -66,6 +71,10 @@ public class auctionServiceImpl implements auctionService {
 	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다.
 	private List<String> parts = Arrays.asList(
 			new String[]{"모자", "머리", "얼굴", "상의", "하의", "신발", "목가슴", "허리", "스킨"});
+
+	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다. 쇼룸의 경우 피부, 무기, 배경이 추가된다.
+	private List<String> showRoomParts = Arrays.asList(
+			new String[]{"모자", "머리", "얼굴", "상의", "하의", "신발", "목가슴", "허리", "피부", "무기", "배경"});
 	
 	/**
 	 * @description 캐릭터명으로 조회후 해당 캐릭에 match되는 리스트 뿌려줌, 리펙토링 필요
@@ -112,7 +121,7 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
-		List<Avatar> wearAvatar = fixNinePieceAvatar(detail, kind);
+		List<Avatar> wearAvatar = fixNinePieceAvatar(detail.getAvatar(), kind, parts);
 		
 		//모자 부터 피부까지 총 8부위만 조회한다.
 		List<Auctions> avatarList = searchAuctionAvatarList(wearAvatar, kind);
@@ -201,15 +210,15 @@ public class auctionServiceImpl implements auctionService {
 	 * @param detail
 	 * @param kind
 	 */
-	public List<Avatar> fixNinePieceAvatar(AuctionCharacterDetail detail, String kind) {
+	public List<Avatar> fixNinePieceAvatar(List<Avatar> detail, String kind, List<String> fixParts) {
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
 		List<Avatar> wearAvatar = new ArrayList<Avatar>();
-		for(String part : parts) {
+		for(String part : fixParts) {
 			Avatar avat = new Avatar(); 
 			avat.setSlotName(part);
 			
-			for(int avatarIndex=0; avatarIndex < detail.getAvatar().size(); avatarIndex++) {
-				Avatar avatar = detail.getAvatar().get(avatarIndex);
+			for(int avatarIndex=0; avatarIndex < detail.size(); avatarIndex++) {
+				Avatar avatar = detail.get(avatarIndex);
 				//avatar.getSlotName().split(" ")[0]) ex) "모자 아바타" -> "모자"
 				if(part.contains(avatar.getSlotName().split(" ")[0])) {
 					avat = avatar;
@@ -394,5 +403,129 @@ public class auctionServiceImpl implements auctionService {
 		fileName = fileName + "." + ext; //확장자
 		
 		return fileName;
+	}
+
+	/**
+	 * @description jobId직군을 Code테이블에서 다 가져온다.
+	 * @return List<CodeTB>
+	 */
+	@Override
+	public List<CodeTB> selectAllJobList() {
+		return dao.selectAllJobList();
+	}
+
+	/**
+	 * @description 직군과 쇼룸의 복붙 정보을 가지고 경매장에서 검색하여 리스트를 반환해준다.
+	 * @param jobId
+	 * @param showroom
+	 * @return
+	 * @throws IOException 
+	 */
+	@Override
+	public Map<String, Object> avatarShowroomSearch(String jobId, String showroom) throws IOException {
+		
+		List<Avatar> list = new ArrayList<Avatar>();
+		int rowPriceSum = 0;
+		
+		//쇼룸 복붙 파싱 로직
+		boolean vaildate = false;
+		for(String token : showroom.trim().split("\\n")){
+			token = token.trim();
+			
+			if(token.length() == 0)
+				continue;
+			
+			if(vaildate && !showRoomParts.contains(token)) {
+				Avatar avatar = new Avatar();
+				avatar.setItemName(token);
+				list.add(avatar);
+			}else if(showRoomParts.contains(token)) 
+				vaildate = true;
+		}
+		
+//		for(Avatar avatar : list) {
+//			List<ItemDetail> detailList = dnfapi.searchItems(avatar.getItemName(), true);
+//			for(ItemDetail detail : detailList) {
+//				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
+//				break;
+//			}
+//		}
+		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
+		List<Avatar> avatarList = new ArrayList<Avatar>();
+		
+		//경매장에서 가져온 엠블렘을 매핑시켜서 돌려준다.
+		for(Auctions auction : auctions) {
+			getMatchEmblem(auction);
+			
+			if(auction.getRows().size() != 0) {
+				avatarList.add(convertAuctionToAvatar(auction.getRows().get(0)));
+				
+				//각 파츠별 최저가의 합
+				rowPriceSum += auction.getRows().get(0).getCurrentPrice();
+			}
+			
+		}
+		
+		//경매장에서 조회된 아바타 파츠 마다 가져와 9파츠로 고정
+		List<Avatar> choiceAvatar = fixNinePieceAvatar(avatarList, "null", parts);
+		
+		Map<String, Object> mapList = new HashMap<String, Object>();
+		mapList.put("auctions", auctions);
+		mapList.put("choiceAvatar", choiceAvatar);
+		mapList.put("rowPriceSum", rowPriceSum);
+		
+		return mapList;
+	}
+	
+	/**
+	 * @description 아이템 이름을 리스트로 보내 경매장에서 응답요청을 리스트로 반환
+	 * @param wearAvatar
+	 * @param kind
+	 * @return
+	 * @throws IOException
+	 */
+	public List<Auctions> searchAuctionAvatarNameList(List<Avatar> Avatar, String jobId) throws IOException {
+		List<Auctions> avatarList = new ArrayList<Auctions>();
+		
+		for(Avatar avatar : Avatar) {
+			Auctions auctions = dnfapi.auctionItemName(avatar.getItemName());
+			List<Auction> temp = new ArrayList<Auction>();
+			
+			//해당 직군과 일치도록 필터링
+			for(Auction auction : auctions.getRows()) {
+				if(auction.getJobId().equals(jobId)) {
+					temp.add(auction);
+				}
+			}
+			auctions.setRows(temp);
+			
+			avatarList.add(auctions);
+		}
+		
+		return avatarList;
+	}
+	
+	/**
+	 * @description 경매장에서 추출한 데이터를 avatar vo로 변환
+	 * @param auctions
+	 * @return
+	 */
+	public Avatar convertAuctionToAvatar(Auction auction){
+		Avatar avatar = new Avatar();
+		
+		//파츠 정보
+		avatar.setSlotName(auction.getItemTypeDetail());
+		avatar.setItemId(auction.getItemId());
+		avatar.setItemName(auction.getItemName());
+		
+		avatar.setEmblems(new ArrayList<ItemDetail>());
+		
+		return avatar;
+	}
+	
+	@Override
+	public Map<String, Object> selectCategoryAvatar(String jobId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
