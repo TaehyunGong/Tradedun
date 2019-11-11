@@ -41,9 +41,6 @@ public class userController {
 		if(service.logout(session) != null) {
 			//로그아웃시 모든 세션을 제거해준다.
 			session.invalidate();
-		}else {
-			//모종의 사유로 로그아웃 요청실패시 예외발생
-			new IOException();
 		}
 		
 		return "redirect:/";
