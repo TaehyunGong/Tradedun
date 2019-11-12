@@ -48,10 +48,11 @@ public class auctionController {
 	/**
 	 * @description 포워딩) 아바타 세트 검색 페이지로 포워딩 
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping(value="/avatarCharacterSet")
-	public String avatarCharacterSet(Model model, HttpServletRequest req) {
-		List<AvatarMastar> avatarList = service.selectRareAvatarList();
+	public String avatarCharacterSet(Model model, HttpServletRequest req) throws IOException {
+		String avatarList = service.selectRareAvatarList();
 		model.addAttribute("avatarList", avatarList);
 		
 		return "/Auction/AvatarCharacterSet";

@@ -23,6 +23,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.generic.NumberTool;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -530,12 +532,24 @@ public class auctionServiceImpl implements auctionService {
 	
 	/**
 	 * @description DB에서 레압 리스트를 가져온다.
-	 * @return
+	 * @return json String
+	 * @throws IOException 
 	 */
 	@Override
-	public List<AvatarMastar> selectRareAvatarList() {
+	public String selectRareAvatarList() throws IOException {
 		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
-		System.out.println(avatarList);
-		return avatarList;
+		
+		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경
+		Map<String, List<String>> job = new HashMap<String, List<String>>();
+		for(AvatarMastar mst : avatarList) {
+			if(job.containsKey(mst.getJobName())) {
+				job.get(mst.getJobName()).add(mst.getCategoryName());
+			}else {
+				List<String> setList = new ArrayList<String>();
+				setList.add(mst.getCategoryName());
+				job.put(mst.getJobName(), setList);
+			}
+		}
+		return mapper.writeValueAsString(job);
 	}
 }

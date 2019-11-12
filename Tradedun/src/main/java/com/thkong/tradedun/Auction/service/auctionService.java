@@ -19,7 +19,7 @@ public interface auctionService {
 	
 	public String insertBoardWrite(String submitJson, String subject, User user) throws IOException;
 	
-	public List<AvatarMastar> selectRareAvatarList();
+	public String selectRareAvatarList() throws IOException;
 
 	public List<CodeTB> selectAllJobList();
 
