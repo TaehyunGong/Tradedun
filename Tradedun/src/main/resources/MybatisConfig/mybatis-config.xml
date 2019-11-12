@@ -9,5 +9,6 @@
 		<typeAlias alias="AuctionAvatarList" type="com.thkong.tradedun.Auction.vo.AuctionAvatarList"/>
 		<typeAlias alias="Category" type="com.thkong.tradedun.Auction.vo.Category"/>
 		<typeAlias alias="CodeTB" type="com.thkong.tradedun.Auction.vo.CodeTB"/>
+		<typeAlias alias="AvatarMastar" type="com.thkong.tradedun.Auction.vo.AvatarMastar"/>
 	</typeAliases>
 </configuration>

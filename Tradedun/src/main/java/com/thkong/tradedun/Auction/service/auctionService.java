@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.thkong.tradedun.Auction.vo.Auctions;
+import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
 
@@ -18,7 +19,7 @@ public interface auctionService {
 	
 	public String insertBoardWrite(String submitJson, String subject, User user) throws IOException;
 	
-	public Map<String, Object> selectCategoryAvatar(String jobId);
+	public List<AvatarMastar> selectRareAvatarList();
 
 	public List<CodeTB> selectAllJobList();
 

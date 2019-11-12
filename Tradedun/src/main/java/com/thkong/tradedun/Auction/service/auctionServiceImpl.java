@@ -39,6 +39,7 @@ import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
+import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.CodeTB;
@@ -443,13 +444,17 @@ public class auctionServiceImpl implements auctionService {
 				vaildate = true;
 		}
 		
+//		int sb = 0;
 //		for(Avatar avatar : list) {
 //			List<ItemDetail> detailList = dnfapi.searchItems(avatar.getItemName(), true);
 //			for(ItemDetail detail : detailList) {
-//				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
-//				break;
+//				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + .jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
+//				sb++;
 //			}
 //		}
+//		Map<String, Object> mapList = new HashMap<String, Object>();
+//		mapList.put("test", sb);
+		
 		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
 		List<Avatar> avatarList = new ArrayList<Avatar>();
 		
@@ -523,9 +528,14 @@ public class auctionServiceImpl implements auctionService {
 		return avatar;
 	}
 	
+	/**
+	 * @description DB에서 레압 리스트를 가져온다.
+	 * @return
+	 */
 	@Override
-	public Map<String, Object> selectCategoryAvatar(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<AvatarMastar> selectRareAvatarList() {
+		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
+		System.out.println(avatarList);
+		return avatarList;
 	}
 }

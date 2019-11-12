@@ -46,4 +46,15 @@
 		ORDER BY sort
 	</select>
 	
+	<select id="selectRareAvatarList" resultType="AvatarMastar">
+		SELECT T1.jobId, T1.jobName, T1.categoryCode, T2.categoryName, T1.avatarSetName
+		FROM (SELECT DISTINCT jobId, jobName, categoryCode, avatarSetName
+			  FROM AvatarMastar) T1	  
+			 JOIN Category T2
+			 	  ON T1.categoryCode = T2.categoryCode
+			 JOIN CodeTB T3
+			 	  ON T1.jobId = T3.code
+		ORDER BY T3.sort, T1.categoryCode	 	 
+	</select>
+	
 </mapper>

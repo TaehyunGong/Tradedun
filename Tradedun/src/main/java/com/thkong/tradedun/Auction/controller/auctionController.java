@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.thkong.tradedun.Auction.service.auctionService;
 import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.Auctions;
+import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
 
@@ -50,6 +51,9 @@ public class auctionController {
 	 */
 	@RequestMapping(value="/avatarCharacterSet")
 	public String avatarCharacterSet(Model model, HttpServletRequest req) {
+		List<AvatarMastar> avatarList = service.selectRareAvatarList();
+		model.addAttribute("avatarList", avatarList);
+		
 		return "/Auction/AvatarCharacterSet";
 	}
 	
@@ -96,7 +100,7 @@ public class auctionController {
 		return page;
 	}
 	
-	@RequestMapping(value="/avatarShowroomSearch", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@RequestMapping(value="/avatarShowroomSearch", method = RequestMethod.POST, produces = "text/plain; charset=utf8") 
 	public String avatarShowroomSearch(@RequestParam(required = true) String jobId
 									 , @RequestParam(required = true) String showroom
 									 , Model model) throws IOException {
