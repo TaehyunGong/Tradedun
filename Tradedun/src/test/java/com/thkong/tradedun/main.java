@@ -26,14 +26,30 @@ public class main {
 		
 		List<AvatarMastar> avatarList = session.selectList("selectRareAvatarList");
 		
-		Map<String, List<String>> job = new HashMap<String, List<String>>();
+		List<String> existCheckList = new ArrayList<String>();
+		List<Map<String, Object>> job = new ArrayList<Map<String, Object>>();
+		
 		for(AvatarMastar mst : avatarList) {
-			if(job.containsKey(mst.getJobName())) {
-				job.get(mst.getJobName()).add(mst.getCategoryName());
+			Map<String, Object> nameAndValue = new HashMap<String, Object>();
+			nameAndValue.put("categoryCode", mst.getCategoryName());
+			nameAndValue.put("categoryName", mst.getCategoryCode());
+			
+			if(existCheckList.contains(mst.getJobName())) {
+				int index = existCheckList.indexOf(mst.getJobName());
+				List<Object> listObj = (List<Object>) job.get(index).get("avatarList");
+				listObj.add(nameAndValue);
 			}else {
-				List<String> setList = new ArrayList<String>();
-				setList.add(mst.getCategoryName());
-				job.put(mst.getJobName(), setList);
+				existCheckList.add(mst.getJobName());
+				
+				List<Object> setList = new ArrayList<Object>();
+				setList.add(nameAndValue);
+				
+				Map<String, Object> obj = new HashMap<String, Object>();
+				obj.put("avatarList", setList);
+				obj.put("jobId", mst.getJobId());
+				obj.put("jobName", mst.getJobName());
+				
+				job.add(obj);
 			}
 		}
 		

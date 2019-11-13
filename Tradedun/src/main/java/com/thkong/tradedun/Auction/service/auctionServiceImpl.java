@@ -538,18 +538,35 @@ public class auctionServiceImpl implements auctionService {
 	@Override
 	public String selectRareAvatarList() throws IOException {
 		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
+		List<String> existCheckList = new ArrayList<String>();
 		
 		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경
-		Map<String, List<String>> job = new HashMap<String, List<String>>();
+		List<Map<String, Object>> job = new ArrayList<Map<String, Object>>();
 		for(AvatarMastar mst : avatarList) {
-			if(job.containsKey(mst.getJobName())) {
-				job.get(mst.getJobName()).add(mst.getCategoryName());
+			Map<String, Object> nameAndValue = new HashMap<String, Object>();
+			nameAndValue.put("categoryName", mst.getCategoryName());
+			nameAndValue.put("categoryCode", mst.getCategoryCode());
+			
+			//DB에서 가져온 직군이 리스트에 없으면 해당 직군명으로 map을 생성, 있으면  해당 직군의 레압을 리스트로 넣어줌. 걍 출력 값 보면 알거야..
+			if(existCheckList.contains(mst.getJobName())) {
+				int index = existCheckList.indexOf(mst.getJobName());
+				List<Object> listObj = (List<Object>) job.get(index).get("avatarList");
+				listObj.add(nameAndValue);
 			}else {
-				List<String> setList = new ArrayList<String>();
-				setList.add(mst.getCategoryName());
-				job.put(mst.getJobName(), setList);
+				existCheckList.add(mst.getJobName());
+				
+				List<Object> setList = new ArrayList<Object>();
+				setList.add(nameAndValue);
+				
+				Map<String, Object> obj = new HashMap<String, Object>();
+				obj.put("avatarList", setList);
+				obj.put("jobId", mst.getJobId());
+				obj.put("jobName", mst.getJobName());
+				
+				job.add(obj);
 			}
 		}
+		
 		return mapper.writeValueAsString(job);
 	}
 }

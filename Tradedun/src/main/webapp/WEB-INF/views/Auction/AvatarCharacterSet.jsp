@@ -24,7 +24,6 @@
       </div>	
     </section>
 
-    
 	<section class="ftco-section ftco-no-pb ftco-no-pt">
 	    <div class="container">
 	        <div class="row">
@@ -37,9 +36,9 @@
 	                                    <label for="#">직군</label>
 	                                    <div class="form-field">
 	                                        <div class="select-wrap">
+	                                        
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="" id="" class="form-control">
-	                                                <option value="">Year Model</option>
+	                                            <select name="" id="jobList" class="form-control">
 	                                            </select>
 	                                        </div>
 	                                    </div>
@@ -51,8 +50,8 @@
 	                                    <div class="form-field">
 	                                        <div class="select-wrap">
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="" id="" class="form-control">
-	                                                <option value="">$1</option>
+	                                            <select name="" id="avatarList" class="form-control">
+	                                                <option value="" selected="selected">Please select state first</option>
 	                                            </select>
 	                                        </div>
 	                                    </div>
@@ -75,5 +74,43 @@
 	</section>
 
 	<c:import  url="/footer" />
+	<script>
+		
+		$(function(){
+			//DB에서 직군+차수 리스트를 가져와 json배열로 삽입
+			var rareAvatarList = JSON.parse('${avatarList}');
+			
+			//페이지 로딩시 리스트중 가장 첫번째 직군리스트를 select에 삽입
+			rareAvatarList.forEach(function(item, index, array){
+				$('#jobList').append("<option value='" + item.jobId + "'>" + item.jobName + "</option>");
+			});
+			//페이징 로딩시 삽입된 직군에 맞는 차수 리스트를 select에 삽입
+			changeOption(rareAvatarList[0].jobId);
+			
+			//직군 select change 이벤트
+			$('#jobList').change(function(){
+				changeOption(this.value);
+			})
+			
+			//직군의 value값에 맞쳐 차수 select option을 바꿔준다.(캐스캐이딩 적용)
+			function changeOption(jobId){
+				$('#avatarList').empty();
+				//json배열 전체를 반복하여 jobId에 일치하는 객체를 찾는다.
+				rareAvatarList.forEach(function(item, index, array){
+					
+					//jobId와 일치하는 avatarList 배열을 찾는다.
+					if(item.jobId == jobId){
+						item.avatarList.forEach(function(avatar){
+							var value = avatar.categoryCode;
+							var name = avatar.categoryName;
+							$('#avatarList').append("<option value='" + value + "'>" + name + "</option>");
+						});
+						return false;
+					}
+				})
+			}
+		});
+		
+	</script>
   </body>
 </html>
