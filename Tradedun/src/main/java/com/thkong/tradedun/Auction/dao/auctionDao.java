@@ -5,6 +5,8 @@ import java.util.List;
 import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
+import com.thkong.tradedun.Auction.vo.Avatar;
+import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
@@ -24,4 +26,8 @@ public interface auctionDao {
 	public List<Category> selectAvatarCategory();
 
 	public List<CodeTB> selectAllJobList();
+
+	public List<AvatarMastar> selectRareAvatarList();
+
+	public List<Avatar> selectAvatarSet(AvatarMastar mastar);
 }

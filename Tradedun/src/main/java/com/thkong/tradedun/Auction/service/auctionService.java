@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.thkong.tradedun.Auction.vo.Auctions;
+import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
 
@@ -18,9 +19,11 @@ public interface auctionService {
 	
 	public String insertBoardWrite(String submitJson, String subject, User user) throws IOException;
 	
-	public Map<String, Object> selectCategoryAvatar(String jobId);
+	public String selectRareAvatarList() throws IOException;
 
 	public List<CodeTB> selectAllJobList();
 
 	public Map<String, Object> avatarShowroomSearch(String jobId, String showroom) throws IOException;
+
+	public Map<String, Object> avatarCharacterSetSearch(String jobId, String categoryCode) throws IOException ;
 }

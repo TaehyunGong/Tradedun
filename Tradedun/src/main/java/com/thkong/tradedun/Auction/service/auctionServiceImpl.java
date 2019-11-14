@@ -23,6 +23,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.generic.NumberTool;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +41,7 @@ import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
+import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.CodeTB;
@@ -182,6 +185,10 @@ public class auctionServiceImpl implements auctionService {
 	 * @return
 	 */
 	public Avatar getMatchAvatarEmblem(Avatar avatar) {
+		// 엠블렘이 없으면 원본을 반환시킨다.
+		if(avatar.getEmblems() == null) 
+			return avatar;
+		
 		//엠블렘 map 리스트
 		List<ItemDetail> emblems = dao.selectItemDetailList();
 		Map<String, ItemDetail> emblemMap = new HashMap<String, ItemDetail>();
@@ -443,13 +450,17 @@ public class auctionServiceImpl implements auctionService {
 				vaildate = true;
 		}
 		
+//		int sb = 0;
 //		for(Avatar avatar : list) {
 //			List<ItemDetail> detailList = dnfapi.searchItems(avatar.getItemName(), true);
 //			for(ItemDetail detail : detailList) {
-//				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
-//				break;
+//				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + .jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
+//				sb++;
 //			}
 //		}
+//		Map<String, Object> mapList = new HashMap<String, Object>();
+//		mapList.put("test", sb);
+		
 		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
 		List<Avatar> avatarList = new ArrayList<Avatar>();
 		
@@ -523,9 +534,89 @@ public class auctionServiceImpl implements auctionService {
 		return avatar;
 	}
 	
+	/**
+	 * @description DB에서 레압 리스트를 가져온다.
+	 * @return json String
+	 * @throws IOException 
+	 */
 	@Override
-	public Map<String, Object> selectCategoryAvatar(String jobId) {
-		// TODO Auto-generated method stub
-		return null;
+	public String selectRareAvatarList() throws IOException {
+		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
+		List<String> existCheckList = new ArrayList<String>();
+		
+		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경
+		List<Map<String, Object>> job = new ArrayList<Map<String, Object>>();
+		for(AvatarMastar mst : avatarList) {
+			Map<String, Object> nameAndValue = new HashMap<String, Object>();
+			nameAndValue.put("categoryName", mst.getCategoryName());
+			nameAndValue.put("categoryCode", mst.getCategoryCode());
+			
+			//DB에서 가져온 직군이 리스트에 없으면 해당 직군명으로 map을 생성, 있으면  해당 직군의 레압을 리스트로 넣어줌. 걍 출력 값 보면 알거야..
+			if(existCheckList.contains(mst.getJobName())) {
+				int index = existCheckList.indexOf(mst.getJobName());
+				List<Object> listObj = (List<Object>) job.get(index).get("avatarList");
+				listObj.add(nameAndValue);
+			}else {
+				existCheckList.add(mst.getJobName());
+				
+				List<Object> setList = new ArrayList<Object>();
+				setList.add(nameAndValue);
+				
+				Map<String, Object> obj = new HashMap<String, Object>();
+				obj.put("avatarList", setList);
+				obj.put("jobId", mst.getJobId());
+				obj.put("jobName", mst.getJobName());
+				
+				job.add(obj);
+			}
+		}
+		
+		return mapper.writeValueAsString(job);
+	}
+
+	/**
+	 * @description jobId와 레압셋 코드로 경매장에서 검색 후 리스트 가져와 뿌려줌
+	 * @param jobId
+	 * @param avatarSet
+	 * @return
+	 * @throws IOException 
+	 */
+	@Override
+	public Map<String, Object> avatarCharacterSetSearch(String jobId, String categoryCode) throws IOException {
+		AvatarMastar am = new AvatarMastar();
+		am.setJobId(jobId);
+		am.setCategoryCode(categoryCode);
+		
+		List<Avatar> list = dao.selectAvatarSet(am);
+		if(list.size() == 0)
+			throw new IOException("해당 아바타는 존재하지 않습니다.");
+		
+		int rowPriceSum = 0;
+		
+		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
+		List<Avatar> avatarList = new ArrayList<Avatar>();
+		
+		//경매장에서 가져온 엠블렘을 매핑시켜서 돌려준다.
+		for(Auctions auction : auctions) {
+			getMatchEmblem(auction);
+			
+			if(auction.getRows().size() != 0) {
+				avatarList.add(convertAuctionToAvatar(auction.getRows().get(0)));
+				
+				//각 파츠별 최저가의 합
+				rowPriceSum += auction.getRows().get(0).getCurrentPrice();
+			}
+			
+		}
+		
+		//경매장에서 조회된 아바타 파츠 마다 가져와 9파츠로 고정
+		List<Avatar> choiceAvatar = fixNinePieceAvatar(list, "null", parts);
+		
+		Map<String, Object> mapList = new HashMap<String, Object>();
+		mapList.put("auctions", auctions);
+		mapList.put("choiceAvatar", choiceAvatar);
+		mapList.put("rowPriceSum", rowPriceSum);
+		
+		return mapList;
 	}
 }
