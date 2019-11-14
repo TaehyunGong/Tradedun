@@ -569,4 +569,10 @@ public class auctionServiceImpl implements auctionService {
 		
 		return mapper.writeValueAsString(job);
 	}
+
+	@Override
+	public Map<String, Object> avatarCharacterSetSearch(String string, String string2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

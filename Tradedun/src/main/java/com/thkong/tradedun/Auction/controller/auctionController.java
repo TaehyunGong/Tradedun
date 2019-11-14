@@ -51,11 +51,32 @@ public class auctionController {
 	 * @throws IOException 
 	 */
 	@RequestMapping(value="/avatarCharacterSet")
-	public String avatarCharacterSet(Model model, HttpServletRequest req) throws IOException {
+	public String avatarCharacterSet(Model model) throws IOException {
 		String avatarList = service.selectRareAvatarList();
 		model.addAttribute("avatarList", avatarList);
 		
 		return "/Auction/AvatarCharacterSet";
+	}
+	
+	/**
+	 * @description 차수 레어 아바타를 경매장에서 긁어서 가져와 뿌려준다.
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value="/avatarCharacterSetSearch")
+	public String avatarCharacterSetSearch(Model model
+										, @RequestParam(required = true) String jobId
+										, @RequestParam(required = true) String avatarSet) throws IOException {
+
+		System.out.println(jobId + " : " + avatarSet);
+		
+		Map<String, Object> mapList = service.avatarCharacterSetSearch("", "");
+//		model.addAttribute("auctions", mapList.get("auctions"));
+//		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
+//		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
+		
+		return "/Auction/AvatarShowroomSearch";
 	}
 	
 	/**

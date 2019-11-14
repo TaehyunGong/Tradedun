@@ -29,7 +29,8 @@
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="search-wrap-1 ftco-animate mb-5">
-	                    <form action="#" class="search-property-1">
+	                
+	                    <form action="/auction/avatarCharacterSetSearch" class="search-property-1">
 	                        <div class="row">
 	                            <div class="col-lg align-items-end">
 	                                <div class="form-group">
@@ -38,7 +39,7 @@
 	                                        <div class="select-wrap">
 	                                        
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="" id="jobList" class="form-control">
+	                                            <select name="jobId" id="jobList" class="form-control">
 	                                            </select>
 	                                        </div>
 	                                    </div>
@@ -50,8 +51,7 @@
 	                                    <div class="form-field">
 	                                        <div class="select-wrap">
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="" id="avatarList" class="form-control">
-	                                                <option value="" selected="selected">Please select state first</option>
+	                                            <select name="avatarSet" id="avatarList" class="form-control">
 	                                            </select>
 	                                        </div>
 	                                    </div>
