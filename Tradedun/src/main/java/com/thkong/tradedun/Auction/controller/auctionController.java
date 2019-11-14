@@ -67,16 +67,14 @@ public class auctionController {
 	@RequestMapping(value="/avatarCharacterSetSearch")
 	public String avatarCharacterSetSearch(Model model
 										, @RequestParam(required = true) String jobId
-										, @RequestParam(required = true) String avatarSet) throws IOException {
+										, @RequestParam(required = true) String categoryCode) throws IOException {
 
-		System.out.println(jobId + " : " + avatarSet);
+		Map<String, Object> mapList = service.avatarCharacterSetSearch(jobId, categoryCode);
+		model.addAttribute("auctions", mapList.get("auctions"));
+		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
+		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
 		
-		Map<String, Object> mapList = service.avatarCharacterSetSearch("", "");
-//		model.addAttribute("auctions", mapList.get("auctions"));
-//		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
-//		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
-		
-		return "/Auction/AvatarShowroomSearch";
+		return "/Auction/AvatarSearch";
 	}
 	
 	/**
@@ -131,6 +129,6 @@ public class auctionController {
 		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
 		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
 		
-		return "/Auction/AvatarShowroomSearch";
+		return "/Auction/AvatarSearch";
 	}
 }

@@ -57,4 +57,11 @@
 		ORDER BY T3.sort, T1.categoryCode	 	 
 	</select>
 	
+	<select id="selectAvatarSet" resultType="Avatar" parameterType="AvatarMastar">
+		SELECT slotName, avatarNo AS "itemId", avatarName AS "itemName"
+		FROM AvatarMastar
+		WHERE jobId = #{jobId}
+		AND categoryCode = #{categoryCode}
+	</select>
+	
 </mapper>

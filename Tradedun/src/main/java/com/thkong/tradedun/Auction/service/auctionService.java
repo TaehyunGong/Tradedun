@@ -25,5 +25,5 @@ public interface auctionService {
 
 	public Map<String, Object> avatarShowroomSearch(String jobId, String showroom) throws IOException;
 
-	public Map<String, Object> avatarCharacterSetSearch(String string, String string2);
+	public Map<String, Object> avatarCharacterSetSearch(String jobId, String categoryCode) throws IOException ;
 }

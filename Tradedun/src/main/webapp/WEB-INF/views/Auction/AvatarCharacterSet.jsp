@@ -51,7 +51,7 @@
 	                                    <div class="form-field">
 	                                        <div class="select-wrap">
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="avatarSet" id="avatarList" class="form-control">
+	                                            <select name="categoryCode" id="avatarList" class="form-control">
 	                                            </select>
 	                                        </div>
 	                                    </div>

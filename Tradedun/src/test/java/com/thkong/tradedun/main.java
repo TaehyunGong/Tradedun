@@ -11,6 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
+import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.AvatarMastar;
 
 public class main {
@@ -24,37 +25,13 @@ public class main {
 		
 		SqlSession session = context.getBean("sqlSession", SqlSession.class);
 		
-		List<AvatarMastar> avatarList = session.selectList("selectRareAvatarList");
+		//944b9aab492c15a8474f96947ceeb9e4 : R_4_3
+
+		AvatarMastar am = new AvatarMastar();
+		am.setJobId("944b9aab492c15a8474f96947ceeb9e4");
+		am.setCategoryCode("R_4_3");
 		
-		List<String> existCheckList = new ArrayList<String>();
-		List<Map<String, Object>> job = new ArrayList<Map<String, Object>>();
-		
-		for(AvatarMastar mst : avatarList) {
-			Map<String, Object> nameAndValue = new HashMap<String, Object>();
-			nameAndValue.put("categoryCode", mst.getCategoryName());
-			nameAndValue.put("categoryName", mst.getCategoryCode());
-			
-			if(existCheckList.contains(mst.getJobName())) {
-				int index = existCheckList.indexOf(mst.getJobName());
-				List<Object> listObj = (List<Object>) job.get(index).get("avatarList");
-				listObj.add(nameAndValue);
-			}else {
-				existCheckList.add(mst.getJobName());
-				
-				List<Object> setList = new ArrayList<Object>();
-				setList.add(nameAndValue);
-				
-				Map<String, Object> obj = new HashMap<String, Object>();
-				obj.put("avatarList", setList);
-				obj.put("jobId", mst.getJobId());
-				obj.put("jobName", mst.getJobName());
-				
-				job.add(obj);
-			}
-		}
-		
-		String json = mapper.writeValueAsString(job);
-		System.out.println(json);
-		
+		List<Avatar> list = session.selectList("selectAvatarSet", am);
+		System.out.println(list);
 	}
 }

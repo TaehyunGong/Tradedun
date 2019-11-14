@@ -185,6 +185,10 @@ public class auctionServiceImpl implements auctionService {
 	 * @return
 	 */
 	public Avatar getMatchAvatarEmblem(Avatar avatar) {
+		// 엠블렘이 없으면 원본을 반환시킨다.
+		if(avatar.getEmblems() == null) 
+			return avatar;
+		
 		//엠블렘 map 리스트
 		List<ItemDetail> emblems = dao.selectItemDetailList();
 		Map<String, ItemDetail> emblemMap = new HashMap<String, ItemDetail>();
@@ -570,9 +574,49 @@ public class auctionServiceImpl implements auctionService {
 		return mapper.writeValueAsString(job);
 	}
 
+	/**
+	 * @description jobId와 레압셋 코드로 경매장에서 검색 후 리스트 가져와 뿌려줌
+	 * @param jobId
+	 * @param avatarSet
+	 * @return
+	 * @throws IOException 
+	 */
 	@Override
-	public Map<String, Object> avatarCharacterSetSearch(String string, String string2) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> avatarCharacterSetSearch(String jobId, String categoryCode) throws IOException {
+		AvatarMastar am = new AvatarMastar();
+		am.setJobId(jobId);
+		am.setCategoryCode(categoryCode);
+		
+		List<Avatar> list = dao.selectAvatarSet(am);
+		if(list.size() == 0)
+			throw new IOException("해당 아바타는 존재하지 않습니다.");
+		
+		int rowPriceSum = 0;
+		
+		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
+		List<Avatar> avatarList = new ArrayList<Avatar>();
+		
+		//경매장에서 가져온 엠블렘을 매핑시켜서 돌려준다.
+		for(Auctions auction : auctions) {
+			getMatchEmblem(auction);
+			
+			if(auction.getRows().size() != 0) {
+				avatarList.add(convertAuctionToAvatar(auction.getRows().get(0)));
+				
+				//각 파츠별 최저가의 합
+				rowPriceSum += auction.getRows().get(0).getCurrentPrice();
+			}
+			
+		}
+		
+		//경매장에서 조회된 아바타 파츠 마다 가져와 9파츠로 고정
+		List<Avatar> choiceAvatar = fixNinePieceAvatar(list, "null", parts);
+		
+		Map<String, Object> mapList = new HashMap<String, Object>();
+		mapList.put("auctions", auctions);
+		mapList.put("choiceAvatar", choiceAvatar);
+		mapList.put("rowPriceSum", rowPriceSum);
+		
+		return mapList;
 	}
 }
