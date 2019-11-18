@@ -54,7 +54,7 @@
 			 	  ON T1.categoryCode = T2.categoryCode
 			 JOIN CodeTB T3
 			 	  ON T1.jobId = T3.code
-		ORDER BY T3.sort, T1.categoryCode	 	 
+		ORDER BY T3.sort, T2.sort	 	 
 	</select>
 	
 	<select id="selectAvatarSet" resultType="Avatar" parameterType="AvatarMastar">
