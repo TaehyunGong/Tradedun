@@ -592,6 +592,7 @@ public class auctionServiceImpl implements auctionService {
 			throw new IOException("해당 아바타는 존재하지 않습니다.");
 		
 		int rowPriceSum = 0;
+		int searchCount = 0;
 		
 		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
 		List<Avatar> avatarList = new ArrayList<Avatar>();
@@ -605,6 +606,7 @@ public class auctionServiceImpl implements auctionService {
 				
 				//각 파츠별 최저가의 합
 				rowPriceSum += auction.getRows().get(0).getCurrentPrice();
+				searchCount += 1;
 			}
 			
 		}
@@ -616,6 +618,7 @@ public class auctionServiceImpl implements auctionService {
 		mapList.put("auctions", auctions);
 		mapList.put("choiceAvatar", choiceAvatar);
 		mapList.put("rowPriceSum", rowPriceSum);
+		mapList.put("searchCount", searchCount);
 		
 		return mapList;
 	}

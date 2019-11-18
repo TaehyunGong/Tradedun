@@ -73,6 +73,7 @@ public class auctionController {
 		model.addAttribute("auctions", mapList.get("auctions"));
 		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
 		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
+		model.addAttribute("searchCount", mapList.get("searchCount"));
 		
 		return "/Auction/AvatarSearch";
 	}
