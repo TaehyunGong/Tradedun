@@ -13,7 +13,6 @@ public class exceptionController {
 	
 	@RequestMapping("/error")
 	public String forward404(HttpServletResponse res) {
-		log.error("에러 남");
 		return "/Exception/except";
 	}
 }
