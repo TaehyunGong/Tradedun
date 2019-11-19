@@ -10,6 +10,7 @@ import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
+import com.thkong.tradedun.Auction.vo.JobGrow;
 
 public interface auctionDao {
 
@@ -30,4 +31,6 @@ public interface auctionDao {
 	public List<AvatarMastar> selectRareAvatarList();
 
 	public List<Avatar> selectAvatarSet(AvatarMastar mastar);
+
+	public List<JobGrow> selectJobGrowList();
 }

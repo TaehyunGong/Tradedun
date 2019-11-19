@@ -68,4 +68,25 @@
 		ORDER BY T2.sort
 	</select>
 	
+	<select id="selectJobGrowList" resultType="JobGrow">
+		SELECT T3.code AS "jobId", T3.codeName AS "jobName", T1.code AS "jobGrowId", T1.codeName AS "jobGrowName", T3.sort jobIdSort, T2.sort jobGrowIdSort
+		FROM CodeTB T1
+			JOIN CodeTB T2 -- 2차각성만 추출	
+				ON T2.codeName LIKE '2차각성%'
+				AND T2.codeKind = 'jobUp'
+				AND T2.code = T1.code
+			JOIN CodeTB T3
+				ON T1.refCode = T3.code		
+		WHERE T1.codeKind = 'jobGrowId'		
+		UNION ALL
+		-- 다크나이트와 크리에이트(로직을 만들어줄빠엔 하드코딩해버리는게 더 낫다)
+		SELECT	T1.code, T1.codeName, T2.code, T2.codeName, T1.sort, T2.sort
+		FROM CodeTB T1
+			JOIN CodeTB T2
+				ON T2.codeName LIKE '자각2%'
+				AND T2.refCode = T1.code
+		WHERE T1.code IN ('17e417b31686389eebff6d754c3401ea', 'b522a95d819a5559b775deb9a490e49a') 
+		ORDER BY jobIdSort, jobGrowIdSort	
+	</select>
+	
 </mapper>

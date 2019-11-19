@@ -93,9 +93,17 @@ public class auctionController {
 	 * @description 포워딩) 판매글 리스트 페이지로 포워딩
 	 * @param model
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping(value="/AuctionList")
-	public String auctionList(Model model) {
+	public String auctionList(Model model
+							, @RequestParam(required = false, defaultValue = "all") String jobId
+							, @RequestParam(required = false, defaultValue = "all") String jobGrowId
+							, @RequestParam(required = false, defaultValue = "all") String categoryCode
+							, @RequestParam(required = false, defaultValue = "0") int price) throws IOException {
+		Map<String, Object> mapList = service.selectAuctionList(jobId, jobGrowId, categoryCode, price);
+		model.addAttribute("jobGrowAvatarList", mapList.get("jobGrowAvatarList"));
+		
 		return "/Auction/AuctionList";
 	}
 	
@@ -119,14 +127,23 @@ public class auctionController {
 		return service.addCharBox(number);
 	}
 	
+	/**
+	 * @description 판매글 작성 INSERT 로직
+	 * @param submitJson
+	 * @param subject
+	 * @param session
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value="/insertBoardWrite", method = RequestMethod.POST, produces = "application/json; charset=utf8")
-	public @ResponseBody String insertBoardWrite(@RequestParam(required = true) String submitJson
+	public String insertBoardWrite(@RequestParam(required = true) String submitJson
 											, @RequestParam(required = true) String subject
 											, HttpSession session) throws IOException {
 		User user = (User)session.getAttribute("user");
 		String page = "404";
-		if(user != null) {
-			page = service.insertBoardWrite(submitJson, subject, user);
+		//등록된 아이템, 제목, 유저가 유효하다면 이 조건을 실행하여 포워딩 패스를 넘겨준다.
+		if(user != null && "1".equals(service.insertBoardWrite(submitJson, subject, user))) {
+			page = "/Auction/AuctionList";
 		}
 		return page;
 	}

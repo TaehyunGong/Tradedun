@@ -46,6 +46,7 @@ import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
+import com.thkong.tradedun.Auction.vo.JobGrow;
 import com.thkong.tradedun.Common.DnfApiLib;
 import com.thkong.tradedun.User.vo.User;
 
@@ -352,7 +353,7 @@ public class auctionServiceImpl implements auctionService {
 			charBoxNumber+=1;
 		}
 		
-		return salesList.toString();
+		return "1";
 	}
 	
 	/**
@@ -541,35 +542,8 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String selectRareAvatarList() throws IOException {
-		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
-		List<String> existCheckList = new ArrayList<String>();
-		
 		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경
-		List<Map<String, Object>> job = new ArrayList<Map<String, Object>>();
-		for(AvatarMastar mst : avatarList) {
-			Map<String, Object> nameAndValue = new HashMap<String, Object>();
-			nameAndValue.put("categoryName", mst.getCategoryName());
-			nameAndValue.put("categoryCode", mst.getCategoryCode());
-			
-			//DB에서 가져온 직군이 리스트에 없으면 해당 직군명으로 map을 생성, 있으면  해당 직군의 레압을 리스트로 넣어줌. 걍 출력 값 보면 알거야..
-			if(existCheckList.contains(mst.getJobName())) {
-				int index = existCheckList.indexOf(mst.getJobName());
-				List<Object> listObj = (List<Object>) job.get(index).get("avatarList");
-				listObj.add(nameAndValue);
-			}else {
-				existCheckList.add(mst.getJobName());
-				
-				List<Object> setList = new ArrayList<Object>();
-				setList.add(nameAndValue);
-				
-				Map<String, Object> obj = new HashMap<String, Object>();
-				obj.put("avatarList", setList);
-				obj.put("jobId", mst.getJobId());
-				obj.put("jobName", mst.getJobName());
-				
-				job.add(obj);
-			}
-		}
+		List<Map<String, Object>> job = selectRareAvatarMap();
 		
 		return mapper.writeValueAsString(job);
 	}
@@ -621,5 +595,95 @@ public class auctionServiceImpl implements auctionService {
 		mapList.put("searchCount", searchCount);
 		
 		return mapList;
+	}
+
+	/**
+	 * @description 필터링으로 걸러서 판매글 리스트를 가져와준다.
+	 * @param jobId
+	 * @param jobGrowId
+	 * @param categoryCode
+	 * @param price
+	 * @return
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@Override
+	public Map<String, Object> selectAuctionList(String jobId, String jobGrowId, String categoryCode, int price) throws IOException {
+
+		//직군과 각 직군의 2차각성명을 JOIN하여 가져온다.
+		List<JobGrow> jobGrow = dao.selectJobGrowList();
+		
+		Map<String, List<JobGrow>> jobGrowMapList = new HashMap<String, List<JobGrow>>();
+		for(JobGrow jg : jobGrow) {
+			JobGrow growTemp = new JobGrow();
+			growTemp.setJobGrowId(jg.getJobGrowId());
+			growTemp.setJobGrowName(jg.getJobGrowName());
+			
+			//jobGrowMapList에 해당 jobId키가 존재한다면 jobGrow를 넣어준다.
+			if(jobGrowMapList.containsKey(jg.getJobId())){
+				jobGrowMapList.get(jg.getJobId()).add(growTemp);
+			}else {
+				//해당 jobId가 없다면 리스트를 만들어준다.
+				List<JobGrow> jobList = new ArrayList<JobGrow>();
+				jobList.add(growTemp);
+				
+				jobGrowMapList.put(jg.getJobId(), jobList);
+			}
+		}
+		
+		//직군별 레어아바타 차수 리스트
+		List<Map<String, Object>> jobList = selectRareAvatarMap();
+		
+		//직군과 2차각성명을 차수리스트의 Map에 통합시킨다.
+		for(Map<String, Object> map : jobList) {
+			if(jobGrowMapList.containsKey(map.get("jobId"))) {
+				map.put("jobGrowList", jobGrowMapList.get(map.get("jobId")));
+			}
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("jobGrowAvatarList", mapper.writeValueAsString(jobList));
+		
+		return map;
+	}
+	
+	/**
+	 * @description DB에서 각 직군별 레어 아바타 리스트를 가져와 출력한다.
+	 * @return
+	 */
+	public List<Map<String, Object>> selectRareAvatarMap() {
+		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
+		List<String> existCheckList = new ArrayList<String>();
+		
+		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경
+		List<Map<String, Object>> job = new ArrayList<Map<String, Object>>();
+		
+		for(AvatarMastar mst : avatarList) {
+			Map<String, Object> nameAndValue = new HashMap<String, Object>();
+			nameAndValue.put("categoryName", mst.getCategoryName());
+			nameAndValue.put("categoryCode", mst.getCategoryCode());
+			
+			//DB에서 가져온 직군이 리스트에 없으면 해당 직군명으로 map을 생성, 있으면  해당 직군의 레압을 리스트로 넣어줌. 걍 출력 값 보면 알거야..
+			if(existCheckList.contains(mst.getJobName())) {
+				int index = existCheckList.indexOf(mst.getJobName());
+				List<Object> listObj = (List<Object>) job.get(index).get("avatarList");
+				listObj.add(nameAndValue);
+			}else {
+				existCheckList.add(mst.getJobName());
+				
+				List<Object> setList = new ArrayList<Object>();
+				setList.add(nameAndValue);
+				
+				Map<String, Object> obj = new HashMap<String, Object>();
+				obj.put("avatarList", setList);
+				obj.put("jobId", mst.getJobId());
+				obj.put("jobName", mst.getJobName());
+				
+				job.add(obj);
+			}
+		}
+		
+		return job;
 	}
 }

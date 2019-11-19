@@ -24,7 +24,95 @@
       </div>
     </section>
 
+	<section class="ftco-section ftco-no-pb ftco-no-pt">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-md-12">
+	                <div class="search-wrap-1 ftco-animate mb-5">
+	                
+	                    <form action="#" class="search-property-1">
+	                        <div class="row">
+	                            <div class="col-lg align-items-end">
+	                                <div class="form-group">
+	                                    <label for="#">직군</label>
+	                                    <div class="form-field">
+	                                        <div class="select-wrap">
+	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+	                                            <select name="" id="jobList" class="form-control">
+	                                                <option value="">귀검사(남)</option>
+	                                            </select>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="col-lg align-items-end">
+	                                <div class="form-group">
+	                                    <label for="#">직업</label>
+	                                    <div class="form-field">
+	                                        <div class="select-wrap">
+	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+	                                            <select name="" id="jobGrowList" class="form-control">
+	                                                <option value="">검신</option>
+	                                            </select>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="col-lg align-items-end">
+	                                <div class="form-group">
+	                                    <label for="#">아바타 종류</label>
+	                                    <div class="form-field">
+	                                        <div class="select-wrap">
+	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+	                                            <select name="" id="avatarList" class="form-control">
+	                                                <option value="">이벤트 아바타</option>
+	                                            </select>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="col-lg align-items-end">
+	                                <div class="form-group">
+	                                    <label for="#">가격</label>
+	                                    <div class="form-field">
+	                                        <div class="select-wrap">
+	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+	                                            <select name="" id="" class="form-control">
+	                                                <option value="">$1</option>
+	                                                <option value="">$50</option>
+	                                                <option value="">$100</option>
+	                                                <option value="">$200</option>
+	                                                <option value="">$300</option>
+	                                                <option value="">$400</option>
+	                                                <option value="">$500</option>
+	                                                <option value="">$600</option>
+	                                                <option value="">$700</option>
+	                                                <option value="">$800</option>
+	                                                <option value="">$900</option>
+	                                                <option value="">$1000</option>
+	                                            </select>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="col-lg align-self-end">
+	                                <div class="form-group">
+	                                    <div class="form-field">
+	                                        <input type="submit" value="Search" class="form-control btn btn-primary">
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </form>
+	                    
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+
     <section class="ftco-section">
+    
     	<div class="container">
     		<div class="row">
     			<div class="col-md-3">
@@ -265,6 +353,53 @@
     </section>
 
 	<c:import  url="/footer" />
-    
+    <script>
+		
+		$(function(){
+			//DB에서 직군+차수 리스트를 가져와 json배열로 삽입
+			var rareAvatarList = JSON.parse('${jobGrowAvatarList}');
+			
+			//페이지 로딩시 리스트중 가장 첫번째 직군리스트를 select에 삽입
+			rareAvatarList.forEach(function(item, index, array){
+				$('#jobList').append("<option value='" + item.jobId + "'>" + item.jobName + "</option>");
+			});
+			//페이징 로딩시 삽입된 직군에 맞는 차수 리스트를 select에 삽입
+			changeOption(rareAvatarList[0].jobId);
+			
+			//직군 select change 이벤트
+			$('#jobList').change(function(){
+				changeOption(this.value);
+			})
+			
+			//직군의 value값에 맞쳐 차수 select option을 바꿔준다.(캐스캐이딩 적용)
+			function changeOption(jobId){
+				$('#avatarList').empty();
+				$('#jobGrowList').empty();
+				
+				//json배열 전체를 반복하여 jobId에 일치하는 객체를 찾는다.
+				rareAvatarList.forEach(function(item, index, array){
+					
+					//jobId와 일치하는 avatarList 배열을 찾는다.
+					if(item.jobId == jobId){
+						item.avatarList.forEach(function(avatar){
+							var value = avatar.categoryCode;
+							var name = avatar.categoryName;
+							$('#avatarList').append("<option value='" + value + "'>" + name + "</option>");
+						});
+						
+						item.jobGrowList.forEach(function(jobGrow){
+							var jobGrowId = jobGrow.jobGrowId;
+							var jobGrowName = jobGrow.jobGrowName;
+							$('#jobGrowList').append("<option value='" + jobGrowId + "'>" + jobGrowName + "</option>");
+						});
+						return false;
+					}
+				});
+				
+			}
+			
+		});
+		
+	</script>
   </body>
 </html>
