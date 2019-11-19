@@ -89,6 +89,16 @@ public class auctionController {
 		return "/Auction/AvatarShowroom";
 	}
 	
+	/**
+	 * @description 포워딩) 판매글 리스트 페이지로 포워딩
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/AuctionList")
+	public String auctionList(Model model) {
+		return "/Auction/AuctionList";
+	}
+	
 	@RequestMapping(value="/charSeachList", method = RequestMethod.GET, produces = "application/text; charset=utf8")
 	public @ResponseBody String charSeachList(@RequestParam(required = true) String server
 										  , @RequestParam(required = true) String character
