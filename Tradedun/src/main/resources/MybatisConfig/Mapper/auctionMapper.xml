@@ -54,14 +54,18 @@
 			 	  ON T1.categoryCode = T2.categoryCode
 			 JOIN CodeTB T3
 			 	  ON T1.jobId = T3.code
-		ORDER BY T3.sort, T1.categoryCode	 	 
+		ORDER BY T3.sort, T2.sort	 	 
 	</select>
 	
 	<select id="selectAvatarSet" resultType="Avatar" parameterType="AvatarMastar">
 		SELECT slotName, avatarNo AS "itemId", avatarName AS "itemName"
-		FROM AvatarMastar
+		FROM AvatarMastar T1
+			JOIN CodeTB T2
+				ON T1.slotName = T2.codeName
+				AND T2.codeKind = 'slotName'
 		WHERE jobId = #{jobId}
 		AND categoryCode = #{categoryCode}
+		ORDER BY T2.sort
 	</select>
 	
 </mapper>

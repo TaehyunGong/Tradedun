@@ -43,5 +43,10 @@
 	        <filter-name>encodingFilter</filter-name>
 	        <url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<!-- 예외 및 에러 발생시 예외처리 페이지로 포워딩 시킨다. -->
+	<error-page>
+		<location>/error</location>
+	</error-page>
 
 </web-app>

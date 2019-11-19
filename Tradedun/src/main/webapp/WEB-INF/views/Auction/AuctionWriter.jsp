@@ -108,6 +108,7 @@
 	  </div>
 
 	<c:import  url="/footer" />
+	<script src="/js/tradedun.js"></script>
 	
     <script>
     	
@@ -150,30 +151,6 @@
 			
 			$('#auctionSumPrice' + charBoxNumber).val(numberWithCommas(price));
         });
-		
-		//input type[text] 의 onlyNumber는 무조건 onlyNumber이다.
-    	$(document).on("keyup", "input:text[onlyNumber]", function() {
-            $(this).val( $(this).val().replace(/[^0-9]/gi,"") );
-        });
-    	
-    	//정규식을 사용해 숫자만 출력
-		function fn(str){
-			var res;
-			res = str.replace(/[^0-9]/g,"");
-			return res;
-		}
-
-    	//정규식을 사용해 숫자의 3자리마다 콤마 찍기
-		function numberWithCommas(x) {
-		    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
-    	
-    	//엔터 이벤트
-    	function enterkey(num) {
-            if (window.event.keyCode == 13) {
-            	search(num);
-            }
-    	}
     	
     	//캐릭터 선택창에서 뒤로가기
 		function backSearch(num){

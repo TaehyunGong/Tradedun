@@ -8,9 +8,15 @@
     <title>Autoroad - Free Bootstrap 4 Template by Colorlib</title>
     <meta charset="utf-8">
   </head>
+	<c:import  url="/header" />
+	<style>
+		.selectListAuction{
+			background: red;
+		}
+	</style>
   <body>
 
-	<c:import  url="/header" />
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
     <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -78,12 +84,13 @@
       	</div>
       	
       	<div class='pt-5'>
-			 <table class="table" >
+			 <table id="example" class='compact hover' style="width:100%">
 			 	<thead>
 			 		<tr>
 			 			<td>부위</td>
-			 			<td>이미지</td>
+			 			<td></td>
 			 			<td>아바타명</td>
+			 			<td>옵션</td>
 			 			<td>엠블렘</td>
 			 			<td>가격</td>
 			 			<td>만료일자</td>
@@ -92,37 +99,36 @@
 			 	<c:forEach var="auction" items="${auctions}">
 			 		<c:if test="${!empty auction.rows[0]}">
 			 		
-						<tbody id='' class="selectAuction auctionList">
-						  <tr class='trLine'>
-						  	<td>${auction.rows[0].itemTypeDetail}</td>
-						  	<td><img src="https://img-api.neople.co.kr/df/items/${auction.rows[0].itemId}"></td>
-						  	<td>${auction.rows[0].itemName}</td>
-						  	<td>
-						  		<c:if test="${!empty auction.rows[0].avatar}">
-							  		<c:forEach var="emblem" items="${auction.rows[0].avatar.emblems}">
-							  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
-							  		</c:forEach>
-						  		</c:if>
-						  	</td>
-						  	<td data-price='auctionSelectPiece'><fmt:formatNumber value="${auction.rows[0].currentPrice}" pattern="#,###" /></td>
-						  	<td>${auction.rows[0].expireDate}</td>
-						  </tr>
-						</tbody>
+					  <tr id='listOne' class='trLine' data-slotName="${auction.rows[0].itemTypeDetail}">
+					  	<td>${auction.rows[0].itemTypeDetail}</td>
+					  	<td><img src="https://img-api.neople.co.kr/df/items/${auction.rows[0].itemId}"></td>
+					  	<td>${auction.rows[0].itemName}</td>
+					  	<td>${auction.rows[0].avatar.ability}</td>
+					  	<td>
+					  		<c:if test="${!empty auction.rows[0].avatar}">
+						  		<c:forEach var="emblem" items="${auction.rows[0].avatar.emblems}">
+						  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+						  		</c:forEach>
+					  		</c:if>
+					  	</td>
+					  	<td data-price='auctionSelectPiece'><fmt:formatNumber value="${auction.rows[0].currentPrice}" pattern="#,###" /></td>
+					  	<td>${auction.rows[0].expireDate}</td>
+					  </tr>
 					</c:if>
 				
-					<tbody class="hide" style='display:none;'>
 					<c:forEach var="item" items="${auction.rows}" varStatus="itemNum">
-						<c:choose>
-							<c:when test="${itemNum.count == 1}">
-								<tr class='auctionList selectListAuction'>
-							</c:when>
-							<c:otherwise>
-								<tr class='auctionList'>
-							</c:otherwise>
-						</c:choose>
-						  	<td>${item.itemTypeDetail}</td>
+							<tr class='auctionList hide' style='display:none;' data-slotName="${item.itemTypeDetail}">
+							<c:choose>
+								<c:when test="${itemNum.count == 1}">
+									<td>선택됨</td>
+								</c:when>
+								<c:otherwise>
+									<td></td>
+								</c:otherwise>
+							</c:choose>
 						  	<td><img src="https://img-api.neople.co.kr/df/items/${item.itemId}"></td>
 						  	<td>${item.itemName}</td>
+						  	<td>${item.avatar.ability}</td>
 						  	<td>
 						  		<c:if test="${!empty item.avatar}">
 							  		<c:forEach var="emblem" items="${item.avatar.emblems}">
@@ -134,7 +140,7 @@
 						  	<td>${item.expireDate}</td>
 						  </tr>
 					</c:forEach>
-					</tbody>
+					
 				</c:forEach>
 			 </table>
 		 </div>
@@ -142,28 +148,66 @@
     </section>
 
 	<c:import  url="/footer" />
+	<!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script> -->
+	<!-- <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script> -->
 	<script src="/js/tradedun.js" ></script>
 	
 	<script>
 	
+		$(document).ready(function() {
+			var table = $('#example').DataTable({
+				info:		false,
+				ordering:	false,
+				searching:	false,
+		        paging:         false,
+		        scrollX:        true,
+		        scrollXInner: "1100px",
+		        //fixedColumns: true,
+		        columnDefs:[
+		        	{targets: [0], width: "60px"},
+		        	{targets: [1], width: "20px"},
+		        	{targets: [2], width: "330px"},
+		        	{targets: [3], width: "250px"},
+		        	{targets: [4], width: "140px"},
+		        	{targets: [5], width: "100px"},
+		        	{targets: [6], width: "200px"}
+		        ]
+		    });
+		    
+			//경매장 리스트 첫번째 라인은 하이라이트
+			$('.trLine').css('background', '#ffdab8').css('font-weight', 'bold');
+		} );
+		
+		//경매장 리스트 클릭시 테이블 down 
+		$(document).on('click', 'table tbody .trLine', function(){
+			var slotName = $(this).data('slotname');
+			console.log(slotName);
+			$('tr[data-slotName="'+ slotName +'"].hide').fadeToggle();
+		});
+	
 		//경매장 리스트 선택시 이펙트 및 텍스트 수정
 		$(document).on('click', 'table tbody .auctionList', function(){
-			var tbody = $(this).parents().prev('.selectAuction')[0];
+			var slotName = $(this).data('slotname');
 			
 			//옵션 부터 가격까지 수정
-			for(var i=2; i<6; i++){
+			for(var i=3; i<7; i++){
 				var prev = $(this).children('td').eq(i).html();
-				var next = $(tbody).children().children('td').eq(i).html(prev);
+				var next = $('tr[data-slotName="'+ slotName +'"].trLine').eq(0);
+				next.children('td').eq(i).html(prev);
 			}
-			$(this).siblings().removeClass('selectListAuction');
-			$(this).addClass('selectListAuction')
-			$(tbody).finish().effect( "highlight", {}, 1000 );
+			
+			//선택한 슬롯 중 '선택됨' 텍스트를 모두 제거
+			$('tr[data-slotName="'+ slotName +'"].hide').each(function(index, item){
+				$(item).eq(0).children('td').eq(0).text('')
+			});
+			$(this).children('td').eq(0).text('선택됨')
+			
+			$(this).finish().effect( "highlight", {}, 1000 );
 			
 			var test = $('*[data-price="auctionSelectPiece"]');
 			var price = 0;
 			test.each(function(i, item){
 				price += Number(fn(item.textContent));
-				console.log(Number(fn(item.textContent)))
 			});
 			
 			$('#auctionSumPrice').val(numberWithCommas(price));
