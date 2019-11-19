@@ -26,7 +26,8 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/jquery-ui.min.css">
     
-    <link href="https://cdn.remixicon.com/releases/v2.0.0/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.remixicon.com/releases/v2.0.0/remixicon.css">
+    <link rel="stylesheet" href="/css/datatables.min.css"/>
 
  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
    <div class="container">
@@ -72,4 +73,5 @@
   <script src="/js/jquery.timepicker.min.js"></script>
   <script src="/js/scrollax.min.js"></script>
   <script src="/js/jquery-ui.min.js"></script>
+  <script src="/js/datatables.min.js"></script>
 
