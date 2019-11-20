@@ -30,11 +30,21 @@
 		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobName}, #{jobGrowName}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
 	</insert>
 	
-	<select id="selectAvatarCategory" resultType="Category">
+	<select id="selectAvatarCategory" resultType="Category" parameterType="String">
+		-- 이벤압은 직업구분이 없기때문에 UNION ALL 처리해준다.
+		SELECT T1.categoryCode, T1.categoryKind, T1.categoryName, T1.sort
+		FROM Category T1
+			JOIN (SELECT DISTINCT jobId, jobName, categoryCode
+				  FROM AvatarMastar) T2
+				ON T1.categoryCode = T2.categoryCode
+		WHERE deleteDT IS NULL
+		AND categoryKind = 'rare'
+		AND T2.jobId = #{jobId}
+		UNION ALL 
 		SELECT categoryCode, categoryKind, categoryName, sort
 		FROM Category
 		WHERE deleteDT IS NULL
-		AND categoryKind IN ('event', 'rare')
+		WHERE categoryCode LIKE '%all%'
 		ORDER BY sort
 	</select>
 	

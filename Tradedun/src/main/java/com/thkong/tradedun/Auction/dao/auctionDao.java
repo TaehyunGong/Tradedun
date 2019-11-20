@@ -24,7 +24,7 @@ public interface auctionDao {
 
 	public void insertAuctionAvatarList(List<AuctionAvatarList> auctionAvatarList);
 	
-	public List<Category> selectAvatarCategory();
+	public List<Category> selectAvatarCategory(String jobId);
 
 	public List<CodeTB> selectAllJobList();
 

@@ -109,7 +109,7 @@ public class auctionServiceImpl implements auctionService {
 	@Override
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
-		List<Category> category = dao.selectAvatarCategory();	//아바타의 카테고리 리스트
+		List<Category> category = dao.selectAvatarCategory(detail.getJobId());	//아바타의 카테고리 리스트
 		DecimalFormat formatter = new DecimalFormat("#,##0.00");
 		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
@@ -153,8 +153,8 @@ public class auctionServiceImpl implements auctionService {
 		//유저가 선택한 항목에 따라 다른 템플릿을 돌린다.
 		String templateName = null;
 		switch(kind) {
-			case "clone" : templateName = "AuctionCloneAvatarListForm.vm"; break; //코디아바타
-			case "buff" : templateName = "AuctionBuffAvatarListForm.vm"; break; //버프강화 아바타
+//			case "clone" : templateName = "AuctionCloneAvatarListForm.vm"; break; //코디아바타
+//			case "buff" : templateName = "AuctionBuffAvatarListForm.vm"; break; //버프강화 아바타
 			default : templateName = "AuctionAvatarListForm.vm"; // 기본값은 착용압
 		}
 		
