@@ -9,15 +9,13 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -28,7 +26,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +64,7 @@ public class auctionServiceImpl implements auctionService {
 	private ObjectMapper mapper;
 	
 	@Autowired 
-	private ResourceLoader resourceLoader;
+	private ServletContext servletContext;
 
 	@Autowired
 	private auctionDao dao;
@@ -386,7 +383,8 @@ public class auctionServiceImpl implements auctionService {
 	 * @throws IOException 
 	 */
 	public String saveCharacterImage(String charId) throws IOException {
-		String path = resourceLoader.getResource("classpath:CharacterImages\\").getURI().getPath();
+//		String path = resourceLoader.getResource("classpath:CharacterImages\\").getURI().getPath();
+		String path = servletContext.getRealPath("/resources/upImage/CharacterImages/");
 		String uploadFileName = fileNameGenerater(charId+".png");
 		File outputFile = new File(path+uploadFileName);
 		 

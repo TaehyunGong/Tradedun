@@ -114,7 +114,7 @@
     			<c:forEach var="num" begin="1" end="9">
 	    			<div class="col-md-3">
 	    				<div class="car-wrap ftco-animate">
-	    					<div class="img d-flex align-items-end" style="background-image: url(/images/car-${num}.jpg);">
+	    					<div class="img d-flex align-items-end" style="background-image: url(/upImage/CharacterImages/1.5742111809557158E1220191120094927.png);">
 	    						<div class="price-wrap d-flex">
 	    							<span class="rate">699,520,000</span>
 	    							<p class="from-day">
