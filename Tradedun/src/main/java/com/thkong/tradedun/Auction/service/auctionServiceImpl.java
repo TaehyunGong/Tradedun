@@ -355,7 +355,7 @@ public class auctionServiceImpl implements auctionService {
 				
 				auctionAvatarList.add(AuctionAvatar);
 			}
-			auctionBoardCharBox.setImageName(saveCharacterImage(list.getCharId()));	//캐릭터 이미지 저장
+			auctionBoardCharBox.setImageName(saveCharacterImage(list.getServer(), list.getCharId()));	//캐릭터 이미지 저장
 			
 			dao.insertAuctionAvatarList(auctionAvatarList);	// 아바타 리스트 insert
 			dao.insertAuctionBoardCharBox(auctionBoardCharBox);	// charBox insert
@@ -391,17 +391,18 @@ public class auctionServiceImpl implements auctionService {
 	 * @description 캐릭터 id를 가져와 이미지로 저장한다.
 	 * @createDate 2019. 11. 1.
 	 * @param charId
+	 * @param string 
 	 * @return 
 	 * @throws IOException 
 	 */
-	public String saveCharacterImage(String charId) throws IOException {
+	public String saveCharacterImage(String server, String charId) throws IOException {
 //		String path = resourceLoader.getResource("classpath:CharacterImages\\").getURI().getPath();
 		String path = servletContext.getRealPath("/resources/upImage/CharacterImages/");
 		String uploadFileName = fileNameGenerater(charId+".png");
 		File outputFile = new File(path+uploadFileName);
 		 
-		URL url = new URL("https://img-api.neople.co.kr/df/servers/bakal/characters/"+charId);
-		BufferedImage bi = ImageIO.read(url);
+		URL url = new URL("https://img-api.neople.co.kr/df/servers/"+ server +"/characters/"+charId);
+		BufferedImage bi = ImageIO.read(url.openStream());
 	    ImageIO.write(bi, "png", outputFile);
 	    
 		return uploadFileName;
