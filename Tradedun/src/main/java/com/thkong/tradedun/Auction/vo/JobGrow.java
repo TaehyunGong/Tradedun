@@ -1,6 +1,5 @@
 package com.thkong.tradedun.Auction.vo;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data

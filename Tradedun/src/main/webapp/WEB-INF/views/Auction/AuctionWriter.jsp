@@ -282,11 +282,11 @@
 	    		
 				var jsonObj = {
 					'server'  : $('#charInfo'+num).data('server'),
-					'slotName': $('#charInfo'+num).data('slotName'),
+					'slotName': $('#charInfo'+num).data('slotname'),
 					'charId'  : $('#charInfo'+num).data('charid'),
 					'charName': $('#charInfo'+num).data('charname'),
-					'jobName': $('#charInfo'+num).data('jobname'),
-					'jobGrowName': $('#charInfo'+num).data('jobgrowname'),
+					'jobId': $('#charInfo'+num).data('jobid'),
+					'jobGrowId': $('#jobGrow'+num).val(),
 					'avatar'  : jsonArray,
 					'resultPrice' : $('#resultPrice'+num).val(),
 					'category' : $('#category'+num).val(),

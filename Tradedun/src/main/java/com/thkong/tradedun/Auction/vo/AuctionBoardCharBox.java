@@ -12,8 +12,8 @@ public class AuctionBoardCharBox {
 	private int boardNo;
 	private int charBox;
 	private String charId;
-	private String jobName;
-	private String jobGrowName;
+	private String jobId;
+	private String jobGrowId;
 	private String imageName;
 	private int totalPrice;
 	private char saleYN;

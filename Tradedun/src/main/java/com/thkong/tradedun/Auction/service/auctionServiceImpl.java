@@ -111,6 +111,8 @@ public class auctionServiceImpl implements auctionService {
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
 		List<Category> category = dao.selectAvatarCategory(detail.getJobId());	//아바타의 카테고리 리스트
+		List<JobGrow> jobGrowList = dao.selectJobGrowList(detail.getJobId());
+		
 		DecimalFormat formatter = new DecimalFormat("#,##0.00");
 		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
@@ -150,8 +152,9 @@ public class auctionServiceImpl implements auctionService {
 		contextValialbe.put("server", server);
 		contextValialbe.put("characterId", detail.getCharacterId());
 		contextValialbe.put("characterName", detail.getCharacterName());
-		contextValialbe.put("jobName", detail.getJobName());
+		contextValialbe.put("jobId", detail.getJobId());
 		contextValialbe.put("jobGrowName", detail.getJobGrowName());
+		contextValialbe.put("jobGrowList", jobGrowList);	// 해당 직업군 2차각성 리스트
 		
 		//유저가 선택한 항목에 따라 다른 템플릿을 돌린다.
 		String templateName = null;
@@ -331,8 +334,8 @@ public class auctionServiceImpl implements auctionService {
 														.saleYN('N')
 														.totalPrice(list.getResultPrice())
 														.charId(list.getCharId())
-														.jobName(list.getJobName())
-														.jobGrowName(list.getJobGrowName())
+														.jobId(list.getJobId())
+														.jobGrowId(list.getJobGrowId())
 														.category(list.getCategory())
 														.comment(list.getComment())
 														.createDT(sysdate).build();
@@ -705,7 +708,7 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	public Map<String, List<JobGrow>> selectJobGrowMapList(){
 		//직군과 각 직군의 2차각성명을 JOIN하여 가져온다.
-		List<JobGrow> jobGrow = dao.selectJobGrowList();
+		List<JobGrow> jobGrow = dao.selectJobGrowAllList();
 		
 		Map<String, List<JobGrow>> jobGrowMapList = new HashMap<String, List<JobGrow>>();
 		for(JobGrow jg : jobGrow) {

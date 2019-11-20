@@ -34,7 +34,9 @@ public interface auctionDao {
 
 	public List<Avatar> selectAvatarSet(AvatarMastar mastar);
 
-	public List<JobGrow> selectJobGrowList();
+	public List<JobGrow> selectJobGrowAllList();
 
 	public List<AuctionSalesBoard> selectAuctionSalesBoard(Map<String, String> pageMap);
+
+	public List<JobGrow> selectJobGrowList(String jobId);
 }

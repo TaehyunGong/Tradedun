@@ -26,8 +26,8 @@
 	</insert>
 	
 	<insert id='insertAuctionBoardCharBox' parameterType="AuctionBoardCharBox">
-		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, jobName, jobGrowName, imageName, totalPrice, saleYN, category, comment, createDT)
-		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobName}, #{jobGrowName}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
+		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, jobId, jobGrowId, imageName, totalPrice, saleYN, category, comment, createDT)
+		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobId}, #{jobGrowId}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
 	</insert>
 	
 	<select id="selectAvatarCategory" resultType="Category" parameterType="String">
@@ -78,7 +78,7 @@
 		ORDER BY T2.sort
 	</select>
 	
-	<select id="selectJobGrowList" resultType="JobGrow">
+	<select id="selectJobGrowAllList" resultType="JobGrow">
 		SELECT T3.code AS "jobId", T3.codeName AS "jobName", T1.code AS "jobGrowId", T1.codeName AS "jobGrowName", T3.sort jobIdSort, T2.sort jobGrowIdSort
 		FROM CodeTB T1
 			JOIN CodeTB T2 -- 2차각성만 추출	
@@ -97,6 +97,21 @@
 				AND T2.refCode = T1.code
 		WHERE T1.code IN ('17e417b31686389eebff6d754c3401ea', 'b522a95d819a5559b775deb9a490e49a') 
 		ORDER BY jobIdSort, jobGrowIdSort	
+	</select>
+	
+	<select id="selectJobGrowList" resultType="JobGrow" parameterType="String">
+		SELECT T1.code AS "jobGrowId", T1.codeName AS "jobGrowName", T2.sort
+		FROM CodeTB T1
+			JOIN CodeTB T2 -- 2차각성만 추출, 닼나와 크리는 별도의 조건이 필요해서 OR 처리
+				ON (
+					T2.codeName LIKE '2차각성%'
+					OR
+					T2.codeName LIKE '자각2%'
+				)
+				AND T2.code = T1.code
+		WHERE T1.codeKind = 'jobGrowId'
+		AND T1.refCode = #{jobId}
+		ORDER BY T2.sort
 	</select>
 	
 	<select id="selectAuctionSalesBoard" resultType="AuctionSalesBoard" parameterType="Map">
