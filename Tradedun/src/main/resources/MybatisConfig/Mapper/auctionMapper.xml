@@ -107,6 +107,19 @@
 			FROM AuctionBoard T1
 				JOIN AuctionBoardCharBox T2
 					ON T1.boardNo = T2.boardNo
+			WHERE 1=1
+			<if test="jobName != 'all'">
+				AND T2.jobName = #{jobName}
+			</if>
+			<if test="jobGrowName != 'all'">
+				AND T2.jobGrowName = #{jobGrowName}
+			</if>
+			<if test="categoryCode != 'all'">
+				AND T2.category = #{categoryCode}
+			</if>
+			<if test="totalPrice != '-1'">
+				AND T2.totalPrice <![CDATA[ <= ]]> #{totalPrice}
+			</if>
 			ORDER BY T1.createDT DESC, T2.charBox DESC		
 		) T1
 		WHERE ROWNUM BETWEEN #{BEGIN} AND #{END} 

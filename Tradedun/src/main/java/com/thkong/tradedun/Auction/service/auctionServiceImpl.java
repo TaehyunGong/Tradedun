@@ -625,7 +625,7 @@ public class auctionServiceImpl implements auctionService {
 	 * @throws JsonGenerationException 
 	 */
 	@Override
-	public Map<String, Object> selectAuctionList(String jobId, String jobGrowId, String categoryCode, int price) throws IOException {
+	public Map<String, Object> selectAuctionList(String jobId, String jobGrowId, String categoryCode, String price) throws IOException {
 
 		//----- 검색 select태그 value 로직 -----
 		//직군별 2차각성 리스트
@@ -641,9 +641,14 @@ public class auctionServiceImpl implements auctionService {
 			}
 		}
 		//스크롤 해주기 위한 페이징 넘버
-		Map<String, Integer> pageMap = new HashMap<String, Integer>();
-		pageMap.put("BEGIN", 1);
-		pageMap.put("END", 12);
+		Map<String, String> pageMap = new HashMap<String, String>();
+		pageMap.put("BEGIN", "1");
+		pageMap.put("END", "12");
+		
+		pageMap.put("jobName", jobId);
+		pageMap.put("jobGrowName", jobGrowId);
+		pageMap.put("categoryCode", categoryCode);
+		pageMap.put("totalPrice", price);
 		
 		//----- 검색하며 나온 판매글 리스트, 기본은 all이고 무한스크롤이기 때문에 처음에는 최대 12개까지 만 뿌려줌
 		List<AuctionSalesBoard> boardList = dao.selectAuctionSalesBoard(pageMap);

@@ -36,5 +36,5 @@ public interface auctionDao {
 
 	public List<JobGrow> selectJobGrowList();
 
-	public List<AuctionSalesBoard> selectAuctionSalesBoard(Map<String, Integer> pageMap);
+	public List<AuctionSalesBoard> selectAuctionSalesBoard(Map<String, String> pageMap);
 }
