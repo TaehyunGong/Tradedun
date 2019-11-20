@@ -44,7 +44,7 @@
 		SELECT categoryCode, categoryKind, categoryName, sort
 		FROM Category
 		WHERE deleteDT IS NULL
-		WHERE categoryCode LIKE '%all%'
+		AND categoryCode LIKE '%all%'
 		ORDER BY sort
 	</select>
 	

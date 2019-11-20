@@ -129,7 +129,9 @@ public class auctionServiceImpl implements auctionService {
 		
 		//경매장에 조회된 아바타 갯수 구하기
 		for(Auctions auctions : avatarList) {
-			if(auctions.getRows().size() != 0) {
+			//클론의 경우 스킨을 못가져온다. 별도의 null 체크
+			if(auctions == null) continue;
+			if(auctions.getRows() != null && auctions.getRows().size() != 0) {
 				availAvatar += 1;
 				minTotalSales += auctions.getRows().get(0).getCurrentPrice();
 			}
@@ -260,16 +262,22 @@ public class auctionServiceImpl implements auctionService {
 				itemId = avatar.getItemId();
 			}
 			else {
+				//클론아바타의 경우는 없는 필드를 수작성으로 생성해주어야한다.
 				itemId = avatar.getClone().getItemId();
 				avatar.setItemId(avatar.getClone().getItemId());
 				avatar.setItemName(avatar.getClone().getItemName());
 				avatar.setEmblems(null);
 				avatar.setOptionAbility(null);
 			}
-			Auctions auctions = dnfapi.auction(itemId);
 			
-			//엠블렘을 매핑시켜주기 위한 별도의 메소드 작성
-			getMatchEmblem(auctions);
+			Auctions auctions = null;
+			//빈 슬롯의 경우  null이기 때문에 넘겨준다.
+			if(itemId != null) {
+				auctions = dnfapi.auction(itemId);
+				
+				//엠블렘을 매핑시켜주기 위한 별도의 메소드 작성
+				getMatchEmblem(auctions);
+			}
 			
 			avatarList.add(auctions);
 		}
