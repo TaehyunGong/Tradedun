@@ -10,6 +10,7 @@
   <body>
     
     <c:import  url="/header" />
+    
     <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_2.jpg');" data-stellar-background-ratio="0.5">
@@ -135,21 +136,6 @@
 	    			</div>
     			</c:forEach>
     		</div>
-    		<div class="row mt-5">
-          <div class="col text-center">
-            <div class="block-27">
-              <ul>
-                <li><a href="#">&lt;</a></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&gt;</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
     	</div>
     </section>
 
@@ -157,6 +143,7 @@
     <script>
 		
 		$(function(){
+			
 			//DB에서 직군+차수 리스트를 가져와 json배열로 삽입
 			var rareAvatarList = JSON.parse('${jobGrowAvatarList}');
 			
