@@ -442,6 +442,7 @@ public class auctionServiceImpl implements auctionService {
 		int rowPriceSum = 0;
 		
 		//쇼룸 복붙 파싱 로직
+	    //ex)모자\n강인한 소울 라이트닝 캡\n		
 		boolean vaildate = false;
 		for(String token : showroom.trim().split("\\n")){
 			token = token.trim();
@@ -457,16 +458,24 @@ public class auctionServiceImpl implements auctionService {
 				vaildate = true;
 		}
 		
-//		int sb = 0;
-//		for(Avatar avatar : list) {
-//			List<ItemDetail> detailList = dnfapi.searchItems(avatar.getItemName(), true);
-//			for(ItemDetail detail : detailList) {
-//				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + .jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
-//				sb++;
-//			}
-//		}
-//		Map<String, Object> mapList = new HashMap<String, Object>();
-//		mapList.put("test", sb);
+	      //만약 파싱으로 뽑아내지 못했을경우 2번째 로직을 사용해 다시 파싱
+	      //ex)모자\t강인한 소울 라이트닝 캡\n
+	      if(list.size() == 0) {
+	         
+	         for(String token : showroom.trim().split("\\n")){
+	            token = token.trim();
+	            String[] tok = token.split("\t");
+	            
+	            if(token.length() == 0)
+	               continue;
+	            
+	            if(showRoomParts.contains(tok[0])) {
+	               Avatar avatar = new Avatar();
+	               avatar.setItemName(tok[1]);
+	               list.add(avatar);
+	            }
+	         }
+	      }
 		
 		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
 		List<Avatar> avatarList = new ArrayList<Avatar>();
@@ -617,26 +626,9 @@ public class auctionServiceImpl implements auctionService {
 	@Override
 	public Map<String, Object> selectAuctionList(String jobId, String jobGrowId, String categoryCode, int price) throws IOException {
 
-		//직군과 각 직군의 2차각성명을 JOIN하여 가져온다.
-		List<JobGrow> jobGrow = dao.selectJobGrowList();
-		
-		Map<String, List<JobGrow>> jobGrowMapList = new HashMap<String, List<JobGrow>>();
-		for(JobGrow jg : jobGrow) {
-			JobGrow growTemp = new JobGrow();
-			growTemp.setJobGrowId(jg.getJobGrowId());
-			growTemp.setJobGrowName(jg.getJobGrowName());
-			
-			//jobGrowMapList에 해당 jobId키가 존재한다면 jobGrow를 넣어준다.
-			if(jobGrowMapList.containsKey(jg.getJobId())){
-				jobGrowMapList.get(jg.getJobId()).add(growTemp);
-			}else {
-				//해당 jobId가 없다면 리스트를 만들어준다.
-				List<JobGrow> jobList = new ArrayList<JobGrow>();
-				jobList.add(growTemp);
-				
-				jobGrowMapList.put(jg.getJobId(), jobList);
-			}
-		}
+		//----- 검색 select태그 value 로직 -----
+		//직군별 2차각성 리스트
+		Map<String, List<JobGrow>> jobGrowMapList = selectJobGrowMapList();
 		
 		//직군별 레어아바타 차수 리스트
 		List<Map<String, Object>> jobList = selectRareAvatarMap();
@@ -647,6 +639,9 @@ public class auctionServiceImpl implements auctionService {
 				map.put("jobGrowList", jobGrowMapList.get(map.get("jobId")));
 			}
 		}
+		
+		//----- 검색하며 나온 판매글 리스트, 기본은 all이고 무한스크롤이기 때문에 처음에는 최대 12개까지 만 뿌려줌
+		
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("jobGrowAvatarList", mapper.writeValueAsString(jobList));
@@ -691,5 +686,34 @@ public class auctionServiceImpl implements auctionService {
 		}
 		
 		return job;
+	}
+	
+	/**
+	 * @description 각 직군마다 2차 각성 코드와 명을 가져와 Map으로 만들어서 반환
+	 * @return
+	 */
+	public Map<String, List<JobGrow>> selectJobGrowMapList(){
+		//직군과 각 직군의 2차각성명을 JOIN하여 가져온다.
+		List<JobGrow> jobGrow = dao.selectJobGrowList();
+		
+		Map<String, List<JobGrow>> jobGrowMapList = new HashMap<String, List<JobGrow>>();
+		for(JobGrow jg : jobGrow) {
+			JobGrow growTemp = new JobGrow();
+			growTemp.setJobGrowId(jg.getJobGrowId());
+			growTemp.setJobGrowName(jg.getJobGrowName());
+			
+			//jobGrowMapList에 해당 jobId키가 존재한다면 jobGrow를 넣어준다.
+			if(jobGrowMapList.containsKey(jg.getJobId())){
+				jobGrowMapList.get(jg.getJobId()).add(growTemp);
+			}else {
+				//해당 jobId가 없다면 리스트를 만들어준다.
+				List<JobGrow> jobList = new ArrayList<JobGrow>();
+				jobList.add(growTemp);
+				
+				jobGrowMapList.put(jg.getJobId(), jobList);
+			}
+		}
+		
+		return jobGrowMapList;
 	}
 }

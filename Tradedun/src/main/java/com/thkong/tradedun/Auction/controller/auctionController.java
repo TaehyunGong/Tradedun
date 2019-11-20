@@ -30,7 +30,7 @@ public class auctionController {
 	auctionService service;
 	
 	/**
-	 * @description 포워딩) 세션에 유저가 없다면 잘못된 접근이라 알리고 에러페이지로 넘김
+	 * @description 포워딩) 판매글 작성, 세션에 유저가 없다면 잘못된 접근이라 알리고 에러페이지로 넘김
 	 * @param session
 	 * @return
 	 */
@@ -78,40 +78,6 @@ public class auctionController {
 		return "/Auction/AvatarSearch";
 	}
 	
-	/**
-	 * @description 포워딩) 아바타 세트 검색 페이지로 포워딩 
-	 * @return
-	 */
-	@RequestMapping(value="/avatarShowroom")
-	public String avatarShowroom(Model model) {
-		List<CodeTB> jobList = service.selectAllJobList();
-		model.addAttribute("jobList", jobList);
-		return "/Auction/AvatarShowroom";
-	}
-	
-	/**
-	 * @description 포워딩) 판매글 리스트 페이지로 포워딩
-	 * @param model
-	 * @return
-	 * @throws IOException 
-	 */
-	@RequestMapping(value="/AuctionList")
-	public String auctionList(Model model
-							, @RequestParam(required = false, defaultValue = "all") String jobId
-							, @RequestParam(required = false, defaultValue = "all") String jobGrowId
-							, @RequestParam(required = false, defaultValue = "all") String categoryCode
-							, @RequestParam(required = false, defaultValue = "-1") int priceRange) throws IOException {
-		Map<String, Object> mapList = service.selectAuctionList(jobId, jobGrowId, categoryCode, priceRange);
-		model.addAttribute("jobGrowAvatarList", mapList.get("jobGrowAvatarList"));
-		
-		model.addAttribute("jobId", jobId);
-		model.addAttribute("jobGrowId", jobGrowId);
-		model.addAttribute("categoryCode", categoryCode);
-		model.addAttribute("priceRange", priceRange);
-		
-		return "/Auction/AuctionList";
-	}
-	
 	@RequestMapping(value="/charSeachList", method = RequestMethod.GET, produces = "application/text; charset=utf8")
 	public @ResponseBody String charSeachList(@RequestParam(required = true) String server
 										  , @RequestParam(required = true) String character
@@ -153,6 +119,25 @@ public class auctionController {
 		return page;
 	}
 	
+	/**
+	 * @description 포워딩) 아바타 세트 검색 페이지로 포워딩 
+	 * @return
+	 */
+	@RequestMapping(value="/avatarShowroom")
+	public String avatarShowroom(Model model) {
+		List<CodeTB> jobList = service.selectAllJobList();
+		model.addAttribute("jobList", jobList);
+		return "/Auction/AvatarShowroom";
+	}
+	
+	/**
+	 * @description 쇼룸 검색 결과 조회, 쇼룸 문장을 파싱하여 경매장 검색 후 JSON 반환
+	 * @param jobId
+	 * @param showroom
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value="/avatarShowroomSearch", method = RequestMethod.POST, produces = "text/plain; charset=utf8") 
 	public String avatarShowroomSearch(@RequestParam(required = true) String jobId
 									 , @RequestParam(required = true) String showroom
@@ -163,5 +148,28 @@ public class auctionController {
 		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
 		
 		return "/Auction/AvatarSearch";
+	}
+	
+	/**
+	 * @description 포워딩) 판매글 리스트 페이지로 포워딩
+	 * @param model
+	 * @return
+	 * @throws IOException 
+	 */
+	@RequestMapping(value="/AuctionList")
+	public String auctionList(Model model
+							, @RequestParam(required = false, defaultValue = "all") String jobId
+							, @RequestParam(required = false, defaultValue = "all") String jobGrowId
+							, @RequestParam(required = false, defaultValue = "all") String categoryCode
+							, @RequestParam(required = false, defaultValue = "-1") int priceRange) throws IOException {
+		Map<String, Object> mapList = service.selectAuctionList(jobId, jobGrowId, categoryCode, priceRange);
+		model.addAttribute("jobGrowAvatarList", mapList.get("jobGrowAvatarList"));
+		
+		model.addAttribute("jobId", jobId);
+		model.addAttribute("jobGrowId", jobGrowId);
+		model.addAttribute("categoryCode", categoryCode);
+		model.addAttribute("priceRange", priceRange);
+		
+		return "/Auction/AuctionList";
 	}
 }
