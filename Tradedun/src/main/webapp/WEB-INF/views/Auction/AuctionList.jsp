@@ -78,14 +78,14 @@
 	                                        <div class="select-wrap">
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
 	                                            <select name="priceRange" id="priceRange" class="form-control">
-	                                                <option value="-1">제한없음</option>
+	                                                <option value="0">제한없음</option>
 	                                                <option value="1">1000만 이하</option>
 	                                                <option value="2">2000만 이하</option>
 	                                                <option value="3">3000만 이하</option>
 	                                                <option value="5">5000만 이하</option>
 	                                                <option value="7">7000만 이하</option>
 	                                                <option value="10">1억 이하</option>
-	                                                <option value="11">1억 초과</option>
+	                                                <option value="99">1억 초과</option>
 	                                            </select>
 	                                        </div>
 	                                    </div>
