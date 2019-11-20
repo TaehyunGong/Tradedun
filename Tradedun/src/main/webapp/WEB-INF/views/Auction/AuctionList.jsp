@@ -30,7 +30,7 @@
 	            <div class="col-md-12">
 	                <div class="search-wrap-1 ftco-animate mb-5">
 	                
-	                    <form action="#" class="search-property-1">
+	                    <form action="/auction/AuctionList" class="search-property-1">
 	                        <div class="row">
 	                            <div class="col-lg align-items-end">
 	                                <div class="form-group">
@@ -38,8 +38,8 @@
 	                                    <div class="form-field">
 	                                        <div class="select-wrap">
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="" id="jobList" class="form-control">
-	                                                <option value="">귀검사(남)</option>
+	                                            <select name="jobId" id="jobList" class="form-control">
+	                                                <option value="all">전체</option>
 	                                            </select>
 	                                        </div>
 	                                    </div>
@@ -51,7 +51,7 @@
 	                                    <div class="form-field">
 	                                        <div class="select-wrap">
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="" id="jobGrowList" class="form-control">
+	                                            <select name="jobGrowId" id="jobGrowList" class="form-control">
 	                                                <option value="">검신</option>
 	                                            </select>
 	                                        </div>
@@ -64,7 +64,7 @@
 	                                    <div class="form-field">
 	                                        <div class="select-wrap">
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="" id="avatarList" class="form-control">
+	                                            <select name="categoryCode" id="avatarList" class="form-control">
 	                                                <option value="">이벤트 아바타</option>
 	                                            </select>
 	                                        </div>
@@ -77,19 +77,15 @@
 	                                    <div class="form-field">
 	                                        <div class="select-wrap">
 	                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                                            <select name="" id="" class="form-control">
-	                                                <option value="">$1</option>
-	                                                <option value="">$50</option>
-	                                                <option value="">$100</option>
-	                                                <option value="">$200</option>
-	                                                <option value="">$300</option>
-	                                                <option value="">$400</option>
-	                                                <option value="">$500</option>
-	                                                <option value="">$600</option>
-	                                                <option value="">$700</option>
-	                                                <option value="">$800</option>
-	                                                <option value="">$900</option>
-	                                                <option value="">$1000</option>
+	                                            <select name="priceRange" id="priceRange" class="form-control">
+	                                                <option value="-1">제한없음</option>
+	                                                <option value="1">1000만 이하</option>
+	                                                <option value="2">2000만 이하</option>
+	                                                <option value="3">3000만 이하</option>
+	                                                <option value="5">5000만 이하</option>
+	                                                <option value="7">7000만 이하</option>
+	                                                <option value="10">1억 이하</option>
+	                                                <option value="11">1억 초과</option>
 	                                            </select>
 	                                        </div>
 	                                    </div>
@@ -371,10 +367,19 @@
 				changeOption(this.value);
 			})
 			
+			//페이지 로드시 이전에 필터링했던 조건을 그대로 적용시켜준다.
+			$('#jobList').val('${jobId}').prop('selected', true).trigger('change');
+			$('#jobGrowList').val('${jobGrowId}').prop('selected', true);
+			$('#avatarList').val('${categoryCode}').prop('selected', true);
+			$('#priceRange').val('${priceRange}').prop('selected', true);
+			
 			//직군의 value값에 맞쳐 차수 select option을 바꿔준다.(캐스캐이딩 적용)
 			function changeOption(jobId){
-				$('#avatarList').empty();
 				$('#jobGrowList').empty();
+				$('#avatarList').empty();
+				
+				$('#jobGrowList').append("<option value='all'>전체</option>");
+				$('#avatarList').append("<option value='all'>전체</option>");
 				
 				//json배열 전체를 반복하여 jobId에 일치하는 객체를 찾는다.
 				rareAvatarList.forEach(function(item, index, array){

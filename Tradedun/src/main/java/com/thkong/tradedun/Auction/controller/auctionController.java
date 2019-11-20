@@ -100,9 +100,14 @@ public class auctionController {
 							, @RequestParam(required = false, defaultValue = "all") String jobId
 							, @RequestParam(required = false, defaultValue = "all") String jobGrowId
 							, @RequestParam(required = false, defaultValue = "all") String categoryCode
-							, @RequestParam(required = false, defaultValue = "0") int price) throws IOException {
-		Map<String, Object> mapList = service.selectAuctionList(jobId, jobGrowId, categoryCode, price);
+							, @RequestParam(required = false, defaultValue = "-1") int priceRange) throws IOException {
+		Map<String, Object> mapList = service.selectAuctionList(jobId, jobGrowId, categoryCode, priceRange);
 		model.addAttribute("jobGrowAvatarList", mapList.get("jobGrowAvatarList"));
+		
+		model.addAttribute("jobId", jobId);
+		model.addAttribute("jobGrowId", jobGrowId);
+		model.addAttribute("categoryCode", categoryCode);
+		model.addAttribute("priceRange", priceRange);
 		
 		return "/Auction/AuctionList";
 	}
