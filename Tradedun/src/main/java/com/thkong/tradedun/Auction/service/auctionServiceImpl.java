@@ -648,8 +648,8 @@ public class auctionServiceImpl implements auctionService {
 		pageMap.put("BEGIN", "1");
 		pageMap.put("END", "12");
 		
-		pageMap.put("jobName", jobId);
-		pageMap.put("jobGrowName", jobGrowId);
+		pageMap.put("jobId", jobId);
+		pageMap.put("jobGrowId", jobGrowId);
 		pageMap.put("categoryCode", categoryCode);
 		pageMap.put("totalPrice", price);
 		
