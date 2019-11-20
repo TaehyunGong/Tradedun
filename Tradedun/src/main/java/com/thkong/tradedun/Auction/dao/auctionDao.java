@@ -1,10 +1,12 @@
 package com.thkong.tradedun.Auction.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.Category;
@@ -33,4 +35,6 @@ public interface auctionDao {
 	public List<Avatar> selectAvatarSet(AvatarMastar mastar);
 
 	public List<JobGrow> selectJobGrowList();
+
+	public List<AuctionSalesBoard> selectAuctionSalesBoard(Map<String, Integer> pageMap);
 }

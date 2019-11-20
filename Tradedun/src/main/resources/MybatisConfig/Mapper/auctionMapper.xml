@@ -99,4 +99,17 @@
 		ORDER BY jobIdSort, jobGrowIdSort	
 	</select>
 	
+	<select id="selectAuctionSalesBoard" resultType="AuctionSalesBoard" parameterType="Map">
+		SELECT T1.boardNo, T1.subject, T1.jobName, T1.jobGrowName, T1.imageName, T1.totalPrice, T1.category, T1.charBox, T1.createDT
+		FROM (
+			SELECT T1.boardNo, T1.subject, T2.jobName, T2.jobGrowName, T2.imageName, T2.totalPrice, T2.category, T2.charBox, T1.createDT
+				, ROW_NUMBER() OVER() ROWNUM	
+			FROM AuctionBoard T1
+				JOIN AuctionBoardCharBox T2
+					ON T1.boardNo = T2.boardNo
+			ORDER BY T1.createDT DESC, T2.charBox DESC		
+		) T1
+		WHERE ROWNUM BETWEEN #{BEGIN} AND #{END} 
+	</select>
+	
 </mapper>

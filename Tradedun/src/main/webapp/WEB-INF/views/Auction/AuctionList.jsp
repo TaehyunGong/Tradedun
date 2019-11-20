@@ -18,7 +18,7 @@
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
           	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>About us <i class="ion-ios-arrow-forward"></i></span></p>
-            <h1 class="mb-3 bread">Choose Your Car</h1>
+            <h1 class="mb-3 bread">아바타 판매</h1>
           </div>
         </div>
       </div>
@@ -111,12 +111,12 @@
     
     	<div class="container">
     		<div class="row">
-    			<c:forEach var="num" begin="1" end="9">
+    			<c:forEach var="board" items="${boardList}">
 	    			<div class="col-md-3">
 	    				<div class="car-wrap ftco-animate">
-	    					<div class="img d-flex align-items-end" style="background-image: url(/upImage/CharacterImages/1.5742111809557158E1220191120094927.png);">
+	    					<div class="img d-flex align-items-end" style="background-image: url(/upImage/CharacterImages/${board.imageName});">
 	    						<div class="price-wrap d-flex">
-	    							<span class="rate">699,520,000</span>
+	    							<span class="rate">${board.totalPrice}</span>
 	    							<p class="from-day">
 	    								<span>-</span>
 	    								<span>/Gold</span>
@@ -124,7 +124,7 @@
 	    						</div>
 	    					</div>
 	    					<div class="text p-4 text-center">
-	    						<h2 class="mb-0"><a href="/?page=car-single">Mercedes Grand Sedan</a></h2>
+	    						<h2 class="mb-0"><a href="/?page=car-single">${board.subject }</a></h2>
 	    						<span>다크 임페리얼</span>
 	    						<p class="d-flex mb-0 d-block">
 		    						<a href="#" class="btn btn-black btn-outline-black mr-1">스크랩</a> 

@@ -12,5 +12,6 @@
 		<typeAlias alias="AvatarMastar" type="com.thkong.tradedun.Auction.vo.AvatarMastar"/>
 		<typeAlias alias="Avatar" type="com.thkong.tradedun.Auction.vo.Avatar"/>
 		<typeAlias alias="JobGrow" type="com.thkong.tradedun.Auction.vo.JobGrow"/>
+		<typeAlias alias="AuctionSalesBoard" type="com.thkong.tradedun.Auction.vo.AuctionSalesBoard"/>
 	</typeAliases>
 </configuration>

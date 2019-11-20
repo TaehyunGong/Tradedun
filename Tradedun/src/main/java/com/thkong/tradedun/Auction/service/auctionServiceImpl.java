@@ -35,6 +35,7 @@ import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
@@ -639,12 +640,17 @@ public class auctionServiceImpl implements auctionService {
 				map.put("jobGrowList", jobGrowMapList.get(map.get("jobId")));
 			}
 		}
+		//스크롤 해주기 위한 페이징 넘버
+		Map<String, Integer> pageMap = new HashMap<String, Integer>();
+		pageMap.put("BEGIN", 1);
+		pageMap.put("END", 12);
 		
 		//----- 검색하며 나온 판매글 리스트, 기본은 all이고 무한스크롤이기 때문에 처음에는 최대 12개까지 만 뿌려줌
-		
+		List<AuctionSalesBoard> boardList = dao.selectAuctionSalesBoard(pageMap);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("jobGrowAvatarList", mapper.writeValueAsString(jobList));
+		map.put("boardList", boardList);
 		
 		return map;
 	}

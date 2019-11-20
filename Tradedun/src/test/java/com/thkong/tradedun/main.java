@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.Category;
@@ -125,50 +126,14 @@ public class main {
 	}
 	
 	public void process() throws IOException {
-		//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다.
-		List<String> parts = Arrays.asList(new String[]{"모자", "머리", "얼굴", "상의", "하의", "신발", "목가슴", "허리", "스킨"});
+		//스크롤 해주기 위한 페이징 넘버
+		Map<String, Integer> pageMap = new HashMap<String, Integer>();
+		pageMap.put("BEGIN", 1);
+		pageMap.put("END", 12);
 		
-		AuctionCharacterDetail detail = dnfapi.charactersAvatar("bakal", "89c8fc267149d7827047dd9ad72e0f6e");
-		List<Category> category = session.selectList("selectAvatarCategory",detail.getJobId());	//아바타의 카테고리 리스트
-		DecimalFormat formatter = new DecimalFormat("#,##0.00");
-		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
-		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
-		
-		String kind = "clone";
-		
-		//만약 노압일경우 없는상태라면 경고창으로 반환
-		if(detail.getAvatar().size() == 0) {
-			System.out.println("노압임");
-			return;
-		}
-		
-		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
-		List<Avatar> wearAvatar = fixNinePieceAvatar(detail.getAvatar(), kind, parts);
-		
-		
-		//모자 부터 피부까지 총 8부위만 조회한다.
-		List<Auctions> avatarList = searchAuctionAvatarList(wearAvatar, kind);
-		
-		//경매장에 조회된 아바타 갯수 구하기
-		for(Auctions auctions : avatarList) {
-			
-			//클론의 경우 스킨을 못가져온다. 별도의 null 체크
-			if(auctions == null) continue;
-			if(auctions.getRows() != null && auctions.getRows().size() != 0) {
-				availAvatar += 1;
-				minTotalSales += auctions.getRows().get(0).getCurrentPrice();
-			}
-		}
-		
-		Map<String, Object> contextValialbe = new HashMap<String, Object>();
-		contextValialbe.put("numberTool", new NumberTool());
-		contextValialbe.put("categoryList", category);
-		contextValialbe.put("wearAvatar", wearAvatar);		// 착용중인 아바타
-		contextValialbe.put("avatarList", avatarList);		// 경매장으로 뽑은 아바타 리스트
-		contextValialbe.put("availAvatar", availAvatar);	// 경매장에서 조회된 아바타 갯수
-		contextValialbe.put("minTotalSales", formatter.format(minTotalSales));// 경매장에서 조회돤 최저가 아바타의 가격 합
-		
-		System.out.println(avatarList);
+		//----- 검색하며 나온 판매글 리스트, 기본은 all이고 무한스크롤이기 때문에 처음에는 최대 12개까지 만 뿌려줌
+		List<AuctionSalesBoard> boardList = session.selectList("selectAuctionSalesBoard",pageMap);
+		System.out.println(boardList);
 	}
 	
 	public static void main(String[] args) throws IOException {

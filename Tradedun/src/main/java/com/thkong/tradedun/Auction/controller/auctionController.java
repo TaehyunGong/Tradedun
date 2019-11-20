@@ -162,8 +162,10 @@ public class auctionController {
 							, @RequestParam(required = false, defaultValue = "all") String jobGrowId
 							, @RequestParam(required = false, defaultValue = "all") String categoryCode
 							, @RequestParam(required = false, defaultValue = "-1") int priceRange) throws IOException {
+		
 		Map<String, Object> mapList = service.selectAuctionList(jobId, jobGrowId, categoryCode, priceRange);
-		model.addAttribute("jobGrowAvatarList", mapList.get("jobGrowAvatarList"));
+		model.addAttribute("jobGrowAvatarList", mapList.get("jobGrowAvatarList"));	//검색 조건 select JSON 데이터
+		model.addAttribute("boardList", mapList.get("boardList"));	//조건으로 검색한 판매글 리스트
 		
 		model.addAttribute("jobId", jobId);
 		model.addAttribute("jobGrowId", jobGrowId);
