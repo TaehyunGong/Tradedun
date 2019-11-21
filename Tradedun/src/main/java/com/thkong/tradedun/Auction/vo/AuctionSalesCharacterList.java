@@ -10,8 +10,8 @@ public class AuctionSalesCharacterList {
 	private String server;
 	private String charId;
 	private String charName;
-	private String jobName;
-	private String jobGrowName;
+	private String jobId;
+	private String jobGrowId;
 	private List<Avatar> avatar;
 	private int resultPrice;
 	private String category;

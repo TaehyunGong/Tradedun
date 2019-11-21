@@ -25,3 +25,19 @@ function enterkey(num) {
     	search(num);
     }
 }
+
+//페이지 최상단 슬라이드 이벤트
+function backToTop(){
+    //e.preventDefault();
+    $('html,body').animate({
+        scrollTop: 0
+    }, 300);
+}
+
+$(window).scroll(function() {
+    if ($(document).scrollTop() > 100) {
+        $('#back-to-top').addClass('show');
+    } else {
+        $('#back-to-top').removeClass('show');
+    }
+});

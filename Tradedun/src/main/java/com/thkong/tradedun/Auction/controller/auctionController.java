@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thkong.tradedun.Auction.service.auctionService;
 import com.thkong.tradedun.Auction.vo.Auction;
+import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.CodeTB;
@@ -30,7 +31,7 @@ public class auctionController {
 	auctionService service;
 	
 	/**
-	 * @description 포워딩) 세션에 유저가 없다면 잘못된 접근이라 알리고 에러페이지로 넘김
+	 * @description 포워딩) 판매글 작성, 세션에 유저가 없다면 잘못된 접근이라 알리고 에러페이지로 넘김
 	 * @param session
 	 * @return
 	 */
@@ -79,6 +80,27 @@ public class auctionController {
 	}
 	
 	/**
+	 * @description 판매글 작성 INSERT 로직
+	 * @param submitJson
+	 * @param subject
+	 * @param session
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value="/insertBoardWrite", method = RequestMethod.POST, produces = "application/json; charset=utf8")
+	public String insertBoardWrite(@RequestParam(required = true) String submitJson
+											, @RequestParam(required = true) String subject
+											, HttpSession session) throws IOException {
+		User user = (User)session.getAttribute("user");
+		String page = "404";
+		//등록된 아이템, 제목, 유저가 유효하다면 이 조건을 실행하여 포워딩 패스를 넘겨준다.
+		if(user != null && "1".equals(service.insertBoardWrite(submitJson, subject, user))) {
+			page = "/Auction/AuctionList";
+		}
+		return page;
+	}
+	
+	/**
 	 * @description 포워딩) 아바타 세트 검색 페이지로 포워딩 
 	 * @return
 	 */
@@ -89,38 +111,14 @@ public class auctionController {
 		return "/Auction/AvatarShowroom";
 	}
 	
-	@RequestMapping(value="/charSeachList", method = RequestMethod.GET, produces = "application/text; charset=utf8")
-	public @ResponseBody String charSeachList(@RequestParam(required = true) String server
-										  , @RequestParam(required = true) String character
-										  , @RequestParam(required = true) String number) throws IOException {
-		return service.charSeachList(server, character, number);
-	}
-	
-	@RequestMapping(value="/charAvatarSeach", method = RequestMethod.GET, produces = "application/text; charset=utf8")
-	public @ResponseBody String charAvatarSeach(@RequestParam(required = true) String server
-										  , @RequestParam(required = true) String character
-										  , @RequestParam(required = true) String number
-										  , @RequestParam(required = true) String kind) throws IOException {
-		return service.charAvatarSeach(server, character, number, kind);
-	}
-	
-	@RequestMapping(value="/addCharBox", method = RequestMethod.GET, produces = "application/text; charset=utf8")
-	public @ResponseBody String addCharBox(@RequestParam(required = true) String number) throws IOException {
-		return service.addCharBox(number);
-	}
-	
-	@RequestMapping(value="/insertBoardWrite", method = RequestMethod.POST, produces = "application/json; charset=utf8")
-	public @ResponseBody String insertBoardWrite(@RequestParam(required = true) String submitJson
-											, @RequestParam(required = true) String subject
-											, HttpSession session) throws IOException {
-		User user = (User)session.getAttribute("user");
-		String page = "404";
-		if(user != null) {
-			page = service.insertBoardWrite(submitJson, subject, user);
-		}
-		return page;
-	}
-	
+	/**
+	 * @description 포워딩) 쇼룸 검색 결과 조회, 쇼룸 문장을 파싱하여 경매장 검색 후 JSON 반환
+	 * @param jobId
+	 * @param showroom
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value="/avatarShowroomSearch", method = RequestMethod.POST, produces = "text/plain; charset=utf8") 
 	public String avatarShowroomSearch(@RequestParam(required = true) String jobId
 									 , @RequestParam(required = true) String showroom
@@ -132,4 +130,41 @@ public class auctionController {
 		
 		return "/Auction/AvatarSearch";
 	}
+	
+	/**
+	 * @description 포워딩) 판매글 리스트 페이지로 포워딩
+	 * @param model
+	 * @return
+	 * @throws IOException 
+	 */
+	@RequestMapping(value="/AuctionList")
+	public String auctionList(Model model
+							, @RequestParam(required = false, defaultValue = "all") String jobId
+							, @RequestParam(required = false, defaultValue = "all") String jobGrowId
+							, @RequestParam(required = false, defaultValue = "all") String categoryCode
+							, @RequestParam(required = false, defaultValue = "0") String priceRange) throws IOException {
+		
+		Map<String, Object> mapList = service.selectAuctionList(jobId, jobGrowId, categoryCode, priceRange);
+		model.addAttribute("jobGrowAvatarList", mapList.get("jobGrowAvatarList"));	//검색 조건 select JSON 데이터
+		model.addAttribute("boardList", mapList.get("boardList"));	//조건으로 검색한 판매글 리스트
+		
+		model.addAttribute("jobId", jobId);
+		model.addAttribute("jobGrowId", jobGrowId);
+		model.addAttribute("categoryCode", categoryCode);
+		model.addAttribute("priceRange", priceRange);
+		
+		return "/Auction/AuctionList";
+	}
+	
+	/**
+	 * @description 포워딩) 판매글 상세 리스트 조회 
+	 * @return
+	 */
+	@RequestMapping(value="/auctionBoardDetail", method = RequestMethod.GET)
+	public String auctionBoardDetail(Model model
+								, @RequestParam(required = true) String boardNo
+								, @RequestParam(required = true) String charBox) {
+		return "/Auction/AuctionDetail";
+	}
+	
 }

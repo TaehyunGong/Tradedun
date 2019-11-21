@@ -25,13 +25,33 @@
     </section>
 
     
-	 <div id='applyBox' class="row block-9 justify-content-center mt-5 mb-5">
-		<div class="request-form">
-           	<a href='/auction/AuctionWriter' class="btn-success py-3 px-3">판매 글 작성</a>
-           	<a href='/auction/avatarCharacterSet' class="btn-success py-3 px-3">아바타 세트 검색</a>
-           	<a href='/auction/avatarShowroom' class="btn-success py-3 px-3">던파 쇼룸 아바타 검색</a>
-	  	</div>
-	  </div>
+	<section class="ftco-section contact-section">
+		<div class='container'>
+		     <div class="row">
+				<div class='col-lg-4  mr-3 mb-3'>
+		           	<button onclick='forward("AuctionWriter")' class="btn-success">판매 글 작성</button>
+				</div>
+				
+				<div class='col-lg-4'>
+					<button onclick='forward("AuctionList")' class="btn-success">판매 글 리스트 보기</button>
+				</div>
+				
+				<div class='col-lg-4'>
+					<button onclick='forward("avatarCharacterSet")' class="btn-success">아바타 세트 검색</button>
+				</div>
+				
+				<div class='col-lg-4'>
+					<button onclick='forward("avatarShowroom")' class="btn-success">던파 쇼룸 아바타 검색</button>
+				</div>
+			</div>
+	     </div>
+    </section>
+      
+	<script>
+		function forward(page){
+			location.href='/auction/'+page;
+		}
+	</script>
 
 	<c:import  url="/footer" />
   </body>

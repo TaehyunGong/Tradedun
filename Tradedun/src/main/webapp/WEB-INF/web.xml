@@ -46,6 +46,7 @@
 	
 	<!-- 예외 및 에러 발생시 예외처리 페이지로 포워딩 시킨다. -->
 	<error-page>
+		<error-code>404</error-code>
 		<location>/error</location>
 	</error-page>
 

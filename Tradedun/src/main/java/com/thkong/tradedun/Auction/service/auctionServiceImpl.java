@@ -9,15 +9,13 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -28,7 +26,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +35,7 @@ import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
 import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
@@ -46,6 +44,7 @@ import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
+import com.thkong.tradedun.Auction.vo.JobGrow;
 import com.thkong.tradedun.Common.DnfApiLib;
 import com.thkong.tradedun.User.vo.User;
 
@@ -66,7 +65,7 @@ public class auctionServiceImpl implements auctionService {
 	private ObjectMapper mapper;
 	
 	@Autowired 
-	private ResourceLoader resourceLoader;
+	private ServletContext servletContext;
 
 	@Autowired
 	private auctionDao dao;
@@ -111,7 +110,9 @@ public class auctionServiceImpl implements auctionService {
 	@Override
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
 		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
-		List<Category> category = dao.selectAvatarCategory();	//아바타의 카테고리 리스트
+		List<Category> category = dao.selectAvatarCategory(detail.getJobId());	//아바타의 카테고리 리스트
+		List<JobGrow> jobGrowList = dao.selectJobGrowList(detail.getJobId());
+		
 		DecimalFormat formatter = new DecimalFormat("#,##0.00");
 		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
@@ -131,7 +132,9 @@ public class auctionServiceImpl implements auctionService {
 		
 		//경매장에 조회된 아바타 갯수 구하기
 		for(Auctions auctions : avatarList) {
-			if(auctions.getRows().size() != 0) {
+			//클론의 경우 스킨을 못가져온다. 별도의 null 체크
+			if(auctions == null) continue;
+			if(auctions.getRows() != null && auctions.getRows().size() != 0) {
 				availAvatar += 1;
 				minTotalSales += auctions.getRows().get(0).getCurrentPrice();
 			}
@@ -149,14 +152,15 @@ public class auctionServiceImpl implements auctionService {
 		contextValialbe.put("server", server);
 		contextValialbe.put("characterId", detail.getCharacterId());
 		contextValialbe.put("characterName", detail.getCharacterName());
-		contextValialbe.put("jobName", detail.getJobName());
+		contextValialbe.put("jobId", detail.getJobId());
 		contextValialbe.put("jobGrowName", detail.getJobGrowName());
+		contextValialbe.put("jobGrowList", jobGrowList);	// 해당 직업군 2차각성 리스트
 		
 		//유저가 선택한 항목에 따라 다른 템플릿을 돌린다.
 		String templateName = null;
 		switch(kind) {
-			case "clone" : templateName = "AuctionCloneAvatarListForm.vm"; break; //코디아바타
-			case "buff" : templateName = "AuctionBuffAvatarListForm.vm"; break; //버프강화 아바타
+//			case "clone" : templateName = "AuctionCloneAvatarListForm.vm"; break; //코디아바타
+//			case "buff" : templateName = "AuctionBuffAvatarListForm.vm"; break; //버프강화 아바타
 			default : templateName = "AuctionAvatarListForm.vm"; // 기본값은 착용압
 		}
 		
@@ -262,16 +266,22 @@ public class auctionServiceImpl implements auctionService {
 				itemId = avatar.getItemId();
 			}
 			else {
+				//클론아바타의 경우는 없는 필드를 수작성으로 생성해주어야한다.
 				itemId = avatar.getClone().getItemId();
 				avatar.setItemId(avatar.getClone().getItemId());
 				avatar.setItemName(avatar.getClone().getItemName());
 				avatar.setEmblems(null);
 				avatar.setOptionAbility(null);
 			}
-			Auctions auctions = dnfapi.auction(itemId);
 			
-			//엠블렘을 매핑시켜주기 위한 별도의 메소드 작성
-			getMatchEmblem(auctions);
+			Auctions auctions = null;
+			//빈 슬롯의 경우  null이기 때문에 넘겨준다.
+			if(itemId != null) {
+				auctions = dnfapi.auction(itemId);
+				
+				//엠블렘을 매핑시켜주기 위한 별도의 메소드 작성
+				getMatchEmblem(auctions);
+			}
 			
 			avatarList.add(auctions);
 		}
@@ -324,8 +334,8 @@ public class auctionServiceImpl implements auctionService {
 														.saleYN('N')
 														.totalPrice(list.getResultPrice())
 														.charId(list.getCharId())
-														.jobName(list.getJobName())
-														.jobGrowName(list.getJobGrowName())
+														.jobId(list.getJobId())
+														.jobGrowId(list.getJobGrowId())
 														.category(list.getCategory())
 														.comment(list.getComment())
 														.createDT(sysdate).build();
@@ -345,14 +355,14 @@ public class auctionServiceImpl implements auctionService {
 				
 				auctionAvatarList.add(AuctionAvatar);
 			}
-			auctionBoardCharBox.setImageName(saveCharacterImage(list.getCharId()));	//캐릭터 이미지 저장
+			auctionBoardCharBox.setImageName(saveCharacterImage(list.getServer(), list.getCharId()));	//캐릭터 이미지 저장
 			
 			dao.insertAuctionAvatarList(auctionAvatarList);	// 아바타 리스트 insert
 			dao.insertAuctionBoardCharBox(auctionBoardCharBox);	// charBox insert
 			charBoxNumber+=1;
 		}
 		
-		return salesList.toString();
+		return "1";
 	}
 	
 	/**
@@ -381,16 +391,18 @@ public class auctionServiceImpl implements auctionService {
 	 * @description 캐릭터 id를 가져와 이미지로 저장한다.
 	 * @createDate 2019. 11. 1.
 	 * @param charId
+	 * @param string 
 	 * @return 
 	 * @throws IOException 
 	 */
-	public String saveCharacterImage(String charId) throws IOException {
-		String path = resourceLoader.getResource("classpath:CharacterImages\\").getURI().getPath();
+	public String saveCharacterImage(String server, String charId) throws IOException {
+//		String path = resourceLoader.getResource("classpath:CharacterImages\\").getURI().getPath();
+		String path = servletContext.getRealPath("/resources/upImage/CharacterImages/");
 		String uploadFileName = fileNameGenerater(charId+".png");
 		File outputFile = new File(path+uploadFileName);
 		 
-		URL url = new URL("https://img-api.neople.co.kr/df/servers/bakal/characters/"+charId);
-		BufferedImage bi = ImageIO.read(url);
+		URL url = new URL("https://img-api.neople.co.kr/df/servers/"+ server +"/characters/"+charId);
+		BufferedImage bi = ImageIO.read(url.openStream());
 	    ImageIO.write(bi, "png", outputFile);
 	    
 		return uploadFileName;
@@ -435,6 +447,7 @@ public class auctionServiceImpl implements auctionService {
 		int rowPriceSum = 0;
 		
 		//쇼룸 복붙 파싱 로직
+	    //ex)모자\n강인한 소울 라이트닝 캡\n		
 		boolean vaildate = false;
 		for(String token : showroom.trim().split("\\n")){
 			token = token.trim();
@@ -450,16 +463,24 @@ public class auctionServiceImpl implements auctionService {
 				vaildate = true;
 		}
 		
-//		int sb = 0;
-//		for(Avatar avatar : list) {
-//			List<ItemDetail> detailList = dnfapi.searchItems(avatar.getItemName(), true);
-//			for(ItemDetail detail : detailList) {
-//				System.out.println(detail.getItemId() + "\t" + detail.getItemName() + "\t" + .jobId + "\t" + jobId + "\t" + detail.getItemTypeDetail());
-//				sb++;
-//			}
-//		}
-//		Map<String, Object> mapList = new HashMap<String, Object>();
-//		mapList.put("test", sb);
+	      //만약 파싱으로 뽑아내지 못했을경우 2번째 로직을 사용해 다시 파싱
+	      //ex)모자\t강인한 소울 라이트닝 캡\n
+	      if(list.size() == 0) {
+	         
+	         for(String token : showroom.trim().split("\\n")){
+	            token = token.trim();
+	            String[] tok = token.split("\t");
+	            
+	            if(token.length() == 0)
+	               continue;
+	            
+	            if(showRoomParts.contains(tok[0])) {
+	               Avatar avatar = new Avatar();
+	               avatar.setItemName(tok[1]);
+	               list.add(avatar);
+	            }
+	         }
+	      }
 		
 		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
 		List<Avatar> avatarList = new ArrayList<Avatar>();
@@ -541,35 +562,8 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String selectRareAvatarList() throws IOException {
-		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
-		List<String> existCheckList = new ArrayList<String>();
-		
 		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경
-		List<Map<String, Object>> job = new ArrayList<Map<String, Object>>();
-		for(AvatarMastar mst : avatarList) {
-			Map<String, Object> nameAndValue = new HashMap<String, Object>();
-			nameAndValue.put("categoryName", mst.getCategoryName());
-			nameAndValue.put("categoryCode", mst.getCategoryCode());
-			
-			//DB에서 가져온 직군이 리스트에 없으면 해당 직군명으로 map을 생성, 있으면  해당 직군의 레압을 리스트로 넣어줌. 걍 출력 값 보면 알거야..
-			if(existCheckList.contains(mst.getJobName())) {
-				int index = existCheckList.indexOf(mst.getJobName());
-				List<Object> listObj = (List<Object>) job.get(index).get("avatarList");
-				listObj.add(nameAndValue);
-			}else {
-				existCheckList.add(mst.getJobName());
-				
-				List<Object> setList = new ArrayList<Object>();
-				setList.add(nameAndValue);
-				
-				Map<String, Object> obj = new HashMap<String, Object>();
-				obj.put("avatarList", setList);
-				obj.put("jobId", mst.getJobId());
-				obj.put("jobName", mst.getJobName());
-				
-				job.add(obj);
-			}
-		}
+		List<Map<String, Object>> job = selectRareAvatarMap();
 		
 		return mapper.writeValueAsString(job);
 	}
@@ -622,4 +616,152 @@ public class auctionServiceImpl implements auctionService {
 		
 		return mapList;
 	}
+
+	/**
+	 * @description 필터링으로 걸러서 판매글 리스트를 가져와준다.
+	 * @param jobId
+	 * @param jobGrowId
+	 * @param categoryCode
+	 * @param price
+	 * @return
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@Override
+	public Map<String, Object> selectAuctionList(String jobId, String jobGrowId, String categoryCode, String price) throws IOException {
+
+		//----- 검색 select태그 value 로직 -----
+		//직군별 2차각성 리스트
+		Map<String, List<JobGrow>> jobGrowMapList = selectJobGrowMapList();
+		
+		//직군별 레어아바타 차수 리스트
+		List<Map<String, Object>> jobList = selectRareAvatarMap();
+		
+		//직군과 2차각성명을 차수리스트의 Map에 통합시킨다.
+		for(Map<String, Object> map : jobList) {
+			if(jobGrowMapList.containsKey(map.get("jobId"))) {
+				map.put("jobGrowList", jobGrowMapList.get(map.get("jobId")));
+			}
+		}
+		//스크롤 해주기 위한 페이징 넘버
+		Map<String, String> pageMap = new HashMap<String, String>();
+		pageMap.put("PAGE", "0");
+		
+		pageMap.put("jobId", jobId);
+		pageMap.put("jobGrowId", jobGrowId);
+		pageMap.put("categoryCode", categoryCode);
+		pageMap.put("totalPrice", price);
+		
+		//----- 검색하며 나온 판매글 리스트, 기본은 all이고 무한스크롤이기 때문에 처음에는 최대 12개까지 만 뿌려줌
+		List<AuctionSalesBoard> boardList = dao.selectAuctionSalesBoard(pageMap);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("jobGrowAvatarList", mapper.writeValueAsString(jobList));
+		map.put("boardList", boardList);
+		
+		return map;
+	}
+	
+	/**
+	 * @description DB에서 각 직군별 레어 아바타 리스트를 가져와 출력한다.
+	 * @return
+	 */
+	public List<Map<String, Object>> selectRareAvatarMap() {
+		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
+		List<String> existCheckList = new ArrayList<String>();
+		
+		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경
+		List<Map<String, Object>> job = new ArrayList<Map<String, Object>>();
+		
+		for(AvatarMastar mst : avatarList) {
+			Map<String, Object> nameAndValue = new HashMap<String, Object>();
+			nameAndValue.put("categoryName", mst.getCategoryName());
+			nameAndValue.put("categoryCode", mst.getCategoryCode());
+			
+			//DB에서 가져온 직군이 리스트에 없으면 해당 직군명으로 map을 생성, 있으면  해당 직군의 레압을 리스트로 넣어줌. 걍 출력 값 보면 알거야..
+			if(existCheckList.contains(mst.getJobName())) {
+				int index = existCheckList.indexOf(mst.getJobName());
+				List<Object> listObj = (List<Object>) job.get(index).get("avatarList");
+				listObj.add(nameAndValue);
+			}else {
+				existCheckList.add(mst.getJobName());
+				
+				List<Object> setList = new ArrayList<Object>();
+				setList.add(nameAndValue);
+				
+				Map<String, Object> obj = new HashMap<String, Object>();
+				obj.put("avatarList", setList);
+				obj.put("jobId", mst.getJobId());
+				obj.put("jobName", mst.getJobName());
+				
+				job.add(obj);
+			}
+		}
+		
+		return job;
+	}
+	
+	/**
+	 * @description 각 직군마다 2차 각성 코드와 명을 가져와 Map으로 만들어서 반환
+	 * @return
+	 */
+	public Map<String, List<JobGrow>> selectJobGrowMapList(){
+		//직군과 각 직군의 2차각성명을 JOIN하여 가져온다.
+		List<JobGrow> jobGrow = dao.selectJobGrowAllList();
+		
+		Map<String, List<JobGrow>> jobGrowMapList = new HashMap<String, List<JobGrow>>();
+		for(JobGrow jg : jobGrow) {
+			JobGrow growTemp = new JobGrow();
+			growTemp.setJobGrowId(jg.getJobGrowId());
+			growTemp.setJobGrowName(jg.getJobGrowName());
+			
+			//jobGrowMapList에 해당 jobId키가 존재한다면 jobGrow를 넣어준다.
+			if(jobGrowMapList.containsKey(jg.getJobId())){
+				jobGrowMapList.get(jg.getJobId()).add(growTemp);
+			}else {
+				//해당 jobId가 없다면 리스트를 만들어준다.
+				List<JobGrow> jobList = new ArrayList<JobGrow>();
+				jobList.add(growTemp);
+				
+				jobGrowMapList.put(jg.getJobId(), jobList);
+			}
+		}
+		
+		return jobGrowMapList;
+	}
+	/**
+	 * @description 판매글 리스트) 무한 페이징 처리를 해준다.  
+	 * @return
+	 */
+	@Override
+	public String selectAuctionListPaging(String jobId, String jobGrowId, String categoryCode,
+			String priceRange, int page) {
+
+		//스크롤 해주기 위한 페이징 넘버
+		//etc) 1페이지 = 13 ~ 24 AND 2페이지 = 25 ~ 36
+		Map<String, String> pageMap = new HashMap<String, String>();
+		pageMap.put("PAGE", String.valueOf(page) );
+		
+		//필터링에 대한 조건만 가져온다.
+		pageMap.put("jobId", jobId);
+		pageMap.put("jobGrowId", jobGrowId);
+		pageMap.put("categoryCode", categoryCode);
+		pageMap.put("totalPrice", priceRange);
+		
+		//----- 검색하며 나온 판매글 리스트, 기본은 all이고 무한스크롤이기 때문에 처음에는 최대 12개까지 만 뿌려줌
+		List<AuctionSalesBoard> boardList = dao.selectAuctionSalesBoard(pageMap);
+		
+		//만약 페이지 끝이라면 null로 반환시켜버린다.
+		if(boardList.size() == 0)
+			boardList = null;
+		
+		//변수를 넣어서 랜더링을 시켜준다.
+		Map<String, Object> contextValialbe = new HashMap<String, Object>();
+		contextValialbe.put("boardList", boardList);
+		contextValialbe.put("numberTool", new NumberTool());
+		
+		return renderTemplate(contextValialbe, "AuctionListAdd.vm");
+	}
+	
 }

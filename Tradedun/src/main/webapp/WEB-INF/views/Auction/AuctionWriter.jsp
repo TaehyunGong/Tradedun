@@ -108,7 +108,6 @@
 	  </div>
 
 	<c:import  url="/footer" />
-	<script src="/js/tradedun.js"></script>
 	
     <script>
     	
@@ -239,7 +238,7 @@
    			    	$('#charBoxList').append(data);
    			    },
    			    error: function (request, status, error){
-   			    	alert(request)
+   			    	alert('잘못된 경로입니다.\n다시 시도해주세요.')
    			    }
     		});
     	}
@@ -282,11 +281,11 @@
 	    		
 				var jsonObj = {
 					'server'  : $('#charInfo'+num).data('server'),
-					'slotName': $('#charInfo'+num).data('slotName'),
+					'slotName': $('#charInfo'+num).data('slotname'),
 					'charId'  : $('#charInfo'+num).data('charid'),
 					'charName': $('#charInfo'+num).data('charname'),
-					'jobName': $('#charInfo'+num).data('jobname'),
-					'jobGrowName': $('#charInfo'+num).data('jobgrowname'),
+					'jobId': $('#charInfo'+num).data('jobid'),
+					'jobGrowId': $('#jobGrow'+num).val(),
 					'avatar'  : jsonArray,
 					'resultPrice' : $('#resultPrice'+num).val(),
 					'category' : $('#category'+num).val(),

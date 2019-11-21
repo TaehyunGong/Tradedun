@@ -26,15 +26,25 @@
 	</insert>
 	
 	<insert id='insertAuctionBoardCharBox' parameterType="AuctionBoardCharBox">
-		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, jobName, jobGrowName, imageName, totalPrice, saleYN, category, comment, createDT)
-		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobName}, #{jobGrowName}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
+		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, jobId, jobGrowId, imageName, totalPrice, saleYN, category, comment, createDT)
+		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobId}, #{jobGrowId}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
 	</insert>
 	
-	<select id="selectAvatarCategory" resultType="Category">
+	<select id="selectAvatarCategory" resultType="Category" parameterType="String">
+		-- 이벤압은 직업구분이 없기때문에 UNION ALL 처리해준다.
+		SELECT T1.categoryCode, T1.categoryKind, T1.categoryName, T1.sort
+		FROM Category T1
+			JOIN (SELECT DISTINCT jobId, jobName, categoryCode
+				  FROM AvatarMastar) T2
+				ON T1.categoryCode = T2.categoryCode
+		WHERE deleteDT IS NULL
+		AND categoryKind = 'rare'
+		AND T2.jobId = #{jobId}
+		UNION ALL 
 		SELECT categoryCode, categoryKind, categoryName, sort
 		FROM Category
 		WHERE deleteDT IS NULL
-		AND categoryKind IN ('event', 'rare')
+		AND categoryCode LIKE '%all%'
 		ORDER BY sort
 	</select>
 	
@@ -66,6 +76,70 @@
 		WHERE jobId = #{jobId}
 		AND categoryCode = #{categoryCode}
 		ORDER BY T2.sort
+	</select>
+	
+	<select id="selectJobGrowAllList" resultType="JobGrow">
+		SELECT T3.code AS "jobId", T3.codeName AS "jobName", T1.code AS "jobGrowId", T1.codeName AS "jobGrowName", T3.sort jobIdSort, T2.sort jobGrowIdSort
+		FROM CodeTB T1
+			JOIN CodeTB T2 -- 2차각성만 추출	
+				ON T2.codeName LIKE '2차각성%'
+				AND T2.codeKind = 'jobUp'
+				AND T2.code = T1.code
+			JOIN CodeTB T3
+				ON T1.refCode = T3.code		
+		WHERE T1.codeKind = 'jobGrowId'		
+		UNION ALL
+		-- 다크나이트와 크리에이트(로직을 만들어줄빠엔 하드코딩해버리는게 더 낫다)
+		SELECT	T1.code, T1.codeName, T2.code, T2.codeName, T1.sort, T2.sort
+		FROM CodeTB T1
+			JOIN CodeTB T2
+				ON T2.codeName LIKE '자각2%'
+				AND T2.refCode = T1.code
+		WHERE T1.code IN ('17e417b31686389eebff6d754c3401ea', 'b522a95d819a5559b775deb9a490e49a') 
+		ORDER BY jobIdSort, jobGrowIdSort	
+	</select>
+	
+	<select id="selectJobGrowList" resultType="JobGrow" parameterType="String">
+		SELECT T1.code AS "jobGrowId", T1.codeName AS "jobGrowName", T2.sort
+		FROM CodeTB T1
+			JOIN CodeTB T2 -- 2차각성만 추출, 닼나와 크리는 별도의 조건이 필요해서 OR 처리
+				ON (
+					T2.codeName LIKE '2차각성%'
+					OR
+					T2.codeName LIKE '자각2%'
+				)
+				AND T2.code = T1.code
+		WHERE T1.codeKind = 'jobGrowId'
+		AND T1.refCode = #{jobId}
+		ORDER BY T2.sort
+	</select>
+	
+	<select id="selectAuctionSalesBoard" resultType="AuctionSalesBoard" parameterType="Map">
+		SELECT *
+		FROM (
+			SELECT T1.boardNo, T1.subject, T2.jobId, T2.jobGrowId, T2.imageName, T2.totalPrice, T2.category, T2.charBox, T1.createDT, ROW_NUMBER() OVER() NO, COUNT(*) OVER() LINE
+			FROM AuctionBoard T1
+				JOIN AuctionBoardCharBox T2
+					ON T1.boardNo = T2.boardNo
+			WHERE 1=1
+			AND T1.deleteDT IS NULL
+			AND T2.saleYN = 'N'
+			<if test="jobId != 'all'">
+				AND T2.jobId = #{jobId}
+			</if>
+			<if test="jobGrowId != 'all'">
+				AND T2.jobGrowId = #{jobGrowId}
+			</if>
+			<if test="categoryCode != 'all'">
+				AND T2.category = #{categoryCode}
+			</if>
+			<if test="totalPrice != 0">
+				AND T2.totalPrice <![CDATA[ <= ]]> #{totalPrice} * 10000000
+			</if>
+			ORDER BY T1.createDT DESC, T2.charBox DESC
+		) A
+		WHERE NO BETWEEN LINE-11 - (12* #{PAGE})  AND LINE - (12* #{PAGE})
+		 
 	</select>
 	
 </mapper>
