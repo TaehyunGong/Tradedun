@@ -239,7 +239,7 @@
    			    	$('#charBoxList').append(data);
    			    },
    			    error: function (request, status, error){
-   			    	alert(request)
+   			    	alert('잘못된 경로입니다.\n다시 시도해주세요.')
    			    }
     		});
     	}

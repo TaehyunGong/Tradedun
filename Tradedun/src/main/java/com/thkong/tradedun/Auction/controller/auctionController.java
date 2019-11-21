@@ -78,26 +78,6 @@ public class auctionController {
 		return "/Auction/AvatarSearch";
 	}
 	
-	@RequestMapping(value="/charSeachList", method = RequestMethod.GET, produces = "application/text; charset=utf8")
-	public @ResponseBody String charSeachList(@RequestParam(required = true) String server
-										  , @RequestParam(required = true) String character
-										  , @RequestParam(required = true) String number) throws IOException {
-		return service.charSeachList(server, character, number);
-	}
-	
-	@RequestMapping(value="/charAvatarSeach", method = RequestMethod.GET, produces = "application/text; charset=utf8")
-	public @ResponseBody String charAvatarSeach(@RequestParam(required = true) String server
-										  , @RequestParam(required = true) String character
-										  , @RequestParam(required = true) String number
-										  , @RequestParam(required = true) String kind) throws IOException {
-		return service.charAvatarSeach(server, character, number, kind);
-	}
-	
-	@RequestMapping(value="/addCharBox", method = RequestMethod.GET, produces = "application/text; charset=utf8")
-	public @ResponseBody String addCharBox(@RequestParam(required = true) String number) throws IOException {
-		return service.addCharBox(number);
-	}
-	
 	/**
 	 * @description 판매글 작성 INSERT 로직
 	 * @param submitJson
@@ -131,7 +111,7 @@ public class auctionController {
 	}
 	
 	/**
-	 * @description 쇼룸 검색 결과 조회, 쇼룸 문장을 파싱하여 경매장 검색 후 JSON 반환
+	 * @description 포워딩) 쇼룸 검색 결과 조회, 쇼룸 문장을 파싱하여 경매장 검색 후 JSON 반환
 	 * @param jobId
 	 * @param showroom
 	 * @param model
@@ -174,4 +154,6 @@ public class auctionController {
 		
 		return "/Auction/AuctionList";
 	}
+	
+	
 }

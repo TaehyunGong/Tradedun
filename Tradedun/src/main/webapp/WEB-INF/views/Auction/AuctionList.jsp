@@ -138,11 +138,47 @@
     		</div>
     	</div>
     </section>
-
+    
 	<c:import  url="/footer" />
+	
     <script>
 		
+    	var page = 1;
+    	var pageValiable = true;
+    	
 		$(function(){
+			
+			//무한 페이징 처리
+	        $(window).scroll(function() {
+	        	
+	            if ($(document).height() - $(window).height() - 1 <= $(window).scrollTop()) {
+	               
+	            	if(pageValiable){
+	            		
+		        		$.ajax({
+		       			  	url: "/auction/auctionAvatarListPaging",
+		       			    data: {
+		       			    	page : page,
+		       			    	jobId : $('#jobList').val(),
+		       			    	jobGrowId : $('#jobGrowList').val(),
+		       			    	categoryCode : $('#avatarList').val(),
+		       			    	priceRange : $('#priceRange').val()
+		       			    },
+		       			    type: "GET",
+		       			 	async: false,
+		       			    cache: false,
+		       			    success: function(data){
+		       			    	//$('#charBoxList').append(data);
+		       			    	console.log(data)
+		       			    	pageValiable = false;
+		       			    },
+		       			    error: function (request, status, error){
+		       			    	alert('잘못된 경로입니다.\n다시 시도해주세요.')
+		       			    }
+		        		});
+	            	}
+	            }
+	        });			
 			
 			//DB에서 직군+차수 리스트를 가져와 json배열로 삽입
 			var rareAvatarList = JSON.parse('${jobGrowAvatarList}');

@@ -731,4 +731,34 @@ public class auctionServiceImpl implements auctionService {
 		
 		return jobGrowMapList;
 	}
+	/**
+	 * @description 판매글 리스트) 무한 페이징 처리를 해준다.  
+	 * @return
+	 */
+	@Override
+	public List<AuctionSalesBoard> selectAuctionListPaging(String jobId, String jobGrowId, String categoryCode,
+			String priceRange, int page) {
+
+		//스크롤 해주기 위한 페이징 넘버
+		//etc) 1페이지 = 13 ~ 24 AND 2페이지 = 25 ~ 36
+		Map<String, String> pageMap = new HashMap<String, String>();
+		pageMap.put("BEGIN", String.valueOf(1+(page*12)) );
+		pageMap.put("END", String.valueOf(12+(page+12)) );
+		
+		//필터링에 대한 조건만 가져온다.
+		pageMap.put("jobId", jobId);
+		pageMap.put("jobGrowId", jobGrowId);
+		pageMap.put("categoryCode", categoryCode);
+		pageMap.put("totalPrice", priceRange);
+		
+		//----- 검색하며 나온 판매글 리스트, 기본은 all이고 무한스크롤이기 때문에 처음에는 최대 12개까지 만 뿌려줌
+		List<AuctionSalesBoard> boardList = dao.selectAuctionSalesBoard(pageMap);
+		
+		//만약 페이지 끝이라면 null로 반환시켜버린다.
+		if(boardList.size() == 0)
+			boardList = null;
+		
+		return boardList;
+	}
+	
 }
