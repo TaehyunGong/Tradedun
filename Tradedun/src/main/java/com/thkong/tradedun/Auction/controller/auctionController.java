@@ -164,6 +164,7 @@ public class auctionController {
 	public String auctionBoardDetail(Model model
 								, @RequestParam(required = true) String boardNo
 								, @RequestParam(required = true) String charBox) {
+		 
 		return "/Auction/AuctionDetail";
 	}
 	
