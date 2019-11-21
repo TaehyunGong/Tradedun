@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
   <head>
@@ -117,7 +118,7 @@
 	    				<div class="car-wrap ftco-animate">
 	    					<div class="img d-flex align-items-end" style="background-image: url(/upImage/CharacterImages/${board.imageName});">
 	    						<div class="price-wrap d-flex">
-	    							<span class="rate">${board.totalPrice}</span>
+	    							<span class="rate"><fmt:formatNumber value="${board.totalPrice}" pattern="#,###" /></span>
 	    							<p class="from-day">
 	    								<span>-</span>
 	    								<span>/Gold</span>
@@ -125,11 +126,11 @@
 	    						</div>
 	    					</div>
 	    					<div class="text p-4 text-center">
-	    						<h2 class="mb-0"><a href="/?page=car-single">${board.subject }</a></h2>
+	    						<h2 class="mb-0"><a href="/auction/AuctionDetail?boardNo=${board.boardNo}&charBox=${board.charBox}">${board.subject }</a></h2>
 	    						<span>다크 임페리얼</span>
 	    						<p class="d-flex mb-0 d-block">
 		    						<a href="#" class="btn btn-black btn-outline-black mr-1">스크랩</a> 
-		    						<a href="#" class="btn btn-black btn-outline-black ml-1">상세보기</a>
+		    						<a href="/auction/AuctionDetail?boardNo=${board.boardNo}&charBox=${board.charBox}" class="btn btn-black btn-outline-black ml-1">상세보기</a>
 	    						</p>
 	    					</div>
 	    				</div>
