@@ -41,7 +41,7 @@ public class auctionRestController {
 		return service.addCharBox(number);
 	}
 	
-	@RequestMapping(value="/auctionAvatarListPaging", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+	@RequestMapping(value="/auctionAvatarListPaging", method = RequestMethod.GET, produces = "application/json; charset=utf8")
 	public List<AuctionSalesBoard> auctionAvatarListPaging(Model model
 										, @RequestParam(required = false, defaultValue = "all") String jobId
 										, @RequestParam(required = false, defaultValue = "all") String jobGrowId

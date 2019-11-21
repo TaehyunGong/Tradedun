@@ -115,14 +115,15 @@
 	</select>
 	
 	<select id="selectAuctionSalesBoard" resultType="AuctionSalesBoard" parameterType="Map">
-		SELECT T1.boardNo, T1.subject, T1.jobId, T1.jobGrowId, T1.imageName, T1.totalPrice, T1.category, T1.charBox, T1.createDT
+		SELECT *
 		FROM (
-			SELECT T1.boardNo, T1.subject, T2.jobId, T2.jobGrowId, T2.imageName, T2.totalPrice, T2.category, T2.charBox, T1.createDT
-				, ROW_NUMBER() OVER() ROWNUM	
+			SELECT T1.boardNo, T1.subject, T2.jobId, T2.jobGrowId, T2.imageName, T2.totalPrice, T2.category, T2.charBox, T1.createDT, ROW_NUMBER() OVER() NO, COUNT(*) OVER() LINE
 			FROM AuctionBoard T1
 				JOIN AuctionBoardCharBox T2
 					ON T1.boardNo = T2.boardNo
 			WHERE 1=1
+			AND T1.deleteDT IS NULL
+			AND T2.saleYN = 'N'
 			<if test="jobId != 'all'">
 				AND T2.jobId = #{jobId}
 			</if>
@@ -135,9 +136,10 @@
 			<if test="totalPrice != 0">
 				AND T2.totalPrice <![CDATA[ <= ]]> #{totalPrice} * 10000000
 			</if>
-			ORDER BY T1.createDT DESC, T2.charBox DESC		
-		) T1
-		WHERE ROWNUM BETWEEN #{BEGIN} AND #{END} 
+			ORDER BY T1.createDT DESC, T2.charBox DESC
+		) A
+		WHERE NO BETWEEN LINE-11 - (12* #{PAGE})  AND LINE - (12* #{PAGE})
+		 
 	</select>
 	
 </mapper>

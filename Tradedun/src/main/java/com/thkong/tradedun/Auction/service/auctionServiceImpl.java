@@ -648,6 +648,7 @@ public class auctionServiceImpl implements auctionService {
 		Map<String, String> pageMap = new HashMap<String, String>();
 		pageMap.put("BEGIN", "1");
 		pageMap.put("END", "12");
+		pageMap.put("PAGE", "0");
 		
 		pageMap.put("jobId", jobId);
 		pageMap.put("jobGrowId", jobGrowId);
@@ -744,6 +745,7 @@ public class auctionServiceImpl implements auctionService {
 		Map<String, String> pageMap = new HashMap<String, String>();
 		pageMap.put("BEGIN", String.valueOf(1+(page*12)) );
 		pageMap.put("END", String.valueOf(12+(page+12)) );
+		pageMap.put("PAGE", String.valueOf(page) );
 		
 		//필터링에 대한 조건만 가져온다.
 		pageMap.put("jobId", jobId);
