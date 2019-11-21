@@ -58,6 +58,9 @@
           </div>
         </div>
       </div>
+      
+      <!-- 최상단 슬라이드 -->
+      <input type="button" id="back-to-top" onclick="backToTop()" value='↑'/>
     </footer>
     
   <!-- loader -->

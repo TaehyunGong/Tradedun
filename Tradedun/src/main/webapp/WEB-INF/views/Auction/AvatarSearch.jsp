@@ -148,9 +148,6 @@
     </section>
 
 	<c:import  url="/footer" />
-	<!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script> -->
-	<!-- <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script> -->
-	<script src="/js/tradedun.js" ></script>
 	
 	<script>
 	

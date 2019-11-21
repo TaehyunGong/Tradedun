@@ -108,7 +108,6 @@
 	  </div>
 
 	<c:import  url="/footer" />
-	<script src="/js/tradedun.js"></script>
 	
     <script>
     	

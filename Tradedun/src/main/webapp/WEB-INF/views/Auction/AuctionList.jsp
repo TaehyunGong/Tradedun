@@ -153,6 +153,9 @@
 		</svg>
 	</div>
 	
+	<!-- 최상단 슬라이드 -->
+    <input type="button" id="back-to-top" onclick="backToTop()" value='↑'/>
+	
 	<script src="/js/main.js"></script>
     <script>
 		
