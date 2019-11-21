@@ -1,7 +1,6 @@
 package com.thkong.tradedun.Auction.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thkong.tradedun.Auction.service.auctionService;
-import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
 
 //ajax 및 rest 통신 전용 Controller
 @RestController
@@ -41,8 +39,8 @@ public class auctionRestController {
 		return service.addCharBox(number);
 	}
 	
-	@RequestMapping(value="/auctionAvatarListPaging", method = RequestMethod.GET, produces = "application/json; charset=utf8")
-	public List<AuctionSalesBoard> auctionAvatarListPaging(Model model
+	@RequestMapping(value="/auctionAvatarListPaging", method = RequestMethod.GET, produces = "application/text; charset=utf8")
+	public String auctionAvatarListPaging(Model model
 										, @RequestParam(required = false, defaultValue = "all") String jobId
 										, @RequestParam(required = false, defaultValue = "all") String jobGrowId
 										, @RequestParam(required = false, defaultValue = "all") String categoryCode

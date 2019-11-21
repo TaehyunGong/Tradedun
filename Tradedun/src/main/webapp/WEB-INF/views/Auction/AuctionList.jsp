@@ -111,7 +111,7 @@
     <section class="ftco-section">
     
     	<div class="container">
-    		<div class="row">
+    		<div id='listSpace' class="row">
     			<c:forEach var="board" items="${boardList}">
 	    			<div class="col-md-3">
 	    				<div class="car-wrap ftco-animate">
@@ -140,7 +140,11 @@
     </section>
     
 	<!-- loader -->
-	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+		<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/>
+		<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/>
+		</svg>
+	</div>
 	
 	<script src="/js/main.js"></script>
     <script>
@@ -154,9 +158,9 @@
 	        $(window).scroll(function() {
 	        	
 	            if ($(document).height() - $(window).height() - 1 <= $(window).scrollTop()) {
-	               
+	               //중복 실행 방지를 위해 조건 추가
 	            	if(pageValiable){
-	            		
+	            		pageValiable = false;
 		        		$.ajax({
 		       			  	url: "/auction/auctionAvatarListPaging",
 		       			    data: {
@@ -170,12 +174,19 @@
 		       			 	async: false,
 		       			    cache: false,
 		       			    success: function(data){
-		       			    	//$('#charBoxList').append(data);
-		       			    	console.log(data)
-		       			    	pageValiable = false;
+		       			    	page += 1;
+		       			    	$('#listSpace').append(data);
+		       			    	
+		       			    	//템플릿을 가져지 못했거나 더이상 board가 없다면 더이상 이 ajax를 실행하지 않도록 한다.
+		       			    	if(data.length <= 100){
+			       			    	pageValiable = false;
+		       			    	}else{
+		       			    		pageValiable = true;
+		       			    	}
 		       			    },
 		       			    error: function (request, status, error){
-		       			    	alert('잘못된 경로입니다.\n다시 시도해주세요.')
+		       			    	alert('잘못된 경로입니다.\n다시 시도해주세요.');
+		       			    	pageValiable = true;
 		       			    }
 		        		});
 	            	}

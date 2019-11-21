@@ -646,8 +646,6 @@ public class auctionServiceImpl implements auctionService {
 		}
 		//스크롤 해주기 위한 페이징 넘버
 		Map<String, String> pageMap = new HashMap<String, String>();
-		pageMap.put("BEGIN", "1");
-		pageMap.put("END", "12");
 		pageMap.put("PAGE", "0");
 		
 		pageMap.put("jobId", jobId);
@@ -737,14 +735,12 @@ public class auctionServiceImpl implements auctionService {
 	 * @return
 	 */
 	@Override
-	public List<AuctionSalesBoard> selectAuctionListPaging(String jobId, String jobGrowId, String categoryCode,
+	public String selectAuctionListPaging(String jobId, String jobGrowId, String categoryCode,
 			String priceRange, int page) {
 
 		//스크롤 해주기 위한 페이징 넘버
 		//etc) 1페이지 = 13 ~ 24 AND 2페이지 = 25 ~ 36
 		Map<String, String> pageMap = new HashMap<String, String>();
-		pageMap.put("BEGIN", String.valueOf(1+(page*12)) );
-		pageMap.put("END", String.valueOf(12+(page+12)) );
 		pageMap.put("PAGE", String.valueOf(page) );
 		
 		//필터링에 대한 조건만 가져온다.
@@ -760,7 +756,12 @@ public class auctionServiceImpl implements auctionService {
 		if(boardList.size() == 0)
 			boardList = null;
 		
-		return boardList;
+		//변수를 넣어서 랜더링을 시켜준다.
+		Map<String, Object> contextValialbe = new HashMap<String, Object>();
+		contextValialbe.put("boardList", boardList);
+		contextValialbe.put("numberTool", new NumberTool());
+		
+		return renderTemplate(contextValialbe, "AuctionListAdd.vm");
 	}
 	
 }

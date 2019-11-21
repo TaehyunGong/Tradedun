@@ -30,6 +30,6 @@ public interface auctionService {
 
 	public Map<String, Object> selectAuctionList(String jobId, String jobGrowId, String categoryCode, String price) throws IOException;
 
-	public List<AuctionSalesBoard> selectAuctionListPaging(String jobId, String jobGrowId, String categoryCode,
+	public String selectAuctionListPaging(String jobId, String jobGrowId, String categoryCode,
 			String priceRange, int page);
 }
