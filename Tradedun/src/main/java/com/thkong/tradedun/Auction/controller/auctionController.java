@@ -155,5 +155,15 @@ public class auctionController {
 		return "/Auction/AuctionList";
 	}
 	
+	/**
+	 * @description 포워딩) 판매글 상세 리스트 조회 
+	 * @return
+	 */
+	@RequestMapping(value="/auctionBoardDetail", method = RequestMethod.GET)
+	public String auctionBoardDetail(Model model
+								, @RequestParam(required = true) String boardNo
+								, @RequestParam(required = true) String charBox) {
+		return "/Auction/AuctionDetail";
+	}
 	
 }

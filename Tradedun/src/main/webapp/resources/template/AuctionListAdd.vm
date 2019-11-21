@@ -14,11 +14,11 @@
 				</div>
 			</div>
 			<div class="text p-4 text-center">
-				<h2 class="mb-0"><a href="/auction/AuctionDetail?boardNo=$board.boardNo&charBox=$board.charBox">$board.subject</a></h2>
+				<h2 class="mb-0"><a href="/auction/auctionBoardDetail?boardNo=$board.boardNo&charBox=$board.charBox">$board.subject</a></h2>
 				<span>다크 임페리얼</span>
 				<p class="d-flex mb-0 d-block">
 					<a href="" class="btn btn-black btn-outline-black mr-1">스크랩</a> 
-					<a href="/auction/AuctionDetail?boardNo=$board.boardNo&charBox=$board.charBox" class="btn btn-black btn-outline-black ml-1">상세보기</a>
+					<a href="/auction/auctionBoardDetail?boardNo=$board.boardNo&charBox=$board.charBox" class="btn btn-black btn-outline-black ml-1">상세보기</a>
 				</p>
 			</div>
 		</div>
