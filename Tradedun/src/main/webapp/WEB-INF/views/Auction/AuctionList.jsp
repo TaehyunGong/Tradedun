@@ -136,6 +136,12 @@
 	    				</div>
 	    			</div>
     			</c:forEach>
+    			
+    		</div>
+    		<div id="loadBox" style='display:none;'>
+    			<div class="text-center align-items-center animated fadeInDown">
+    				<img src="/images/loading.gif">
+    			</div>
     		</div>
     	</div>
     </section>
@@ -162,6 +168,8 @@
 	               //중복 실행 방지를 위해 조건 추가
 	            	if(pageValiable){
 	            		pageValiable = false;
+	            		$('#loadBox').show();
+	            		
 		        		$.ajax({
 		       			  	url: "/auction/auctionAvatarListPaging",
 		       			    data: {
@@ -175,12 +183,15 @@
 		       			 	async: false,
 		       			    cache: false,
 		       			    success: function(data){
+		       			    	$('#loadBox').hide();
 		       			    	page += 1;
 		       			    	$('#listSpace').append(data);
 		       			    	
 		       			    	//템플릿을 가져지 못했거나 더이상 board가 없다면 더이상 이 ajax를 실행하지 않도록 한다.
 		       			    	if(data.length <= 100){
 			       			    	pageValiable = false;
+			       			    	
+			       			    	//$('#listSpace').append('<div class="col-md-12"><div class="text-center align-items-center animated fadeInDown"><img src="/images/loading.gif"></div></div>');
 		       			    	}else{
 		       			    		pageValiable = true;
 		       			    	}
