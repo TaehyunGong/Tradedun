@@ -1,12 +1,11 @@
 package com.thkong.tradedun.Auction.vo;
 
 import java.util.Date;
+import java.util.List;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class AuctionBoardCharBox {
 
 	private int boardNo;
@@ -14,11 +13,15 @@ public class AuctionBoardCharBox {
 	private String charId;
 	private String jobId;
 	private String jobGrowId;
+	private String jobGrowName;
 	private String imageName;
 	private int totalPrice;
 	private char saleYN;
 	private String category;
+	private String categoryName;
 	private String comment;
 	private Date createDT;
 	private Date modifyDT;
+	
+	private List<AuctionAvatarList> auctionAvatarList;
 }

@@ -327,31 +327,29 @@ public class auctionServiceImpl implements auctionService {
 		
 		int charBoxNumber = 1;
 		for(AuctionSalesCharacterList list : salesList) {
-			AuctionBoardCharBox auctionBoardCharBox = AuctionBoardCharBox.builder()
-														.boardNo(boardNo)
-														.charBox(charBoxNumber)
-														.category("guitar")
-														.saleYN('N')
-														.totalPrice(list.getResultPrice())
-														.charId(list.getCharId())
-														.jobId(list.getJobId())
-														.jobGrowId(list.getJobGrowId())
-														.category(list.getCategory())
-														.comment(list.getComment())
-														.createDT(sysdate).build();
+			AuctionBoardCharBox auctionBoardCharBox = new AuctionBoardCharBox();
+								auctionBoardCharBox.setBoardNo(boardNo);
+								auctionBoardCharBox.setCharBox(charBoxNumber);
+								auctionBoardCharBox.setCategory("guitar");
+								auctionBoardCharBox.setSaleYN('N');
+								auctionBoardCharBox.setTotalPrice(list.getResultPrice());
+								auctionBoardCharBox.setCharId(list.getCharId());
+								auctionBoardCharBox.setJobId(list.getJobId());
+								auctionBoardCharBox.setJobGrowId(list.getJobGrowId());
+								auctionBoardCharBox.setCategory(list.getCategory());
+								auctionBoardCharBox.setComment(list.getComment());
 			
 			//charBox의 아바타 리스트를 list로 만들어줌
 			List<AuctionAvatarList> auctionAvatarList = new ArrayList<AuctionAvatarList>();
 			for(Avatar avatar : list.getAvatar()) {
-				AuctionAvatarList AuctionAvatar = AuctionAvatarList.builder()
-													.boardNo(boardNo)
-													.charBox(charBoxNumber)
-													.slotName(avatar.getSlotName())
-													.avatarNo(avatar.getItemId())
-													.avatarName(avatar.getItemName())
-													.optionAbility(avatar.getOptionAbility())
-													.createDT(sysdate)
-													.build();
+				AuctionAvatarList AuctionAvatar = new AuctionAvatarList();
+									AuctionAvatar.setBoardNo(boardNo);
+									AuctionAvatar.setCharBox(charBoxNumber);
+									AuctionAvatar.setSlotName(avatar.getSlotName());
+									AuctionAvatar.setAvatarNo(avatar.getItemId());
+									AuctionAvatar.setAvatarName(avatar.getItemName());
+									AuctionAvatar.setOptionAbility(avatar.getOptionAbility());
+									AuctionAvatar.setCreateDT(sysdate);
 				
 				auctionAvatarList.add(AuctionAvatar);
 			}

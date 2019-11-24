@@ -7,6 +7,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
 import com.thkong.tradedun.Common.DnfApiLib;
 
 public class main {
@@ -18,6 +19,8 @@ public class main {
 	
 	
 	public void process() throws IOException {
+		AuctionSalesBoardDetail detail = session.selectOne("selectAuctionSalesBoardDetail", "1");
+		System.out.println(detail);
 	}
 	
 	public static void main(String[] args) throws IOException {
