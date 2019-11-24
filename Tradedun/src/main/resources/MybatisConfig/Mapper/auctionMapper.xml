@@ -117,10 +117,15 @@
 	<select id="selectAuctionSalesBoard" resultType="AuctionSalesBoard" parameterType="Map">
 		SELECT *
 		FROM (
-			SELECT T1.boardNo, T1.subject, T2.jobId, T2.jobGrowId, T2.imageName, T2.totalPrice, T2.category, T2.charBox, T1.createDT, ROW_NUMBER() OVER() NO, COUNT(*) OVER() LINE
+			SELECT T1.boardNo, T1.subject, T2.comment, T2.jobId, T2.jobGrowId, T3.codeName AS "jobGrowName", T2.imageName, T2.totalPrice, T2.category, T4.categoryName,T2.charBox, T1.createDT, ROW_NUMBER() OVER() NO, COUNT(*) OVER() LINE
 			FROM AuctionBoard T1
 				JOIN AuctionBoardCharBox T2
 					ON T1.boardNo = T2.boardNo
+				LEFT OUTER JOIN CodeTB T3 -- 2차 직업 명
+					ON T2.jobId = T3.refCode
+					AND T2.jobGrowId = T3.code
+				LEFT OUTER JOIN Category T4 -- 카테고리 아바타 세트 명
+					ON T2.category = T4.categoryCode
 			WHERE 1=1
 			AND T1.deleteDT IS NULL
 			AND T2.saleYN = 'N'
