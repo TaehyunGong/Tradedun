@@ -35,6 +35,7 @@ import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
 import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
@@ -728,6 +729,7 @@ public class auctionServiceImpl implements auctionService {
 		
 		return jobGrowMapList;
 	}
+	
 	/**
 	 * @description 판매글 리스트) 무한 페이징 처리를 해준다.  
 	 * @return
@@ -760,6 +762,15 @@ public class auctionServiceImpl implements auctionService {
 		contextValialbe.put("numberTool", new NumberTool());
 		
 		return renderTemplate(contextValialbe, "AuctionListAdd.vm");
+	}
+
+	/**
+	 * @description 판매 글 상세 보드) boardNo을 받고 쿼리의 결과를 불러온다.   
+	 * @return
+	 */
+	@Override
+	public AuctionSalesBoardDetail selectAuctionSalesBoardDetail(String boardNo) {
+		return dao.selectAuctionSalesBoardDetail(boardNo);
 	}
 	
 }

@@ -7,6 +7,7 @@ import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
 import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.Category;
@@ -40,5 +41,5 @@ public interface auctionDao {
 
 	public List<JobGrow> selectJobGrowList(String jobId);
 	
-	public AuctionBoardCharBox selectAuctionSalesBoardDetail(String boardNo);
+	public AuctionSalesBoardDetail selectAuctionSalesBoardDetail(String boardNo);
 }

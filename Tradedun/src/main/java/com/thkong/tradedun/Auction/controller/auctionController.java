@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thkong.tradedun.Auction.service.auctionService;
-import com.thkong.tradedun.Auction.vo.Auction;
-import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
-import com.thkong.tradedun.Auction.vo.Auctions;
-import com.thkong.tradedun.Auction.vo.AvatarMastar;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.User.vo.User;
 
@@ -164,7 +159,11 @@ public class auctionController {
 	public String auctionBoardDetail(Model model
 								, @RequestParam(required = true) String boardNo
 								, @RequestParam(required = true) String charBox) {
-		 
+		
+		AuctionSalesBoardDetail boardDetail = service.selectAuctionSalesBoardDetail(boardNo);
+		model.addAttribute("boardDetail", boardDetail);
+		model.addAttribute("charBox", charBox);
+		
 		return "/Auction/AuctionDetail";
 	}
 	

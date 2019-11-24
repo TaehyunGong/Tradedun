@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.CodeTB;
@@ -32,4 +33,6 @@ public interface auctionService {
 
 	public String selectAuctionListPaging(String jobId, String jobGrowId, String categoryCode,
 			String priceRange, int page);
+
+	public AuctionSalesBoardDetail selectAuctionSalesBoardDetail(String boardNo);
 }
