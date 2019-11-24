@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class AuctionCharacterDetail {
+public class CharactersEquipAvatar {
 
 	private String characterId;
 	private String characterName;

@@ -3,9 +3,9 @@ package com.thkong.tradedun.Common;
 import java.io.IOException;
 import java.util.List;
 
-import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Characters;
+import com.thkong.tradedun.Auction.vo.CharactersEquipAvatar;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Auction.vo.ItemDetails;
 
@@ -68,13 +68,13 @@ public class DnfApiLib {
 	 * @return
 	 * @throws IOException
 	 */
-	public AuctionCharacterDetail charactersAvatar(String server, String characterId) throws IOException {
+	public CharactersEquipAvatar charactersAvatar(String server, String characterId) throws IOException {
 		
-		AuctionCharacterDetail detail = Unirest.get("https://api.neople.co.kr/df/servers/{server}/characters/{characterId}/equip/avatar?apikey={dnfKey}")
+		CharactersEquipAvatar detail = Unirest.get("https://api.neople.co.kr/df/servers/{server}/characters/{characterId}/equip/avatar?apikey={dnfKey}")
 												.routeParam("server", server)
 												.routeParam("characterId", characterId)
 												.routeParam("dnfKey", dnfRestKey)
-												.asObject(AuctionCharacterDetail.class)
+												.asObject(CharactersEquipAvatar.class)
 												.ifFailure(res -> exceptionMethod(res))
 												.getBody();
 		return detail;

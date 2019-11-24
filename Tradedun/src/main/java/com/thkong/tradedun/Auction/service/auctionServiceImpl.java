@@ -34,7 +34,6 @@ import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
-import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
@@ -42,6 +41,7 @@ import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
+import com.thkong.tradedun.Auction.vo.CharactersEquipAvatar;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Auction.vo.JobGrow;
@@ -109,7 +109,7 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
-		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
+		CharactersEquipAvatar detail = dnfapi.charactersAvatar(server, character);
 		List<Category> category = dao.selectAvatarCategory(detail.getJobId());	//아바타의 카테고리 리스트
 		List<JobGrow> jobGrowList = dao.selectJobGrowList(detail.getJobId());
 		
