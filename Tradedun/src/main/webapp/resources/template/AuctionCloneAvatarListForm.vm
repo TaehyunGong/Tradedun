@@ -1,5 +1,5 @@
 ###########
-## 캐릭터 코디 아바타용 템플릿
+## 캐릭터 착용 아바타용 템플릿
 ###########
 <div class="row avatarList animated fadeInDown" style='font-size: 13px;'>
 	<div class='col-md-12'>
@@ -12,8 +12,8 @@
 
 	<div class='col-md-5 pb-3'>
 		<div class="text p-4 text-center" id='charInfo${number}' data-server="${server}" 
-								data-charId="${characterId}" data-charName="${characterName}"
-								data-jobName="${jobName}" data-jobGrowName="${jobGrowName}">
+								data-charid="${characterId}" data-charname="${characterName}"
+								data-jobid="${jobId}" data-jobGrowName="${jobGrowName}">
 			<img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/servers/${server}/characters/${characterId}'/>
 			<h2 class="mb-0">${characterName}</h2>
 			<span>${jobGrowName}</span>
@@ -28,7 +28,6 @@
 		<table class="table table-condensed " >
 			#foreach($index in [0..8])
 				#set($equipAvatar = $wearAvatar.get($index))
-				
 				<tr id='charBoxAvatarList${number}$foreach.count' 
 					data-slotName='$!equipAvatar.getSlotName()' data-itemId='$!equipAvatar.getItemId()'
 					data-itemName='$!equipAvatar.getItemName()' data-optionAbility='$!equipAvatar.getOptionAbility()' 
@@ -36,9 +35,19 @@
 					
 					<td style='width:60px;'>$equipAvatar.getSlotName()</td>
 				    <td>#if($equipAvatar.getItemId())
-				    	<img class="pr-3" src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()' title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
-				    	<font class='pl-2' style='font-weight: bold;'>$!equipAvatar.getItemName()</font>
+				    	<img class="pr-3"
+				    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()' title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
 				    	#end
+				    	#foreach($emblem in $equipAvatar.getEmblems())
+				    		## 주석 : 엠블렘 ID 매핑에 성공하여 엠블렘 id를 가져왔을때
+				    		#if($emblem.getItemId())
+				    			<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+				    		## 주석 : 엠블렘 ID 매핑에 실패시 엠블렘명만 출력
+				    		#else
+				    			<font class='pl-2' style='font-weight: bold;'>$emblem.getItemName()</font>
+				    		#end
+				    	#end
+			    		<font class='pl-2' style='font-weight: bold;'>$!equipAvatar.getOptionAbility()</font>
 				    </td>
 				</tr>
 			#end
@@ -50,28 +59,52 @@
 	##################
 	
 	<div class='col-md-5 pr-3'>
-		<!-- 테스트 -->
-          	<form action="#" class="request-form">
-          		<h2>판매 설정</h2>
-    				<div class="form-group">
-    					<label for="" class="label">판매하실 금액</label>
-    					<input type="text" id='resultPrice${number}' class="form-control" placeholder="판매하실 금액" onlyNumber>
-    				</div>
-	    			<div class="d-flex">
-		              <div class="form-group ml-2">
-		                <label for="" class="label">경매장에 조회된 아바타 부위</label>
-		                <input type="text" class="form-control" id="" value="${availAvatar}부위" readonly>
-		              </div>
-		              <div class="form-group ml-2">
-		                <label for="" class="label">선택된 아바타 가격</label>
-		                <input type="text" class="form-control" id="auctionSumPrice${number}" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
-		              </div>
-              		</div>
-
-	            <div class="form-group">
-	              <input type="button" value="등록완료" class="btn btn-primary py-3 px-4">
-	            </div>
-			</form>
+		<!-- 판매 설정 -->
+      	<form action="#" class="request-form">
+      		<h3>판매 설정</h3>
+      		<div class="form-group">
+              	<label class="label">카테고리</label>
+				<div class="form-field">
+  					<div class="select-wrap">
+                      <select id="category${number}" class="form-control">
+                      	#foreach($category in $categoryList)
+	                      	<option value="$category.categoryCode">$category.categoryName</option>
+	                    #end
+                      </select>
+                    </div>
+               </div>
+            </div>
+            <div class="form-group">
+              	<label class="label">직업</label>
+				<div class="form-field">
+  					<div class="select-wrap">
+                      <select id="jobGrow${number}" class="form-control">
+                      	#foreach($jobGrow in $jobGrowList)
+	                      	<option value="$jobGrow.jobGrowId">$jobGrow.jobGrowName</option>
+	                    #end
+                      </select>
+                    </div>
+               </div>
+            </div>
+			<div class="form-group">
+				<label for="" class="label">판매하실 금액</label>
+				<input type="text" id='resultPrice${number}' class="form-control" placeholder="판매하실 금액" onlyNumber>
+			</div>
+			<div class="d-flex">
+              <div class="form-group ml-2">
+                <label for="" class="label">경매장에 조회된 아바타 부위</label>
+                <input type="text" class="form-control" id="" value="${availAvatar}부위" readonly>
+              </div>
+              <div class="form-group ml-2">
+                <label for="" class="label">선택된 아바타 가격</label>
+                <input type="text" class="form-control" id="auctionSumPrice${number}" value="$numberTool.format('#,##0', $minTotalSales)" readonly>
+              </div>
+      		</div>
+            <div class="form-group">
+              	<label for="" class="label">짧은 코멘트(최대 30자)</label>
+				<input type="text" id='comment${number}' class="form-control" placeholder="" maxlength="30">
+            </div>
+		</form>
 	</div>
 	
 	##################
