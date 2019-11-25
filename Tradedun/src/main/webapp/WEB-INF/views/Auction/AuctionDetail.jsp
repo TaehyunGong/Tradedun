@@ -79,7 +79,7 @@
 				 -->
 				 
 				<div class='col-md-7'>
-				 <table id="avatarTable" class='compact hover' style="width:100%">
+				 <table id="avatarTable" class='avatarTable compact hover' style="width:100%">
 				 	<thead>
 				 		<tr>
 				 			<td>부위</td>
@@ -93,13 +93,26 @@
 				 		
 						  <tr id='listOne' class='trLine' data-slotName="${avatar.slotName}">
 						  	<td>${avatar.slotName }</td>
-						  	<td><img src="https://img-api.neople.co.kr/df/items/${avatar.avatarNo}"></td>
-						  	<td>${avatar.avatarName}</td>
-						  	<td>${avatar.optionAbility}</td>
-						  	<td><img src="https://img-api.neople.co.kr/df/items/${avatar.platinum}">
-						  		<img src="https://img-api.neople.co.kr/df/items/${avatar.emblemOne}">
-						  		<img src="https://img-api.neople.co.kr/df/items/${avatar.emblemTwo}">
-						  	</td>
+						  	
+						  	<c:choose>
+						  		<c:when test="${!empty avatar.avatarNo }">
+								  	<td><img src="https://img-api.neople.co.kr/df/items/${avatar.avatarNo}"></td>
+								  	<td>${avatar.avatarName}</td>
+								  	<td>${avatar.optionAbility}</td>
+								  	<td><img src="https://img-api.neople.co.kr/df/items/${avatar.platinum}">
+								  		<img src="https://img-api.neople.co.kr/df/items/${avatar.emblemOne}">
+								  		<img src="https://img-api.neople.co.kr/df/items/${avatar.emblemTwo}">
+								  	</td>
+							  	</c:when>
+							  	
+							  	<c:otherwise>
+							  		<td></td>
+							  		<td></td>
+							  		<td></td>
+							  		<td></td>
+							  		<td></td>
+							  	</c:otherwise>
+						  	</c:choose>
 						  </tr>
 					
 					</c:forEach>
@@ -117,7 +130,7 @@
 	
 	<script>
 		$(document).ready(function() {
-			var table = $('#avatarTable').DataTable({
+			var table = $('table.avatarTable').DataTable({
 				info:		false,
 				ordering:	false,
 				searching:	false,
