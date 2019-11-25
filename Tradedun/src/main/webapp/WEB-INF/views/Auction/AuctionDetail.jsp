@@ -141,7 +141,9 @@
 	<script>
 		$(document).ready(function() {
 			//페이지 로드시 해당 charBox로 focus
-			$('#charBox${charBox}')[0].scrollIntoView();
+			$('#charBox${charBox}')[0].scrollIntoView({
+				behavior: 'smooth'
+			});
 			
 			var table = $('table.avatarTable').DataTable({
 				info:		false,
