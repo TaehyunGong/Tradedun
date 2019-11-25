@@ -110,9 +110,9 @@
 								  	<td><img src="https://img-api.neople.co.kr/df/items/${avatar.avatarNo}"></td>
 								  	<td>${avatar.avatarName}</td>
 								  	<td>${avatar.optionAbility}</td>
-								  	<td><img src="https://img-api.neople.co.kr/df/items/${avatar.platinum}">
-								  		<img src="https://img-api.neople.co.kr/df/items/${avatar.emblemOne}">
-								  		<img src="https://img-api.neople.co.kr/df/items/${avatar.emblemTwo}">
+								  	<td><c:forEach var="emblem" items="${avatar.emblemList}">
+								  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+								  		</c:forEach>
 								  	</td>
 							  	</c:when>
 							  	

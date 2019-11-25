@@ -1,8 +1,8 @@
 package com.thkong.tradedun.Auction.vo;
 
 import java.util.Date;
+import java.util.List;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -15,6 +15,8 @@ public class AuctionAvatarList {
 	private String avatarNo;
 	private String avatarName;
 	private String optionAbility;
+	private String emblems;
+	private List<ItemDetail> emblemList;
 	private String platinum;
 	private String emblemOne;
 	private String emblemTwo;

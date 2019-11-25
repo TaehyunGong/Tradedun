@@ -350,8 +350,8 @@ public class auctionServiceImpl implements auctionService {
 									AuctionAvatar.setAvatarNo(avatar.getItemId());
 									AuctionAvatar.setAvatarName(avatar.getItemName());
 									AuctionAvatar.setOptionAbility(avatar.getOptionAbility());
+									AuctionAvatar.setEmblems(avatar.getEmblemName());
 									AuctionAvatar.setCreateDT(sysdate);
-				
 				auctionAvatarList.add(AuctionAvatar);
 			}
 			auctionBoardCharBox.setImageName(saveCharacterImage(list.getServer(), list.getCharId()));	//캐릭터 이미지 저장
@@ -765,12 +765,42 @@ public class auctionServiceImpl implements auctionService {
 	}
 
 	/**
-	 * @description 판매 글 상세 보드) boardNo을 받고 쿼리의 결과를 불러온다.   
+	 * @description 판매 글 상세 보드) boardNo을 받고 쿼리의 결과를 불러온다. 또 엠블렘의 경우 구분자 ,을 사용하여 엠블렘 코드를 매핑해서 값을 삽입 후 보낸다.
 	 * @return
 	 */
 	@Override
 	public AuctionSalesBoardDetail selectAuctionSalesBoardDetail(String boardNo) {
-		return dao.selectAuctionSalesBoardDetail(boardNo);
+		AuctionSalesBoardDetail boardDetail = dao.selectAuctionSalesBoardDetail(boardNo);
+		
+		//엠블렘 map 리스트
+		List<ItemDetail> emblems = dao.selectItemDetailList();
+		Map<String, ItemDetail> emblemMap = new HashMap<String, ItemDetail>();
+		for(ItemDetail avatarEmblem : emblems) {
+			emblemMap.put(avatarEmblem.getItemName(), avatarEmblem);
+		}
+		
+		/* 엠블렘 이름을 코드로 매핑시키기 위한 로직
+		 * foreach는 컬렉션을 복사하는 특수한 방식을 사용하고 있기때문에 값을 변경하려면 직접 인덱스를 가져오는 일반적인 for문을 사용하엿음
+		 */
+		for(int charBoxIndex=0; charBoxIndex < boardDetail.getAuctionBoardCharBox().size(); charBoxIndex++) {
+			AuctionBoardCharBox charBox = boardDetail.getAuctionBoardCharBox().get(charBoxIndex);
+			
+			for(int avatarIndex=0; avatarIndex <charBox.getAuctionAvatarList().size(); avatarIndex++) {
+				AuctionAvatarList avatar = charBox.getAuctionAvatarList().get(avatarIndex);
+				List<ItemDetail> newEmblemList = new ArrayList<ItemDetail>();
+				
+				//엠블렘이 없는 경우 split이 불가능 하므로 조건처리
+				if(avatar.getEmblems() != null) {
+					for(String emblem : avatar.getEmblems().split(",")) {
+						//DB에서 가져온 엠블렘이랑 일치하는 엠블렘 객체를 대입해준다.
+						newEmblemList.add(emblemMap.get(emblem));
+					}
+				}
+				avatar.setEmblemList(newEmblemList);
+			}
+		}
+		
+		return boardDetail;
 	}
 	
 }
