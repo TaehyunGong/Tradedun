@@ -26,9 +26,7 @@
 			<result property="slotName" column="slotName"/>
 			<result property="avatarName" column="avatarName"/>
 			<result property="optionAbility" column="optionAbility"/>
-			<result property="platinum" column="platinum"/>
-			<result property="emblemOne" column="emblemOne"/>
-			<result property="emblemTwo" column="emblemTwo"/>
+			<result property="emblems" column="emblems"/>
 		</collection>
 	  </collection>
 	</resultMap>
@@ -48,10 +46,10 @@
 	</insert>
 	
 	<insert id='insertAuctionAvatarList' parameterType="java.util.Map">
-		INSERT INTO AuctionAvatarList(boardNo, charBox, slotName, avatarNo, avatarName, optionAbility, createDT)
+		INSERT INTO AuctionAvatarList(boardNo, charBox, slotName, avatarNo, avatarName, optionAbility, emblems, createDT)
 		VALUES
 		<foreach collection="list" item="item" separator=" , ">
-            (#{item.boardNo}, #{item.charBox}, #{item.slotName}, #{item.avatarNo}, #{item.avatarName}, #{item.optionAbility}, #{item.createDT})
+            (#{item.boardNo}, #{item.charBox}, #{item.slotName}, #{item.avatarNo}, #{item.avatarName}, #{item.optionAbility}, #{item.emblems}, #{item.createDT})
         </foreach>
 	</insert>
 	
@@ -180,7 +178,7 @@
 	<select id="selectAuctionSalesBoardDetail" parameterType="String" resultMap="AuctionSalesBoardDetail">
 		SELECT T1.boardNo, T1.subject, T1.userNo, T2.charBox, T2.charId, T2.jobId, T2.jobGrowId, T6.codeName AS "jobGrowName"
 				, T2.imageName, T2.totalPrice, T2.saleYN, T2.category, T5.categoryName, T2.comment
-				, T3.slotName, T3.avatarNo, T3.avatarName, T3.optionAbility, T3.platinum, T3.emblemOne, T3.emblemTwo, T4.code AS "slotId"
+				, T3.slotName, T3.avatarNo, T3.avatarName, T3.optionAbility, T3.emblems, T4.code AS "slotId"
 		FROM AuctionBoard T1
 			JOIN AuctionBoardCharBox T2
 				ON T1.boardNo = T2.boardNo
