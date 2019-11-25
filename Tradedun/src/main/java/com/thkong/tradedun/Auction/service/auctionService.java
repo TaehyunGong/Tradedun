@@ -35,4 +35,5 @@ public interface auctionService {
 			String priceRange, int page);
 
 	public AuctionSalesBoardDetail selectAuctionSalesBoardDetail(String boardNo);
+
 }

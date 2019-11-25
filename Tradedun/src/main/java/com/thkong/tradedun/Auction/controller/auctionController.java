@@ -90,7 +90,7 @@ public class auctionController {
 		String page = "404";
 		//등록된 아이템, 제목, 유저가 유효하다면 이 조건을 실행하여 포워딩 패스를 넘겨준다.
 		if(user != null && "1".equals(service.insertBoardWrite(submitJson, subject, user))) {
-			page = "/Auction/AuctionList";
+			page = "redirect:/auction/AuctionList";
 		}
 		return page;
 	}

@@ -13,8 +13,8 @@
 			<p class="d-flex mb-0 d-block-c">
 				<input type="hidden" id='charName$velocityCount' value="$character.characterId">
 				<input type="hidden" id="charServer$velocityCount" value="${server}">
-				<a onclick='avartar(${number}, "${server}", "$character.characterId", "wear")' class="btn btn-black btn-outline-black mr-1">착용압</a>
-				<a onclick='avartar(${number}, "${server}", "$character.characterId", "clone")' class="btn btn-black btn-outline-black mr-1">클론압 </a>
+				<a onclick='avartar(${number}, "${server}", "$character.characterId", "wear")' class="btn btn-black btn-outline-black mr-1">가져오기</a>
+				##<a onclick='avartar(${number}, "${server}", "$character.characterId", "coordi")' class="btn btn-black btn-outline-black mr-1">클론압 </a>
 			</p>
 		</div>
 	</div>

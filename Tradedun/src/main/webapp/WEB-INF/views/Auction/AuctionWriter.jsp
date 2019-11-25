@@ -96,13 +96,9 @@
     
 	  <div id='applyBox' class="row block-9 justify-content-center mb-5">
 		<div class="request-form">
-			<div class="form-group">
-				<label for="" class="label">제목</label>
-   				<input type="text" id="subject" name='subject' class="form-control" placeholder="글 제목을 입력하세요.">
-			</div>
-            <div class="form-group">
-            	<input type="button" onclick='addCharBox()' value="추가하기" class="btn-success py-3 px-4">
-              	<input type="button" onclick='salesBoardSubmit()' value="등록하기" class="btn-primary py-3 px-4">
+            <div class="">
+            	<input type="button" onclick='addCharBox()' value="판매 캐릭 추가" class="btn-success py-1 px-4">
+              	<input type="button" onclick='salesBoardSubmit()' value="판매 글 등록" class="btn-primary py-1 px-4">
             </div>
  		</div>
 	  </div>
@@ -245,14 +241,6 @@
     	
     	//charBox의 모든 리스트를 가져와 JSON으로 변환 후 서버에 submit
     	function salesBoardSubmit(){
-			var subject = $('#subject').val();
-			
-			//제목을 필수로 입력받는다.
-			if(subject.length == 0){
-				alert('판매 글의 제목을 입력하셔야 합니다.');
-				$('#subject').focus();
-				return false;
-			}
     		
 			//판매가격을 안적은 input으로 포커싱
 			for(var index=0; index < numberList.length; index++){
@@ -287,7 +275,7 @@
 					'jobId': $('#charInfo'+num).data('jobid'),
 					'jobGrowId': $('#jobGrow'+num).val(),
 					'avatar'  : jsonArray,
-					'resultPrice' : $('#resultPrice'+num).val(),
+					'resultPrice' : fn( $('#resultPrice'+num).val() ),
 					'category' : $('#category'+num).val(),
 					'comment' : $('#comment'+num).val()
 				};
@@ -295,6 +283,16 @@
 				totalJsonArray.push(jsonObj);
 			});
 			
+    		//아무것도 등록하지 않고 판매 글 등록했을때 경고 출력 후 빽
+    		if(totalJsonArray.length == 0){
+    			alert('최소 하나 이상의 캐릭터를 등록하셔야합니다.');
+    			$('#character1')[0].scrollIntoView({
+    				behavior: 'smooth'
+    			});
+				$('#character1').focus();
+    			return false;
+    		}
+    		
 			var json = JSON.stringify(totalJsonArray);
 			
 			//동적 form submit Post
@@ -303,7 +301,7 @@
 		    $(form).attr("method", "POST");
 
 		    var jsonInput = $("<input>").attr("type", "hidden").attr("name", "submitJson").val(json);
-		    var subjectInput = $("<input>").attr("type", "hidden").attr("name", "subject").val(subject);
+		    var subjectInput = $("<input>").attr("type", "hidden").attr("name", "subject").val('');
 		    
 		    $(document.body).append(form);
 		    $(form).append($(jsonInput));

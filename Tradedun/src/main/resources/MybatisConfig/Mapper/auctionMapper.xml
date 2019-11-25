@@ -54,8 +54,8 @@
 	</insert>
 	
 	<insert id='insertAuctionBoardCharBox' parameterType="AuctionBoardCharBox">
-		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, jobId, jobGrowId, imageName, totalPrice, saleYN, category, comment, createDT)
-		VALUES(#{boardNo}, #{charBox}, #{charId}, #{jobId}, #{jobGrowId}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
+		INSERT INTO AuctionBoardCharBox(boardNo, charBox, charId, charName, avatarKind, jobId, jobGrowId, imageName, totalPrice, saleYN, category, comment, createDT)
+		VALUES(#{boardNo}, #{charBox}, #{charId}, #{charName}, #{avatarKind}, #{jobId}, #{jobGrowId}, #{imageName}, #{totalPrice}, #{saleYN}, #{category}, #{comment}, #{createDT})
 	</insert>
 	
 	<select id="selectAvatarCategory" resultType="Category" parameterType="String">

@@ -100,8 +100,9 @@ public class auctionServiceImpl implements auctionService {
 	}
 
 	/**
-	 * @description 캐릭터id를 가져와 해당 아바타를 상세하게 뿌려줌, 리펙토링 필요
+	 * @description 착용한 아바타를 캐릭터에서 가져와 해당 아바타들의 경매장 리스트들을 상세하게 뿌려주고 없는 슬롯은 빈칸으로 하여 9칸을 고정하도록 템플릿에 넣어 뿌려줌
 	 * @createDate 2019. 10. 23.
+	 * @modifyDate 2019. 11. 25.
 	 * @param server
 	 * @param character
 	 * @param number
@@ -114,16 +115,12 @@ public class auctionServiceImpl implements auctionService {
 		List<Category> category = dao.selectAvatarCategory(detail.getJobId());	//아바타의 카테고리 리스트
 		List<JobGrow> jobGrowList = dao.selectJobGrowList(detail.getJobId());
 		
-		DecimalFormat formatter = new DecimalFormat("#,##0.00");
 		int availAvatar = 0;	// 경매장에서 조회된 아바타 갯수
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
-		//만약 노압일경우 없는상태라면 경고창으로 반환
-		if(detail.getAvatar().size() == 0) {
-			Map<String, Object> contextValialbe = new HashMap<String, Object>();
-			contextValialbe.put("number", number);
-			return renderTemplate(contextValialbe, "AuctionCharacterNoAvatar.vm");
-		}
+		//만약 노압일경우 없는상태라면 노아바타 템플릿으로 반환
+		if(detail.getAvatar().size() == 0) 
+			return charNoAvatarTemplate(number);
 		
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
 		List<Avatar> wearAvatar = fixNinePieceAvatar(detail.getAvatar(), kind, parts);
@@ -148,7 +145,7 @@ public class auctionServiceImpl implements auctionService {
 		contextValialbe.put("wearAvatar", wearAvatar);		// 착용중인 아바타
 		contextValialbe.put("avatarList", avatarList);		// 경매장으로 뽑은 아바타 리스트
 		contextValialbe.put("availAvatar", availAvatar);	// 경매장에서 조회된 아바타 갯수
-		contextValialbe.put("minTotalSales", formatter.format(minTotalSales));// 경매장에서 조회돤 최저가 아바타의 가격 합
+		contextValialbe.put("minTotalSales", minTotalSales);// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
 		contextValialbe.put("server", server);
 		contextValialbe.put("characterId", detail.getCharacterId());
@@ -157,15 +154,18 @@ public class auctionServiceImpl implements auctionService {
 		contextValialbe.put("jobGrowName", detail.getJobGrowName());
 		contextValialbe.put("jobGrowList", jobGrowList);	// 해당 직업군 2차각성 리스트
 		
-		//유저가 선택한 항목에 따라 다른 템플릿을 돌린다.
-		String templateName = null;
-		switch(kind) {
-//			case "clone" : templateName = "AuctionCloneAvatarListForm.vm"; break; //코디아바타
-//			case "buff" : templateName = "AuctionBuffAvatarListForm.vm"; break; //버프강화 아바타
-			default : templateName = "AuctionAvatarListForm.vm"; // 기본값은 착용압
-		}
-		
-		return renderTemplate(contextValialbe, templateName);
+		return renderTemplate(contextValialbe, "AuctionAvatarListForm.vm");
+	}
+	
+	/**
+	 * @description charBox의 캐릭터가 아바타가 없으면 노아바타 라고 템플릿 뿌려줌
+	 * @param number
+	 * @return
+	 */
+	public String charNoAvatarTemplate(String number) {
+		Map<String, Object> contextValialbe = new HashMap<String, Object>();
+		contextValialbe.put("number", number);
+		return renderTemplate(contextValialbe, "AuctionCharacterNoAvatar.vm");
 	}
 	
 	/**
@@ -262,17 +262,22 @@ public class auctionServiceImpl implements auctionService {
 		List<Auctions> avatarList = new ArrayList<Auctions>();
 		
 		for(Avatar avatar : wearAvatar) {
-			String itemId;
-			if(kind.equals("wear") || avatar.getSlotId().equals("스킨")) {
-				itemId = avatar.getItemId();
-			}
-			else {
-				//클론아바타의 경우는 없는 필드를 수작성으로 생성해주어야한다.
+			String itemId = null;
+			
+			if(kind.equals("coordi")){
+				//코디아바타의 경우는 없는 필드를 수작성으로 생성해주어야한다.
 				itemId = avatar.getClone().getItemId();
 				avatar.setItemId(avatar.getClone().getItemId());
 				avatar.setItemName(avatar.getClone().getItemName());
 				avatar.setEmblems(null);
 				avatar.setOptionAbility(null);
+			}else {
+				itemId = avatar.getItemId();
+			}
+			
+			//스킨은 wear나 coordi나 둘다 검색해준다.
+			if(avatar.getSlotId().equals("스킨") || avatar.getSlotId().equals("피부")) {
+				itemId = avatar.getItemId();
 			}
 			
 			Auctions auctions = null;
@@ -331,10 +336,11 @@ public class auctionServiceImpl implements auctionService {
 			AuctionBoardCharBox auctionBoardCharBox = new AuctionBoardCharBox();
 								auctionBoardCharBox.setBoardNo(boardNo);
 								auctionBoardCharBox.setCharBox(charBoxNumber);
-								auctionBoardCharBox.setCategory("guitar");
+								auctionBoardCharBox.setCharId(list.getCharId());
+								auctionBoardCharBox.setCharName(list.getCharName());
+								auctionBoardCharBox.setAvatarKind("wear");
 								auctionBoardCharBox.setSaleYN('N');
 								auctionBoardCharBox.setTotalPrice(list.getResultPrice());
-								auctionBoardCharBox.setCharId(list.getCharId());
 								auctionBoardCharBox.setJobId(list.getJobId());
 								auctionBoardCharBox.setJobGrowId(list.getJobGrowId());
 								auctionBoardCharBox.setCategory(list.getCategory());
