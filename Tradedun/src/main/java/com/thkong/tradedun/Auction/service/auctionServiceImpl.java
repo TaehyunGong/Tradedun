@@ -262,17 +262,22 @@ public class auctionServiceImpl implements auctionService {
 		List<Auctions> avatarList = new ArrayList<Auctions>();
 		
 		for(Avatar avatar : wearAvatar) {
-			String itemId;
-			if(kind.equals("wear") || avatar.getSlotId().equals("스킨")) {
-				itemId = avatar.getItemId();
-			}
-			else {
-				//클론아바타의 경우는 없는 필드를 수작성으로 생성해주어야한다.
+			String itemId = null;
+			
+			if(kind.equals("coordi")){
+				//코디아바타의 경우는 없는 필드를 수작성으로 생성해주어야한다.
 				itemId = avatar.getClone().getItemId();
 				avatar.setItemId(avatar.getClone().getItemId());
 				avatar.setItemName(avatar.getClone().getItemName());
 				avatar.setEmblems(null);
 				avatar.setOptionAbility(null);
+			}else {
+				itemId = avatar.getItemId();
+			}
+			
+			//스킨은 wear나 coordi나 둘다 검색해준다.
+			if(avatar.getSlotId().equals("스킨") || avatar.getSlotId().equals("피부")) {
+				itemId = avatar.getItemId();
 			}
 			
 			Auctions auctions = null;

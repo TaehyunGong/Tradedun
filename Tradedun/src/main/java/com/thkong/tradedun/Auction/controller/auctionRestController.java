@@ -52,7 +52,7 @@ public class auctionRestController {
 		String templateResult = null;
 		switch(kind) {
 			case "wear" : templateResult = service.charAvatarSeach(server, character, number, kind); break;
-			case "clone" : templateResult = service.charAvatarSeach(server, character, number, kind); break;
+			case "coordi" : templateResult = service.charAvatarSeach(server, character, number, kind); break;
 			case "buff" : break;
 		}
 		
