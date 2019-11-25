@@ -27,9 +27,13 @@
 
 	<section class="ftco-section contact-section">
       <div class="container">
-        <div class="row block-9 justify-content-center mb-5">
+        <div class="row justify-content-center mb-5">
         	
         	<c:forEach var="charBox" items="${boardDetail.auctionBoardCharBox}">
+        		<div id='charBox${charBox.charBox}' class='col-md-12 heading-section text-center ftco-animate mb-5 fadeInUp ftco-animated'>
+        			<span class="subheading">${charBox.jobGrowName}</span>
+        			<h2 class="mb-2">${charBox.categoryName }</h2>
+        		</div>
         	
         		<!-- 
 				##################
@@ -37,39 +41,46 @@
 				##################
 				 -->
 				
-				<div class='col-md-5 pr-3'>
-					<!-- 판매 설정 -->
-			      	<form action="#" class="request-form">
-			      		<h3>판매 설정</h3>
-			      		<div class="form-group">
-			              	<label class="label">카테고리</label>
-							<div class="form-field">
-			  					<div class="select-wrap">
-			                      <select id="category${charBox.charBox}" class="form-control">
-				                      	<option value="$category.categoryCode">${charBox.categoryName}</option>
-			                      </select>
-			                    </div>
-			               </div>
-			            </div>
-			            <div class="form-group">
-			              	<label class="label">직업</label>
-							<div class="form-field">
-			  					<div class="select-wrap">
-			                      <select id="jobGrow${charBox.charBox}" class="form-control">
-				                      	<option value="$jobGrow.jobGrowId">${charBox.jobGrowName}</option>
-			                      </select>
-			                    </div>
-			               </div>
-			            </div>
-						<div class="form-group">
-							<label for="" class="label">판매 금액</label>
-							<input type="text" id='resultPrice${charBox.charBox}' class="form-control" value="<fmt:formatNumber value="${charBox.totalPrice}" pattern="#,###" />" readonly>
-						</div>
-			            <div class="form-group">
-			              	<label for="" class="label">판매자 말</label>
-							<input type="text" id='comment${charBox.charBox}' class="form-control" value="${charBox.comment}" maxlength="30" readonly>
-			            </div>
-					</form> 
+				<div class='col-md-12 mb-3'>
+					
+			        <div class="row d-flex">
+			          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+			            <img src="/upImage/CharacterImages/${charBox.imageName}"/>
+			          </div>
+			          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+			            <div class="media block-6 services">
+			              <div class="media-body py-md-4">
+			              	<div class="d-flex mb-3 align-items-center">
+				              	<div class="icon"><span class="flaticon-placeholder"></span></div>
+				                <h3 class="heading mb-0 pl-3">가격</h3>
+			                </div>
+			                <p><fmt:formatNumber value="${charBox.totalPrice}" pattern="#,###" /></p>
+			              </div>
+			            </div>      
+			          </div>
+			          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+			            <div class="media block-6 services">
+			              <div class="media-body py-md-4">
+			              	<div class="d-flex mb-3 align-items-center">
+				              	<div class="icon"><span class="flaticon-placeholder"></span></div>
+				                <h3 class="heading mb-0 pl-3">판매자의 말</h3>
+			                </div>
+			                <p>${charBox.comment}</p>
+			              </div>
+			            </div>      
+			          </div>
+			          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+			            <div class="media block-6 services">
+			              <div class="media-body py-md-4">
+			              	<div class="d-flex mb-3 align-items-center">
+				              	<div class="icon"><span class="flaticon-placeholder"></span></div>
+				                <h3 class="heading mb-0 pl-3">구매요청</h3>
+			                </div>
+			                <p><a href='#'>대충 구매요청하는 이미지</a></p>
+			              </div>
+			            </div>      
+			          </div>
+			        </div>
 				</div>
 				
 				<!-- 
@@ -78,7 +89,7 @@
 				##################
 				 -->
 				 
-				<div class='col-md-7'>
+				<div class='col-md-12 mb-3'>
 				 <table id="avatarTable" class='avatarTable compact hover' style="width:100%">
 				 	<thead>
 				 		<tr>
@@ -110,7 +121,6 @@
 							  		<td></td>
 							  		<td></td>
 							  		<td></td>
-							  		<td></td>
 							  	</c:otherwise>
 						  	</c:choose>
 						  </tr>
@@ -123,26 +133,29 @@
 			
 			</div>
         </div>
-      </div>
+      
     </section>
 
 	<c:import  url="/footer" />
 	
 	<script>
 		$(document).ready(function() {
+			//페이지 로드시 해당 charBox로 focus
+			$('#charBox${charBox}')[0].scrollIntoView();
+			
 			var table = $('table.avatarTable').DataTable({
 				info:		false,
 				ordering:	false,
 				searching:	false,
 		        paging:     false,
 		        scrollX:    true,
-		        scrollXInner: "800px",
+		        scrollXInner: "1100px",
 		        //fixedColumns: true,
 		        columnDefs:[
 		        	{targets: [0], width: "60px"},
 		        	{targets: [1], width: "20px"},
-		        	{targets: [2], width: "330px"},
-		        	{targets: [3], width: "250px"},
+		        	{targets: [2], width: "430px"},
+		        	{targets: [3], width: "350px"},
 		        	{targets: [4], width: "140px"}
 		        ]
 		    });
