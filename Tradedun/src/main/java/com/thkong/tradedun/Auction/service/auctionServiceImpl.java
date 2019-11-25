@@ -34,14 +34,15 @@ import com.thkong.tradedun.Auction.vo.Auction;
 import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoard;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
-import com.thkong.tradedun.Auction.vo.AuctionCharacterDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesBoard;
+import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
 import com.thkong.tradedun.Auction.vo.AuctionSalesCharacterList;
 import com.thkong.tradedun.Auction.vo.Auctions;
 import com.thkong.tradedun.Auction.vo.Avatar;
 import com.thkong.tradedun.Auction.vo.AvatarMastar;
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Auction.vo.Characters;
+import com.thkong.tradedun.Auction.vo.CharactersEquipAvatar;
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Auction.vo.JobGrow;
@@ -109,7 +110,7 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String charAvatarSeach(String server, String character, String number, String kind) throws IOException {
-		AuctionCharacterDetail detail = dnfapi.charactersAvatar(server, character);
+		CharactersEquipAvatar detail = dnfapi.charactersAvatar(server, character);
 		List<Category> category = dao.selectAvatarCategory(detail.getJobId());	//아바타의 카테고리 리스트
 		List<JobGrow> jobGrowList = dao.selectJobGrowList(detail.getJobId());
 		
@@ -327,31 +328,29 @@ public class auctionServiceImpl implements auctionService {
 		
 		int charBoxNumber = 1;
 		for(AuctionSalesCharacterList list : salesList) {
-			AuctionBoardCharBox auctionBoardCharBox = AuctionBoardCharBox.builder()
-														.boardNo(boardNo)
-														.charBox(charBoxNumber)
-														.category("guitar")
-														.saleYN('N')
-														.totalPrice(list.getResultPrice())
-														.charId(list.getCharId())
-														.jobId(list.getJobId())
-														.jobGrowId(list.getJobGrowId())
-														.category(list.getCategory())
-														.comment(list.getComment())
-														.createDT(sysdate).build();
+			AuctionBoardCharBox auctionBoardCharBox = new AuctionBoardCharBox();
+								auctionBoardCharBox.setBoardNo(boardNo);
+								auctionBoardCharBox.setCharBox(charBoxNumber);
+								auctionBoardCharBox.setCategory("guitar");
+								auctionBoardCharBox.setSaleYN('N');
+								auctionBoardCharBox.setTotalPrice(list.getResultPrice());
+								auctionBoardCharBox.setCharId(list.getCharId());
+								auctionBoardCharBox.setJobId(list.getJobId());
+								auctionBoardCharBox.setJobGrowId(list.getJobGrowId());
+								auctionBoardCharBox.setCategory(list.getCategory());
+								auctionBoardCharBox.setComment(list.getComment());
 			
 			//charBox의 아바타 리스트를 list로 만들어줌
 			List<AuctionAvatarList> auctionAvatarList = new ArrayList<AuctionAvatarList>();
 			for(Avatar avatar : list.getAvatar()) {
-				AuctionAvatarList AuctionAvatar = AuctionAvatarList.builder()
-													.boardNo(boardNo)
-													.charBox(charBoxNumber)
-													.slotName(avatar.getSlotName())
-													.avatarNo(avatar.getItemId())
-													.avatarName(avatar.getItemName())
-													.optionAbility(avatar.getOptionAbility())
-													.createDT(sysdate)
-													.build();
+				AuctionAvatarList AuctionAvatar = new AuctionAvatarList();
+									AuctionAvatar.setBoardNo(boardNo);
+									AuctionAvatar.setCharBox(charBoxNumber);
+									AuctionAvatar.setSlotName(avatar.getSlotName());
+									AuctionAvatar.setAvatarNo(avatar.getItemId());
+									AuctionAvatar.setAvatarName(avatar.getItemName());
+									AuctionAvatar.setOptionAbility(avatar.getOptionAbility());
+									AuctionAvatar.setCreateDT(sysdate);
 				
 				auctionAvatarList.add(AuctionAvatar);
 			}
@@ -730,6 +729,7 @@ public class auctionServiceImpl implements auctionService {
 		
 		return jobGrowMapList;
 	}
+	
 	/**
 	 * @description 판매글 리스트) 무한 페이징 처리를 해준다.  
 	 * @return
@@ -762,6 +762,15 @@ public class auctionServiceImpl implements auctionService {
 		contextValialbe.put("numberTool", new NumberTool());
 		
 		return renderTemplate(contextValialbe, "AuctionListAdd.vm");
+	}
+
+	/**
+	 * @description 판매 글 상세 보드) boardNo을 받고 쿼리의 결과를 불러온다.   
+	 * @return
+	 */
+	@Override
+	public AuctionSalesBoardDetail selectAuctionSalesBoardDetail(String boardNo) {
+		return dao.selectAuctionSalesBoardDetail(boardNo);
 	}
 	
 }

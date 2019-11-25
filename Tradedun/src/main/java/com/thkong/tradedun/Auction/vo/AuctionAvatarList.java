@@ -6,11 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class AuctionAvatarList {
 
 	private int boardNo;
 	private int charBox;
+	private String slotId;
 	private String slotName;
 	private String avatarNo;
 	private String avatarName;
