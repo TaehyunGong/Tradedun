@@ -336,10 +336,11 @@ public class auctionServiceImpl implements auctionService {
 			AuctionBoardCharBox auctionBoardCharBox = new AuctionBoardCharBox();
 								auctionBoardCharBox.setBoardNo(boardNo);
 								auctionBoardCharBox.setCharBox(charBoxNumber);
-								auctionBoardCharBox.setCategory("guitar");
+								auctionBoardCharBox.setCharId(list.getCharId());
+								auctionBoardCharBox.setCharName(list.getCharName());
+								auctionBoardCharBox.setAvatarKind("wear");
 								auctionBoardCharBox.setSaleYN('N');
 								auctionBoardCharBox.setTotalPrice(list.getResultPrice());
-								auctionBoardCharBox.setCharId(list.getCharId());
 								auctionBoardCharBox.setJobId(list.getJobId());
 								auctionBoardCharBox.setJobGrowId(list.getJobGrowId());
 								auctionBoardCharBox.setCategory(list.getCategory());

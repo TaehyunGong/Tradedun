@@ -10,6 +10,7 @@ public class AuctionSalesCharacterList {
 	private String server;
 	private String charId;
 	private String charName;
+	private String avatarKind;
 	private String jobId;
 	private String jobGrowId;
 	private List<Avatar> avatar;
