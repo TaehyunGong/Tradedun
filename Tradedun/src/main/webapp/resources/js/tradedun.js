@@ -4,7 +4,7 @@
 
 //input type[text] 의 onlyNumber는 무조건 onlyNumber이다.
 $(document).on("keyup", "input:text[onlyNumber]", function() {
-    $(this).val( $(this).val().replace(/[^0-9]/gi,"") );
+    $(this).val( numberWithCommas($(this).val().replace(/[^0-9]/gi,"")) );
 });
 
 //정규식을 사용해 숫자만 출력

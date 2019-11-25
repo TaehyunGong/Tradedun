@@ -275,7 +275,7 @@
 					'jobId': $('#charInfo'+num).data('jobid'),
 					'jobGrowId': $('#jobGrow'+num).val(),
 					'avatar'  : jsonArray,
-					'resultPrice' : $('#resultPrice'+num).val(),
+					'resultPrice' : fn( $('#resultPrice'+num).val() ),
 					'category' : $('#category'+num).val(),
 					'comment' : $('#comment'+num).val()
 				};
