@@ -90,13 +90,21 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	@Override
 	public String charSeachList(String server, String character, String number) throws IOException {
+		
 		Characters characters = dnfapi.characters(server,character);
+		
+		String template = "AuctionCharacterSelectForm.vm";
+		
+		//검색된 캐릭터가 없다면 검색결과가 없다고 템플릿을 뿌려줌.
+		if(characters.getRows().size() == 0) 
+			template = "AuctionCharacterNoSearch.vm";
 		
 		Map<String, Object> contextValialbe = new HashMap<String, Object>();
 		contextValialbe.put("list", characters.getRows());
 		contextValialbe.put("server", server);
 		contextValialbe.put("number", number);
-		return renderTemplate(contextValialbe, "AuctionCharacterSelectForm.vm");
+		
+		return renderTemplate(contextValialbe, template);
 	}
 
 	/**

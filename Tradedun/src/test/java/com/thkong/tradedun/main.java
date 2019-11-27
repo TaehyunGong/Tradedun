@@ -10,6 +10,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
 import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
 import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
+import com.thkong.tradedun.Auction.vo.Characters;
 import com.thkong.tradedun.Common.DnfApiLib;
 
 public class main {
@@ -21,18 +22,8 @@ public class main {
 	
 	
 	public void process() throws IOException {
-		AuctionSalesBoardDetail boardDetail = session.selectOne("selectAuctionSalesBoardDetail", "11");
-		
-		for(AuctionBoardCharBox charBox : boardDetail.getAuctionBoardCharBox()) {
-			for(AuctionAvatarList avatar : charBox.getAuctionAvatarList()) {
-				if(avatar.getEmblems() != null) {
-					for(String emblem : avatar.getEmblems().split(",")) {
-						System.out.println(emblem);
-					}
-				}
-				
-			}
-		}
+		Characters characters = dnfapi.characters("bakal","체");
+		System.out.println(characters);
 	}
 	
 	public static void main(String[] args) throws IOException {
