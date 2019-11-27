@@ -31,12 +31,15 @@ public class auctionController {
 	 * @return
 	 */
 	@RequestMapping(value="/AuctionWriter")
-	public String auctionWriter(HttpSession session) {
+	public String auctionWriter(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
 		
-		String page = "404";
+		String page = "/Auction/AuctionMenu";
 		if(user != null)
 			page = "/Auction/AuctionWriter";
+		else
+			//비로그인 상태라면 alert창으로 로그인이 필요하다 알림
+			model.addAttribute("msg","<script>alert('로그인이 필요한 서비스입니다.');</script>");
 		
 		return page;
 	}

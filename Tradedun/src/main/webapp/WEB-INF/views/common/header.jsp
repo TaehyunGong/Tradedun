@@ -76,3 +76,6 @@
   <script src="/js/jquery-ui.min.js"></script>
   <script src="/js/datatables.min.js"></script>
   <script src="/js/tradedun.js" ></script>
+  
+  <%--메시지 전용 jstl이다. --%>
+  ${msg}
