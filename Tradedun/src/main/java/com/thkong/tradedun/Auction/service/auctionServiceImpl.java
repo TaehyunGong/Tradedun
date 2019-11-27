@@ -119,8 +119,10 @@ public class auctionServiceImpl implements auctionService {
 		int minTotalSales = 0;	// 경매장에서 조회돤 최저가 아바타의 가격 합
 		
 		//만약 노압일경우 없는상태라면 노아바타 템플릿으로 반환
-		if(detail.getAvatar().size() == 0) 
-			return charNoAvatarTemplate(number);
+		if(detail.getAvatar().size() == 0) {
+//			return charNoAvatarTemplate(number);
+			return "0";
+		}
 		
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
 		List<Avatar> wearAvatar = fixNinePieceAvatar(detail.getAvatar(), kind, parts);
@@ -260,6 +262,7 @@ public class auctionServiceImpl implements auctionService {
 	 */
 	public List<Auctions> searchAuctionAvatarList(List<Avatar> wearAvatar, String kind) throws IOException {
 		List<Auctions> avatarList = new ArrayList<Auctions>();
+		System.out.println(wearAvatar);
 		
 		for(Avatar avatar : wearAvatar) {
 			String itemId = null;
@@ -276,7 +279,7 @@ public class auctionServiceImpl implements auctionService {
 			}
 			
 			//스킨은 wear나 coordi나 둘다 검색해준다.
-			if(avatar.getSlotId().equals("스킨") || avatar.getSlotId().equals("피부")) {
+			if(avatar.getSlotName().equals("스킨") || avatar.getSlotName().equals("피부")) {
 				itemId = avatar.getItemId();
 			}
 			
