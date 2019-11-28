@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -111,7 +112,14 @@
 								  	<td>${avatar.avatarName}</td>
 								  	<td>${avatar.optionAbility}</td>
 								  	<td><c:forEach var="emblem" items="${avatar.emblemList}">
-								  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+								  			<c:choose>
+								  				<c:when test="${fn:substring(emblem.itemId, fn:length(emblem.itemId) -6, fn:length(emblem.itemId)) == 'emblem'}">
+								  					<img src="/images/emblems/${emblem.itemId}.png" style='width:28px;'>
+								  				</c:when>
+								  				<c:otherwise>
+								  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" style='width:28px;'>
+								  				</c:otherwise>
+								  			</c:choose>
 								  		</c:forEach>
 								  	</td>
 							  	</c:when>

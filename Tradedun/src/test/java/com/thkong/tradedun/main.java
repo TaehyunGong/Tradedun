@@ -1,16 +1,14 @@
 package com.thkong.tradedun;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import com.thkong.tradedun.Auction.vo.AuctionAvatarList;
-import com.thkong.tradedun.Auction.vo.AuctionBoardCharBox;
-import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
-import com.thkong.tradedun.Auction.vo.Characters;
+import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Common.DnfApiLib;
 
 public class main {
@@ -22,8 +20,11 @@ public class main {
 	
 	
 	public void process() throws IOException {
-		Characters characters = dnfapi.characters("bakal","체");
-		System.out.println(characters);
+		//엠블렘 map 리스트
+		List<ItemDetail> emblems = session.selectList("selectItemDetailList");
+		for(ItemDetail list : emblems) {
+			System.out.println(list.getItemName());
+		}
 	}
 	
 	public static void main(String[] args) throws IOException {
