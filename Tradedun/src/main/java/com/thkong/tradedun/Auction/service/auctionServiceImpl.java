@@ -185,10 +185,13 @@ public class auctionServiceImpl implements auctionService {
 	 * @return
 	 */
 	public Auctions getMatchEmblem(Auctions auctions) {
+		//엠블렘 map 리스트
+		List<ItemDetail> emblems = dao.selectItemDetailList();
+		
 		//auctions의 rows size만큼 반복
 		for(int auctionIndex=0; auctionIndex < auctions.getRows().size(); auctionIndex++) {
 			Avatar avatar = auctions.getRows().get(auctionIndex).getAvatar();
-			getMatchAvatarEmblem(avatar);
+			getMatchAvatarEmblem(emblems, avatar);
 		}
 		
 		return auctions;
@@ -199,13 +202,11 @@ public class auctionServiceImpl implements auctionService {
 	 * @param avatar
 	 * @return
 	 */
-	public Avatar getMatchAvatarEmblem(Avatar avatar) {
+	public Avatar getMatchAvatarEmblem(List<ItemDetail> emblems, Avatar avatar) {
 		// 엠블렘이 없으면 원본을 반환시킨다.
 		if(avatar.getEmblems() == null) 
 			return avatar;
 		
-		//엠블렘 map 리스트
-		List<ItemDetail> emblems = dao.selectItemDetailList();
 		Map<String, ItemDetail> emblemMap = new HashMap<String, ItemDetail>();
 		for(ItemDetail avatarEmblem : emblems) {
 			emblemMap.put(avatarEmblem.getItemName(), avatarEmblem);
@@ -233,6 +234,9 @@ public class auctionServiceImpl implements auctionService {
 	 * @param kind
 	 */
 	public List<Avatar> fixNinePieceAvatar(List<Avatar> detail, String kind, List<String> fixParts) {
+		//엠블렘 map 리스트
+		List<ItemDetail> emblems = dao.selectItemDetailList();
+		
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
 		List<Avatar> wearAvatar = new ArrayList<Avatar>();
 		for(String part : fixParts) {
@@ -245,7 +249,7 @@ public class auctionServiceImpl implements auctionService {
 				if(part.contains(avatar.getSlotName().split(" ")[0])) {
 					avat = avatar;
 					avat.setSlotName(avat.getSlotName().split(" ")[0]);
-					getMatchAvatarEmblem(avat);
+					getMatchAvatarEmblem(emblems, avat);
 					break;
 				}
 			}
