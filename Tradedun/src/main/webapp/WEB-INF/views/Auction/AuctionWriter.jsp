@@ -206,6 +206,11 @@
    			 	async: false,
    			    cache: false,
    			    success: function(data){
+   			    	if(data == '0'){
+   			    		alert('착용한 아바타가 없습니다.');
+   			    		return false;
+   			    	}
+   			    	
    			    	$('#charBox'+num+' .row').hide();
    			    	
    			    	$('#charBox'+num).append(data);
@@ -241,7 +246,6 @@
     	
     	//charBox의 모든 리스트를 가져와 JSON으로 변환 후 서버에 submit
     	function salesBoardSubmit(){
-    		
 			//판매가격을 안적은 input으로 포커싱
 			for(var index=0; index < numberList.length; index++){
                 if($('#resultPrice'+numberList[index]).val().length == 0){
@@ -292,7 +296,7 @@
 				$('#character1').focus();
     			return false;
     		}
-    		
+    		console.log(totalJsonArray)
 			var json = JSON.stringify(totalJsonArray);
 			
 			//동적 form submit Post

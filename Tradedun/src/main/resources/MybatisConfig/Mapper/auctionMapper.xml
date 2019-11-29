@@ -59,7 +59,7 @@
 	</insert>
 	
 	<select id="selectAvatarCategory" resultType="Category" parameterType="String">
-		-- 이벤압은 직업구분이 없기때문에 UNION ALL 처리해준다.
+		-- 이벤압과 클레압은 직업구분이 없기때문에 UNION ALL 처리해준다.
 		SELECT T1.categoryCode, T1.categoryKind, T1.categoryName, T1.sort
 		FROM Category T1
 			JOIN (SELECT DISTINCT jobId, jobName, categoryCode
@@ -72,7 +72,11 @@
 		SELECT categoryCode, categoryKind, categoryName, sort
 		FROM Category
 		WHERE deleteDT IS NULL
-		AND categoryCode LIKE '%all%'
+		AND (
+				categoryCode LIKE '%all%' -- 일반 레압 및 이벤압
+				OR
+				categoryCode LIKE '%RC%' -- 클레압
+			)
 		ORDER BY sort
 	</select>
 	
@@ -84,15 +88,41 @@
 		ORDER BY sort
 	</select>
 	
-	<select id="selectRareAvatarList" resultType="AvatarMastar">
-		SELECT T1.jobId, T1.jobName, T1.categoryCode, T2.categoryName, T1.avatarSetName
+	<select id="selectAuctionDetailRareAvatarList" resultType="AvatarMastar">
+		-- 클론압, 레어압, 이벤압은 구분자가 없어 하드코딩으로 UNION ALL을 하였음
+		SELECT T1.jobId, T1.jobName, T1.categoryCode, T2.categoryName, T1.avatarSetName, T3.sort AS "T3SORT", T2.sort AS "T2SORT"
 		FROM (SELECT DISTINCT jobId, jobName, categoryCode, avatarSetName
 			  FROM AvatarMastar) T1	  
 			 JOIN Category T2
 			 	  ON T1.categoryCode = T2.categoryCode
 			 JOIN CodeTB T3
 			 	  ON T1.jobId = T3.code
-		ORDER BY T3.sort, T2.sort	 	 
+		UNION ALL
+		SELECT T2.code, T2.codeName, T1.categoryCode, T1.categoryName, T1.categoryName, T2.sort AS "T3SORT", T1.sort AS "T2SORT" 
+		FROM (  SELECT 'jobId' jobKind, A.* 
+				FROM Category A
+			) T1
+			JOIN CodeTB T2
+				ON T1.jobKind = T2.codeKind
+		WHERE 1=1 	
+		AND (
+				T1.categoryCode LIKE '%all%' -- 일반 레압 및 이벤압
+				OR
+				T1.categoryCode LIKE '%RC%' -- 클레압
+			)
+		ORDER BY T3SORT, T2SORT	 	 
+	</select>
+	
+	<select id="selectRareAvatarList" resultType="AvatarMastar">
+		-- 클론압, 레어압, 이벤압은 구분자가 없어 하드코딩으로 UNION ALL을 하였음
+		SELECT T1.jobId, T1.jobName, T1.categoryCode, T2.categoryName, T1.avatarSetName, T3.sort AS "T3SORT", T2.sort AS "T2SORT"
+		FROM (SELECT DISTINCT jobId, jobName, categoryCode, avatarSetName
+			  FROM AvatarMastar) T1	  
+			 JOIN Category T2
+			 	  ON T1.categoryCode = T2.categoryCode
+			 JOIN CodeTB T3
+			 	  ON T1.jobId = T3.code
+		ORDER BY T3SORT, T2SORT	 	 
 	</select>
 	
 	<select id="selectAvatarSet" resultType="Avatar" parameterType="AvatarMastar">

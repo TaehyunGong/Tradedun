@@ -31,6 +31,7 @@ public class DnfApiLib {
 	 * @param res
 	 */
 	public <T> void exceptionMethod(HttpResponse<T> res) {
+		System.out.println("Error Response For DnfApiLib");
 		System.out.println("Oh No! Status " + res.getStatus());
     	System.out.println("Parsing Exception: "+ res.getStatusText());
     	
@@ -49,10 +50,17 @@ public class DnfApiLib {
 	 * @throws IOException
 	 */
 	public Characters characters(String server, String characterName) {
+		String wordType = "full";
+		
+		//캐릭명이 한글자라면 검색타입을 완전 일치 match로 변경
+		if(characterName.length() == 1) 
+			wordType = "match";
+		
 		// Response to Object
-		Characters character = Unirest.get("https://api.neople.co.kr/df/servers/{server}/characters?characterName={name}&wordType=full&apikey={dnfKey}")
+		Characters character = Unirest.get("https://api.neople.co.kr/df/servers/{server}/characters?characterName={name}&wordType={wordType}&apikey={dnfKey}")
 								.routeParam("server", server)
 								.routeParam("name", characterName)
+								.routeParam("wordType", wordType)
 								.routeParam("dnfKey", dnfRestKey)
 								.asObject(Characters.class)
 								.ifFailure(res -> exceptionMethod(res))

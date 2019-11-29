@@ -32,7 +32,7 @@
 
  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
    <div class="container">
-     <a class="navbar-brand" href="index.html">Auto<span>road</span></a>
+     <a class="navbar-brand" href="index.html">Trade<span>Dun</span></a>
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
        <span class="oi oi-menu"></span> Menu
      </button>
@@ -76,3 +76,6 @@
   <script src="/js/jquery-ui.min.js"></script>
   <script src="/js/datatables.min.js"></script>
   <script src="/js/tradedun.js" ></script>
+  
+  <%--메시지 전용 jstl이다. --%>
+  ${msg}
