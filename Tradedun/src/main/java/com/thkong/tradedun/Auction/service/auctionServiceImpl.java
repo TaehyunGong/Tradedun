@@ -136,7 +136,7 @@ public class auctionServiceImpl implements auctionService {
 		List<Avatar> wearAvatar = fixNinePieceAvatar(detail.getAvatar(), kind, parts);
 		
 		//모자 부터 피부까지 총 8부위만 조회한다.
-		List<Auctions> avatarList = searchAuctionAvatarList(wearAvatar, kind);
+		List<Auctions> avatarList = searchAuctionAvatarList(detail.getJobId(), wearAvatar, kind);
 		
 		//경매장에 조회된 아바타 갯수 구하기
 		for(Auctions auctions : avatarList) {
@@ -184,47 +184,37 @@ public class auctionServiceImpl implements auctionService {
 	 * @param auctions
 	 * @return
 	 */
-	public Auctions getMatchEmblem(Auctions auctions) {
+	public Auctions getMatchEmblem(String jobId, Auctions auctions) {
 		//엠블렘 map 리스트
 		List<ItemDetail> emblems = dao.selectItemDetailList();
-		
-		//auctions의 rows size만큼 반복
-		for(int auctionIndex=0; auctionIndex < auctions.getRows().size(); auctionIndex++) {
-			Avatar avatar = auctions.getRows().get(auctionIndex).getAvatar();
-			getMatchAvatarEmblem(emblems, avatar);
-		}
-		
-		return auctions;
-	}
-	
-	/**
-	 * @description DB에서 itemDetail의 엠블렘을 가져와 매핑시켜준다. 리펙토링 필요
-	 * @param avatar
-	 * @return
-	 */
-	public Avatar getMatchAvatarEmblem(List<ItemDetail> emblems, Avatar avatar) {
-		// 엠블렘이 없으면 원본을 반환시킨다.
-		if(avatar.getEmblems() == null) 
-			return avatar;
-		
+		// map의 키값을 통해 매핑시키기 위해 list를 map으로 치환
 		Map<String, ItemDetail> emblemMap = new HashMap<String, ItemDetail>();
 		for(ItemDetail avatarEmblem : emblems) {
 			emblemMap.put(avatarEmblem.getItemName(), avatarEmblem);
 		}
 		
-		//avatar의 엠블렘의 수 만큼 반복 
-		for(int emblemIndex=0; emblemIndex < avatar.getEmblems().size(); emblemIndex++) {
-			ItemDetail emblem = avatar.getEmblems().get(emblemIndex);
+		//auctions의 rows size만큼 반복
+		for(int auctionIndex=0; auctionIndex < auctions.getRows().size(); auctionIndex++) {
+			Avatar avatar = auctions.getRows().get(auctionIndex).getAvatar();
+
+			// 엠블렘이 없으면 패스한다.			
+			if(avatar.getEmblems() == null) 
+				continue;
 			
-			//DB에서 가져온 엠블렘이랑 일치하는 엠블렘 객체를 대입해준다.
-			ItemDetail newEmblem = emblemMap.get(emblem.getItemName());
-			
-			//만약 map에 없는 엠블렘이라면 패스한다.
-			if(newEmblem != null)
-				avatar.getEmblems().set(emblemIndex, newEmblem);
+			//avatar의 엠블렘의 수 만큼 반복 
+			for(int emblemIndex=0; emblemIndex < avatar.getEmblems().size(); emblemIndex++) {
+				ItemDetail emblem = avatar.getEmblems().get(emblemIndex);
+				
+				//DB에서 가져온 엠블렘이랑 일치하는 엠블렘 객체를 대입해준다.
+				ItemDetail newEmblem = emblemMap.get(emblem.getItemName());
+				
+				//만약 map에 없는 엠블렘이라면 패스한다.
+				if(newEmblem != null)
+					avatar.getEmblems().set(emblemIndex, newEmblem);
+			}
 		}
 		
-		return avatar;
+		return auctions;
 	}
 	
 	/**
@@ -234,9 +224,6 @@ public class auctionServiceImpl implements auctionService {
 	 * @param kind
 	 */
 	public List<Avatar> fixNinePieceAvatar(List<Avatar> detail, String kind, List<String> fixParts) {
-		//엠블렘 map 리스트
-		List<ItemDetail> emblems = dao.selectItemDetailList();
-		
 		//아바타가 9피스가 아닐경우 9피스가 되도록 비어있는 슬롯을 자동 삽입
 		List<Avatar> wearAvatar = new ArrayList<Avatar>();
 		for(String part : fixParts) {
@@ -249,7 +236,6 @@ public class auctionServiceImpl implements auctionService {
 				if(part.contains(avatar.getSlotName().split(" ")[0])) {
 					avat = avatar;
 					avat.setSlotName(avat.getSlotName().split(" ")[0]);
-					getMatchAvatarEmblem(emblems, avat);
 					break;
 				}
 			}
@@ -272,7 +258,7 @@ public class auctionServiceImpl implements auctionService {
 	 * @param kind
 	 * @throws IOException 
 	 */
-	public List<Auctions> searchAuctionAvatarList(List<Avatar> wearAvatar, String kind) throws IOException {
+	public List<Auctions> searchAuctionAvatarList(String jobId, List<Avatar> wearAvatar, String kind) throws IOException {
 		List<Auctions> avatarList = new ArrayList<Auctions>();
 		System.out.println(wearAvatar);
 		
@@ -301,7 +287,7 @@ public class auctionServiceImpl implements auctionService {
 				auctions = dnfapi.auction(itemId);
 				
 				//엠블렘을 매핑시켜주기 위한 별도의 메소드 작성
-				getMatchEmblem(auctions);
+				getMatchEmblem(jobId, auctions);
 			}
 			
 			avatarList.add(auctions);
@@ -507,7 +493,7 @@ public class auctionServiceImpl implements auctionService {
 		
 		//경매장에서 가져온 엠블렘을 매핑시켜서 돌려준다.
 		for(Auctions auction : auctions) {
-			getMatchEmblem(auction);
+			getMatchEmblem(jobId, auction);
 			
 			if(auction.getRows().size() != 0) {
 				avatarList.add(convertAuctionToAvatar(auction.getRows().get(0)));
@@ -613,7 +599,7 @@ public class auctionServiceImpl implements auctionService {
 		
 		//경매장에서 가져온 엠블렘을 매핑시켜서 돌려준다.
 		for(Auctions auction : auctions) {
-			getMatchEmblem(auction);
+			getMatchEmblem(jobId, auction);
 			
 			if(auction.getRows().size() != 0) {
 				avatarList.add(convertAuctionToAvatar(auction.getRows().get(0)));
