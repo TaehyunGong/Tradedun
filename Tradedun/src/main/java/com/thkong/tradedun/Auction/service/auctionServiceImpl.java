@@ -530,7 +530,17 @@ public class auctionServiceImpl implements auctionService {
 	            }
 	         }
 	      }
-		
+
+	    //염색 문자 제거, 예) 골드 셀레스티얼 양갈래 롱헤어 (흑록) <- 괄호 제거
+	    for(int strIndex=0; strIndex < list.size(); strIndex++) {
+	    	Avatar avatar = list.get(strIndex);
+	    	int checkIdx = avatar.getItemName().indexOf('('); 
+	    	// -1이 아니라면 '(' 가 있으니 조건 처리
+	    	if(checkIdx != -1) {
+	    		avatar.setItemName(avatar.getItemName().substring(0, checkIdx-1));
+	    	}
+	    }
+	      
 		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
 		List<Avatar> avatarList = new ArrayList<Avatar>();
 		
