@@ -42,4 +42,6 @@ public interface auctionDao {
 	public List<JobGrow> selectJobGrowList(String jobId);
 	
 	public AuctionSalesBoardDetail selectAuctionSalesBoardDetail(String boardNo);
+
+	public List<AvatarMastar> selectAuctionDetailRareAvatarList();
 }

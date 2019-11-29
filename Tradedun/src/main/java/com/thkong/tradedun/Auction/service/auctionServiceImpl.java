@@ -612,7 +612,7 @@ public class auctionServiceImpl implements auctionService {
 	@Override
 	public String selectRareAvatarList() throws IOException {
 		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경
-		List<Map<String, Object>> job = selectRareAvatarMap();
+		List<Map<String, Object>> job = selectRareAvatarMap("allAvatarList");
 		
 		return mapper.writeValueAsString(job);
 	}
@@ -685,7 +685,7 @@ public class auctionServiceImpl implements auctionService {
 		Map<String, List<JobGrow>> jobGrowMapList = selectJobGrowMapList();
 		
 		//직군별 레어아바타 차수 리스트
-		List<Map<String, Object>> jobList = selectRareAvatarMap();
+		List<Map<String, Object>> jobList = selectRareAvatarMap("AuctionDetail");
 		
 		//직군과 2차각성명을 차수리스트의 Map에 통합시킨다.
 		for(Map<String, Object> map : jobList) {
@@ -716,8 +716,14 @@ public class auctionServiceImpl implements auctionService {
 	 * @description DB에서 각 직군별 레어 아바타 리스트를 가져와 출력한다.
 	 * @return
 	 */
-	public List<Map<String, Object>> selectRareAvatarMap() {
-		List<AvatarMastar> avatarList = dao.selectRareAvatarList();
+	public List<Map<String, Object>> selectRareAvatarMap(String selectPage) {
+		List<AvatarMastar> avatarList = null;
+		if(selectPage.equals("AuctionDetail")) {
+			avatarList = dao.selectAuctionDetailRareAvatarList();
+		}else {
+			avatarList = dao.selectRareAvatarList();
+		}
+		
 		List<String> existCheckList = new ArrayList<String>();
 		
 		// cascading select를 위해 DB에서 가져온 레압리스트를 json으로 변경

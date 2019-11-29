@@ -88,7 +88,7 @@
 		ORDER BY sort
 	</select>
 	
-	<select id="selectRareAvatarList" resultType="AvatarMastar">
+	<select id="selectAuctionDetailRareAvatarList" resultType="AvatarMastar">
 		-- 클론압, 레어압, 이벤압은 구분자가 없어 하드코딩으로 UNION ALL을 하였음
 		SELECT T1.jobId, T1.jobName, T1.categoryCode, T2.categoryName, T1.avatarSetName, T3.sort AS "T3SORT", T2.sort AS "T2SORT"
 		FROM (SELECT DISTINCT jobId, jobName, categoryCode, avatarSetName
@@ -110,6 +110,18 @@
 				OR
 				T1.categoryCode LIKE '%RC%' -- 클레압
 			)
+		ORDER BY T3SORT, T2SORT	 	 
+	</select>
+	
+	<select id="selectRareAvatarList" resultType="AvatarMastar">
+		-- 클론압, 레어압, 이벤압은 구분자가 없어 하드코딩으로 UNION ALL을 하였음
+		SELECT T1.jobId, T1.jobName, T1.categoryCode, T2.categoryName, T1.avatarSetName, T3.sort AS "T3SORT", T2.sort AS "T2SORT"
+		FROM (SELECT DISTINCT jobId, jobName, categoryCode, avatarSetName
+			  FROM AvatarMastar) T1	  
+			 JOIN Category T2
+			 	  ON T1.categoryCode = T2.categoryCode
+			 JOIN CodeTB T3
+			 	  ON T1.jobId = T3.code
 		ORDER BY T3SORT, T2SORT	 	 
 	</select>
 	
