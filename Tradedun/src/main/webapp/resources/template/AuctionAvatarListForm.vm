@@ -36,15 +36,14 @@
 					<td style='width:60px;'>$equipAvatar.getSlotName()</td>
 				    <td>#if($equipAvatar.getItemId())
 				    	<img class="pr-3"
-				    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()' title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
+				    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()' onerror="this.style.display='none'" title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
 				    	#end
 				    	#foreach($emblem in $equipAvatar.getEmblems())
 				    		## 주석 : 엠블렘 ID 매핑에 성공하여 엠블렘 id를 가져왔을때
-				    		#if($emblem.getItemId())
-				    			<img src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
-				    		## 주석 : 엠블렘 ID 매핑에 실패시 엠블렘명만 출력
+				    		#if($emblem.getItemType() == "attach")
+				    			<img class='pl-1' src='/images/emblems/${emblem.getItemId()}.png' onerror="this.style.display='none'" title='$emblem.getItemName()' alt='$emblem.getItemName()' style='width:28px;'/>
 				    		#else
-				    			<font class='pl-2' style='font-weight: bold;'>$emblem.getItemName()</font>
+				    			<img class='pl-1' src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' onerror="this.style.display='none'" title='$emblem.getItemName()' alt='$emblem.getItemName()' style='width:28px;'/>
 				    		#end
 				    	#end
 			    		<font class='pl-2' style='font-weight: bold;'>$!equipAvatar.getOptionAbility()</font>
@@ -123,7 +122,7 @@
 		<tbody id='test' class="selectAuction auctionList">
 		  <tr class='trLine'>
 		    <td style='width:8%;'>$equipAvatar.getSlotName()</td>
-		    <td style='width:5%;'><img class="img-c d-flex text-center align-items-end" 
+		    <td style='width:5%;'><img class="img-c d-flex text-center align-items-end" onerror="this.style.display='none'" 
 		    	#if($equipAvatar.getItemId())
 		    		src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'/>
 		    	#end
@@ -134,7 +133,11 @@
 				<td style='width:30%;'>$!Avatars.get(0).getAvatar().getAbility()</td>
 			    <td style='width:27%;'>
 			    	#foreach($emblem in $Avatars.get(0).getAvatar().getEmblems())
-			    		<img class='pl-1' src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+			    		#if($emblem.getItemType() == "attach")
+			    			<img class='pl-1' src='/images/emblems/$emblem.getItemId().png' onerror="this.style.display='none'" title='$emblem.getItemName()' alt='$emblem.getItemName()' style='width:28px;'/>
+			    		#else
+			    			<img class='pl-1' src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' onerror="this.style.display='none'" title='$emblem.getItemName()' alt='$emblem.getItemName()' style='width:28px;'/>
+			    		#end
 			    	#end
 			    </td>
 			    <td style='width:30%;' data-price='auctionSelectPiece'>$numberTool.format('#,##0', $Avatars.get(0).getCurrentPrice()) Gold</td>
@@ -156,12 +159,12 @@
 		  	  #end
 			  	<td style='width:8%;'>$equipAvatar.getSlotName()</td>
 			  	<td style='width:5%;'><img class="img-c d-flex text-center align-items-end" src='https://img-api.neople.co.kr/df/items/$equipAvatar.getItemId()'
-			  			 title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()'/>
+			  			 onerror="this.style.display='none'" title='$equipAvatar.getItemName()' alt='$equipAvatar.getItemName()' style='width:28px;'/>
 			  	</td>
 			    <td style='width:30%;'>$!avatar.getAvatar().getAbility()</td>
 			    <td style='width:27%;'>
 			    	#foreach($emblem in $avatar.getAvatar().getEmblems())
-		    			<img class='pl-1' src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' title='$emblem.getItemName()' alt='$emblem.getItemName()'/>
+		    			<img class='pl-1' src='https://img-api.neople.co.kr/df/items/$!emblem.getItemId()' onerror="this.style.display='none'" title='$emblem.getItemName()' alt='$emblem.getItemName()' style='width:28px;'/>
 			    	#end
 			    </td>
 			    <td style='width:30%;'>$numberTool.format('#,##0', $avatar.currentPrice) Gold</td>
