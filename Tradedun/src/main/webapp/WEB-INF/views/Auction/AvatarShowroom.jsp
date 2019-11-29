@@ -6,6 +6,8 @@
   <head>
     <title>Autoroad - Free Bootstrap 4 Template by Colorlib</title>
     <meta charset="utf-8">
+    
+	
   </head>
   <body>
 
@@ -42,7 +44,7 @@
          		<li>이 페이지는 PC에 최적화 되어있습니다.</li>
          	</ul>
          	
-         	<button class='form-control btn btn-success'>사용 방법</button>
+         	<a href="#ex1" rel="modal:open" class='form-control btn btn-success'>사용 방법</a>
          </div>
        	</div>
        	
@@ -81,6 +83,21 @@
         
       </div>
     </section>
+
+	<!-- Modal HTML embedded directly into document -->
+	<div id="ex1" class="modal">
+		<div class='justify-content-center p-3'>
+			<ol>
+				<li>던파 공식 홈페이지에서 쇼룸으로 간다.</li>
+				<li>위시리스트에서 검색하고싶은 캐릭터를 눌러 '아바타 정보'를 누른다.</li>
+				<li>맨 위의 머리부터 피부까지 복사(Ctrl+C)를 한다</li>
+				<li>복사한 내용을 쇼룸검색 텍스트창에 붙혀넣는다.(Ctrl+V)</li>
+				<li>검색할 캐릭터의 직군을 선택한다.</li>
+				<li>검색 클릭!</li>
+			</ol>
+			<a href="#" rel="modal:close" class='btn btn-danger'>닫기</a>
+		</div>
+	</div>
 
 	<c:import  url="/footer" />
   </body>

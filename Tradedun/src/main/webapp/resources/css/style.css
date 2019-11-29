@@ -4585,6 +4585,7 @@ a.close.disabled {
 .toast-body {
   padding: 0.75rem; }
 
+/*
 .modal-open {
   overflow: hidden; }
   .modal-open .modal {
@@ -4743,6 +4744,7 @@ a.close.disabled {
 @media (min-width: 1200px) {
   .modal-xl {
     max-width: 1140px; } }
+*/
 
 .tooltip {
   position: absolute;
