@@ -114,10 +114,10 @@
 								  	<td><c:forEach var="emblem" items="${avatar.emblemList}">
 								  			<c:choose>
 								  				<c:when test="${fn:substring(emblem.itemId, fn:length(emblem.itemId) -6, fn:length(emblem.itemId)) == 'emblem'}">
-								  					<img src="/images/emblems/${emblem.itemId}.png" style='width:28px;'>
+								  					<img src="/images/emblems/${emblem.itemId}.png" onerror="this.style.display='none'" style='width:28px;'>
 								  				</c:when>
 								  				<c:otherwise>
-								  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" style='width:28px;'>
+								  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" onerror="this.style.display='none'" style='width:28px;'>
 								  				</c:otherwise>
 								  			</c:choose>
 								  		</c:forEach>

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -107,7 +108,14 @@
 					  	<td>
 					  		<c:if test="${!empty auction.rows[0].avatar}">
 						  		<c:forEach var="emblem" items="${auction.rows[0].avatar.emblems}">
-						  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+						  			<c:choose>
+						  				<c:when test="${fn:substring(emblem.itemId, fn:length(emblem.itemId) -6, fn:length(emblem.itemId)) == 'emblem'}">
+						  					<img src="/images/emblems/${emblem.itemId}.png" onerror="this.style.display='none'" style='width:28px;'>
+						  				</c:when>
+						  				<c:otherwise>
+						  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" onerror="this.style.display='none'" style='width:28px;'>
+						  				</c:otherwise>
+						  			</c:choose>
 						  		</c:forEach>
 					  		</c:if>
 					  	</td>
@@ -132,7 +140,14 @@
 						  	<td>
 						  		<c:if test="${!empty item.avatar}">
 							  		<c:forEach var="emblem" items="${item.avatar.emblems}">
-							  			<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}">
+							  			<c:choose>
+							  				<c:when test="${fn:substring(emblem.itemId, fn:length(emblem.itemId) -6, fn:length(emblem.itemId)) == 'emblem'}">
+							  					<img src="/images/emblems/${emblem.itemId}.png" onerror="this.style.display='none'" style='width:28px;'>
+							  				</c:when>
+							  				<c:otherwise>
+							  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" onerror="this.style.display='none'" style='width:28px;'>
+							  				</c:otherwise>
+							  			</c:choose>
 							  		</c:forEach>
 						  		</c:if>
 						  	</td>
