@@ -36,7 +36,7 @@
 	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
 	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('AuctionWriter')">
 	                    <div class="media-body py-md-4 text-center p-2">
-	                        <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route"></span></div>
+	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-pen"></span></div>
 	                        <p class='sub_title'>판매 글 작성</p>
 	                        <p>판매하고싶은 아바타를 착용한 아바타에서 바로 가져와 글을 등록할수 있습니다.</p>
 	                    </div>
@@ -45,7 +45,7 @@
 	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
 	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('AuctionList')">
 	                    <div class="media-body py-md-4 text-center  p-2">
-	                        <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-select"></span></div>
+	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-list"></span></div>
 	                        <p class='sub_title'>판매 글 리스트 보기</p>
 	                        <p>현재 판매중인 아바타들을 조회해보세요!</p>
 	                    </div>
@@ -54,7 +54,7 @@
 	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
 	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('rareAvatarSet')">
 	                    <div class="media-body py-md-4 text-center  p-2">
-	                        <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-rent"></span></div>
+	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-search"></span></div>
 	                        <p class='sub_title'>아바타 세트 검색</p>
 	                        <p>각종 차수 레어아바타를 경매장 최저로 검색해보세요!</p>
 	                    </div>
@@ -63,7 +63,7 @@
 	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
 	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('avatarShowroom')">
 	                    <div class="media-body py-md-4 text-center  p-2">
-	                        <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-review"></span></div>
+	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-search-dollar"></span></div>
 	                        <p class='sub_title'>쇼룸 아바타 검색</p>
 	                        <p>던파 공홈 쇼룸에 등록한 위시리스트들을 간편히 경매장에서 검색해보세요!</p>
 	                    </div>
