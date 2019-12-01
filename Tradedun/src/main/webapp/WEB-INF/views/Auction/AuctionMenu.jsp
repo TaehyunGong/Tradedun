@@ -37,7 +37,7 @@
 				</div>
 				
 				<div class='col-lg-4'>
-					<button onclick='forward("avatarCharacterSet")' class="btn-success">아바타 세트 검색</button>
+					<button onclick='forward("rareAvatarSet")' class="btn-success">아바타 세트 검색</button>
 				</div>
 				
 				<div class='col-lg-4'>
