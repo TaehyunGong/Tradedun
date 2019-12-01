@@ -74,6 +74,8 @@ public class auctionController {
 		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
 		model.addAttribute("searchCount", mapList.get("searchCount"));
 		
+		model.addAttribute("title", "레어아바타 차수 검색 결과");
+		
 		return "/Auction/AvatarSearch";
 	}
 	
@@ -125,6 +127,8 @@ public class auctionController {
 		model.addAttribute("auctions", mapList.get("auctions"));
 		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
 		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
+		
+		model.addAttribute("title", "위시리스트 검색 결과");
 		
 		return "/Auction/AvatarSearch";
 	}
