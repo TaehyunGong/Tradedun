@@ -86,7 +86,7 @@
 
 	<!-- Modal HTML embedded directly into document -->
 	<div id="ex1" class="modal">
-		<div class='justify-content-center p-3'>
+		<div class=''>
 			<ol>
 				<li>던파 공식 홈페이지에서 쇼룸으로 간다.</li>
 				<li>위시리스트에서 검색하고싶은 캐릭터를 눌러 '아바타 정보'를 누른다.</li>
