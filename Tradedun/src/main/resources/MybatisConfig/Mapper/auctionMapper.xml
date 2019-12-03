@@ -32,8 +32,16 @@
 	</resultMap>
 
 	<select id="selectItemDetailList" resultType="ItemDetail">
+		-- 플래티넘 엠블렘의 경우 별도의 로직을 갖고있어 id와 name를 반대로 하여 UNION ALL로 묶는다.
 		SELECT itemId, itemName, itemRarity, itemType, itemTypeDetail, itemAvailableLevel, itemRarityColor
 		FROM  ItemDetail
+		WHERE itemTypeDetail = '엠블렘'
+		UNION ALL
+		SELECT itemName, itemId, itemRarity, itemType, itemTypeDetail, itemAvailableLevel, itemRarityColor
+		FROM  ItemDetail
+		WHERE itemType = 'attach'
+		AND   itemTypeDetail = '엠블렘'
+		AND   itemRarity = '레전더리'
 	</select>
 	
 	<select id='selectBoardNo' resultType="Int">

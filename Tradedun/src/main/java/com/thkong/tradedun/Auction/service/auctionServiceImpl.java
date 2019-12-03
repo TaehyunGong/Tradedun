@@ -250,14 +250,39 @@ public class auctionServiceImpl implements auctionService {
 			
 			//avatar의 엠블렘의 수 만큼 반복 
 			for(int emblemIndex=0; emblemIndex < avatar.getEmblems().size(); emblemIndex++) {
-				ItemDetail emblem = avatar.getEmblems().get(emblemIndex);
+				ItemDetail detail = avatar.getEmblems().get(emblemIndex);
+				String emblem = detail.getItemName();
 				
 				//DB에서 가져온 엠블렘이랑 일치하는 엠블렘 객체를 대입해준다.
-				ItemDetail newEmblem = emblemMap.get(emblem.getItemName());
+				ItemDetail newEmblem = emblemMap.get(emblem);
 				
-				//만약 map에 없는 엠블렘이라면 패스한다.
-				if(newEmblem != null)
-					avatar.getEmblems().set(emblemIndex, newEmblem);
+				//혹시 플래티넘 엠블렘인지 체크 후 플티라면 파싱 후 해당 직군에 맞는 엠블렘으로 객체를 만들어서 넣어준다.
+				if(newEmblem == null) {
+					if(emblem.contains("플래티넘")) {
+						int index = emblem.indexOf('[');
+						
+						// 예) 귀검사의 플래티넘 엠블렘[무기의 극의] -> [무기의 극의]
+						if(index != -1) {
+							//Call by Reference 때문에 직접적으로 대입을 시켜줄수가 없다.
+							newEmblem = new ItemDetail();
+							
+							ItemDetail platinum = emblemMap.get(jobId.substring(0, 5) + "_platinum_emblem");
+							
+							if(platinum != null) {
+								//DB에서  select 할때 바뀌었던 id와 name을 정상으로 돌린다.
+								newEmblem.setItemId(platinum.getItemName());
+								newEmblem.setItemName(emblem.substring(index));
+								newEmblem.setItemRarity(platinum.getItemRarity());
+								newEmblem.setItemRarityColor(platinum.getItemRarityColor());
+								newEmblem.setItemType(platinum.getItemType());
+								newEmblem.setItemTypeDetail(platinum.getItemTypeDetail());
+							}
+						}
+					}
+				}
+				
+				//매칭시킨 엠블렘으로 값을 넣는다.
+				avatar.getEmblems().set(emblemIndex, newEmblem);
 			}
 		}
 		
