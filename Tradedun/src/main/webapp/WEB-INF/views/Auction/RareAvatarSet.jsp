@@ -24,8 +24,16 @@
       </div>	
     </section>
 
-	<section class="ftco-section ftco-no-pb ftco-no-pt">
+	<section class="ftco-section">
 	    <div class="container">
+	    
+	    	<div class="row block-12 justify-content-center mb-3">
+				<div class="col-md-12 heading-section text-center mb-3">
+					<span class="subheading">RareAvatar Auction Search</span>
+					<h2 class="mb-2">레어아바타 세트 경매장 검색</h2>
+	         	</div>
+	       	</div>
+	    
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="search-wrap-1 ftco-animate mb-5">

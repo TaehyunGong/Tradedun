@@ -38,7 +38,7 @@
 	                    <div class="media-body py-md-4 text-center p-2">
 	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-pen"></span></div>
 	                        <p class='sub_title'>판매 글 작성</p>
-	                        <p>판매하고싶은 아바타를 착용한 아바타에서 바로 가져와 글을 등록할수 있습니다.</p>
+	                        <p>판매하고싶은 아바타를 착용한 캐릭터에서 바로 가져와 글을 등록할수 있습니다.</p>
 	                    </div>
 	                </div>
 	            </div>
