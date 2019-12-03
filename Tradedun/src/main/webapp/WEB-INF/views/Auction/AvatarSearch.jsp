@@ -17,7 +17,6 @@
 	</style>
   <body>
 
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
     <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -72,11 +71,13 @@
       		
       		<div class='col-md-7'>
       			<table class="table table-condensed " >
+      				<thead>
+      					<td class='text-center' colspan="3">아바타 리스트</td>
+      				</thead>
       				<c:forEach var="avatar" items="${choiceAvatar}">
 						<tr>
 							<td style='width:60px;'>${avatar.slotName}</td>
-						    <td><img class="pr-3" src='https://img-api.neople.co.kr/df/items/${avatar.itemId}' title='${avatar.itemName}' alt='${avatar.itemName}'/>
-						    </td>
+						    <td><img class="pr-3" src='https://img-api.neople.co.kr/df/items/${avatar.itemId}' title='${avatar.itemName}' alt='${avatar.itemName}'/></td>
 						    <td><font class='pl-2' style='font-weight: bold;'>${avatar.itemName}</font></td>
 						</tr>
 					</c:forEach>
@@ -85,7 +86,7 @@
       	</div>
       	
       	<div>
-			 <table id="example" class='compact hover' style="width:100%">
+			 <table id="example" class='compact hover cell-border' style="width:100%">
 			 	<thead>
 			 		<tr>
 			 			<td>부위</td>
