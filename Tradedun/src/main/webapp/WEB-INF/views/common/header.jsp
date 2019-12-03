@@ -35,6 +35,9 @@
 
 	<!-- fontawsome -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+	
+	<!-- Toasts -->
+	<link rel="stylesheet" href="/css/toastr.min.css"/>
 
  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
    <div class="container">
@@ -85,6 +88,9 @@
   
   <!-- jQuery Modal -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+  
+  <!-- Toasts -->
+  <script src="/js/toastr.min.js" ></script>
   
   <%--메시지 전용 jstl이다. --%>
   ${msg}

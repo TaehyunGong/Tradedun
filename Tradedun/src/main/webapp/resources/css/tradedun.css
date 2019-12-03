@@ -170,3 +170,9 @@
     color:#fc983c !important;;
     border-radius: 0.5em;
 }      
+
+
+.emblem_list_size{
+	width:28px;
+	cursor: zoom-in;
+}

@@ -43,8 +43,8 @@
           </div>
       	</div>
       	
-      	<div class='row'>
-     		<div class='col-md-5 pr-3'>
+      	<div class='row mb-3'>
+     		<div class='col-md-5 pr-3 pb-3'>
 				<!-- 판매 설정 -->
 		      	<div class="request-form">
 		      		<h3>조회 결과</h3>
@@ -84,7 +84,7 @@
       		</div>
       	</div>
       	
-      	<div class='pt-5'>
+      	<div>
 			 <table id="example" class='compact hover' style="width:100%">
 			 	<thead>
 			 		<tr>
@@ -110,10 +110,10 @@
 						  		<c:forEach var="emblem" items="${auction.rows[0].avatar.emblems}">
 						  			<c:choose>
 						  				<c:when test="${fn:substring(emblem.itemId, fn:length(emblem.itemId) -6, fn:length(emblem.itemId)) == 'emblem'}">
-						  					<img src="/images/emblems/${emblem.itemId}.png" onerror="this.style.display='none'" style='width:28px;'>
+						  					<img src="/images/emblems/${emblem.itemId}.png" class='emblem_list_size' onerror="this.style.display='none'" data-emblemName='${emblem.itemName}'>
 						  				</c:when>
 						  				<c:otherwise>
-						  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" onerror="this.style.display='none'" style='width:28px;'>
+						  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" class='emblem_list_size' onerror="this.style.display='none'" data-emblemName='${emblem.itemName}'>
 						  				</c:otherwise>
 						  			</c:choose>
 						  		</c:forEach>
@@ -142,10 +142,10 @@
 							  		<c:forEach var="emblem" items="${item.avatar.emblems}">
 							  			<c:choose>
 							  				<c:when test="${fn:substring(emblem.itemId, fn:length(emblem.itemId) -6, fn:length(emblem.itemId)) == 'emblem'}">
-							  					<img src="/images/emblems/${emblem.itemId}.png" onerror="this.style.display='none'" style='width:28px;'>
+							  					<img src="/images/emblems/${emblem.itemId}.png" class='emblem_list_size' onerror="this.style.display='none'" data-emblemName='${emblem.itemName}'>
 							  				</c:when>
 							  				<c:otherwise>
-							  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" onerror="this.style.display='none'" style='width:28px;'>
+							  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" class='emblem_list_size' onerror="this.style.display='none'" data-emblemName='${emblem.itemName}'>
 							  				</c:otherwise>
 							  			</c:choose>
 							  		</c:forEach>
@@ -188,12 +188,12 @@
 		    
 			//경매장 리스트 첫번째 라인은 하이라이트
 			$('.trLine').css('background', '#ffdab8').css('font-weight', 'bold');
+			
 		} );
 		
 		//경매장 리스트 클릭시 테이블 down 
 		$(document).on('click', 'table tbody .trLine', function(){
 			var slotName = $(this).data('slotname');
-			console.log(slotName);
 			$('tr[data-slotName="'+ slotName +'"].hide').fadeToggle();
 		});
 	
@@ -234,6 +234,31 @@
 		function allOpen(){
 			$('.hide').show();
 		}
+		
+		//경매장 리스트 클릭시 테이블 down 
+		$(document).on('click', 'table tbody .emblem_list_size', function(){
+			var emblemName = $(this).data('emblemname');
+			toastr.info(emblemName, '엠블렘');
+		});
+		
+		//Toast 설정
+		toastr.options = {
+				  "closeButton": false,
+				  "debug": false,
+				  "newestOnTop": false,
+				  "progressBar": true,
+				  "positionClass": "toast-bottom-center",
+				  "preventDuplicates": true,
+				  "onclick": null,
+				  "showDuration": "300",
+				  "hideDuration": "500",
+				  "timeOut": "2500",
+				  "extendedTimeOut": "5000",
+				  "showEasing": "swing",
+				  "hideEasing": "linear",
+				  "showMethod": "fadeIn",
+				  "hideMethod": "fadeOut"
+				}
 	</script>
 	
   </body>
