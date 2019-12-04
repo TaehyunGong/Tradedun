@@ -30,6 +30,15 @@
     <link rel="stylesheet" href="/css/datatables.min.css"/>
     <link rel="stylesheet" href="/css/tradedun.css"/>
 
+	<!-- jQuery Modal -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+	<!-- fontawsome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+	
+	<!-- Toasts -->
+	<link rel="stylesheet" href="/css/toastr.min.css"/>
+
  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
    <div class="container">
      <a class="navbar-brand" href="index.html">Trade<span>Dun</span></a>
@@ -76,6 +85,12 @@
   <script src="/js/jquery-ui.min.js"></script>
   <script src="/js/datatables.min.js"></script>
   <script src="/js/tradedun.js" ></script>
+  
+  <!-- jQuery Modal -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+  
+  <!-- Toasts -->
+  <script src="/js/toastr.min.js" ></script>
   
   <%--메시지 전용 jstl이다. --%>
   ${msg}

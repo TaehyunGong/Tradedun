@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Autoroad - Free Bootstrap 4 Template by Colorlib</title>
+    <title>TradeDun - 레어아바타 검색</title>
     <meta charset="utf-8">
   </head>
   <body>
@@ -12,20 +12,28 @@
 	<c:import  url="/header" />    
     <!-- END nav -->
     
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/nbg_4.png');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
           	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Contact <i class="ion-ios-arrow-forward"></i></span></p>
-            <h1 class="mb-3 bread">AuctionSetSearch</h1>
+            <h1 class="mb-3 bread">레어아바타 세트 검색</h1>
           </div>
         </div>
       </div>	
     </section>
 
-	<section class="ftco-section ftco-no-pb ftco-no-pt">
+	<section class="ftco-section">
 	    <div class="container">
+	    
+	    	<div class="row block-12 justify-content-center mb-3">
+				<div class="col-md-12 heading-section text-center mb-3">
+					<span class="subheading">RareAvatar Auction Search</span>
+					<h2 class="mb-2">레어아바타 세트 경매장 검색</h2>
+	         	</div>
+	       	</div>
+	    
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="search-wrap-1 ftco-animate mb-5">

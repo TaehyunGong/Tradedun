@@ -45,16 +45,16 @@ public class auctionController {
 	}
 	
 	/**
-	 * @description 포워딩) 아바타 세트 검색 페이지로 포워딩 
+	 * @description 포워딩) 레어 아바타 세트 검색 페이지로 포워딩 
 	 * @return
 	 * @throws IOException 
 	 */
-	@RequestMapping(value="/avatarCharacterSet")
+	@RequestMapping(value="/rareAvatarSet")
 	public String avatarCharacterSet(Model model) throws IOException {
 		String avatarList = service.selectRareAvatarList();
 		model.addAttribute("avatarList", avatarList);
 		
-		return "/Auction/AvatarCharacterSet";
+		return "/Auction/RareAvatarSet";
 	}
 	
 	/**
@@ -73,6 +73,8 @@ public class auctionController {
 		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
 		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
 		model.addAttribute("searchCount", mapList.get("searchCount"));
+		
+		model.addAttribute("title", "레어아바타 차수 검색 결과");
 		
 		return "/Auction/AvatarSearch";
 	}
@@ -125,6 +127,8 @@ public class auctionController {
 		model.addAttribute("auctions", mapList.get("auctions"));
 		model.addAttribute("choiceAvatar", mapList.get("choiceAvatar"));
 		model.addAttribute("rowPriceSum", mapList.get("rowPriceSum"));
+		
+		model.addAttribute("title", "위시리스트 검색 결과");
 		
 		return "/Auction/AvatarSearch";
 	}

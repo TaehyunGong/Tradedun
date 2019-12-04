@@ -250,14 +250,35 @@ public class auctionServiceImpl implements auctionService {
 			
 			//avatar의 엠블렘의 수 만큼 반복 
 			for(int emblemIndex=0; emblemIndex < avatar.getEmblems().size(); emblemIndex++) {
-				ItemDetail emblem = avatar.getEmblems().get(emblemIndex);
+				ItemDetail detail = avatar.getEmblems().get(emblemIndex);
+				String emblem = detail.getItemName();
 				
 				//DB에서 가져온 엠블렘이랑 일치하는 엠블렘 객체를 대입해준다.
-				ItemDetail newEmblem = emblemMap.get(emblem.getItemName());
+				ItemDetail newEmblem = emblemMap.get(emblem);
 				
-				//만약 map에 없는 엠블렘이라면 패스한다.
-				if(newEmblem != null)
-					avatar.getEmblems().set(emblemIndex, newEmblem);
+				//혹시 플래티넘 엠블렘인지 체크 후 플티라면 파싱 후 해당 직군에 맞는 엠블렘으로 객체를 만들어서 넣어준다.
+				if(newEmblem == null) {
+					if(emblem.contains("플래티넘")) {
+						
+						//Call by Reference 때문에 직접적으로 대입을 시켜줄수가 없다.
+						newEmblem = new ItemDetail();
+						
+						ItemDetail platinum = emblemMap.get(jobId.substring(0, 5) + "_platinum_emblem");
+						
+						//DB에서  select 할때 바뀌었던 id와 name을 정상으로 돌린다.
+						if(platinum != null) {
+							newEmblem.setItemId(platinum.getItemName());
+							newEmblem.setItemName(emblem);
+							newEmblem.setItemRarity(platinum.getItemRarity());
+							newEmblem.setItemRarityColor(platinum.getItemRarityColor());
+							newEmblem.setItemType(platinum.getItemType());
+							newEmblem.setItemTypeDetail(platinum.getItemTypeDetail());
+						}
+					}
+				}
+				
+				//매칭시킨 엠블렘으로 값을 넣는다.
+				avatar.getEmblems().set(emblemIndex, newEmblem);
 			}
 		}
 		
@@ -530,7 +551,17 @@ public class auctionServiceImpl implements auctionService {
 	            }
 	         }
 	      }
-		
+
+	    //염색 문자 제거, 예) 골드 셀레스티얼 양갈래 롱헤어 (흑록) <- 괄호 제거
+	    for(int strIndex=0; strIndex < list.size(); strIndex++) {
+	    	Avatar avatar = list.get(strIndex);
+	    	int checkIdx = avatar.getItemName().indexOf('('); 
+	    	// -1이 아니라면 '(' 가 있으니 조건 처리
+	    	if(checkIdx != -1) {
+	    		avatar.setItemName(avatar.getItemName().substring(0, checkIdx-1));
+	    	}
+	    }
+	      
 		List<Auctions> auctions = searchAuctionAvatarNameList(list, jobId);
 		List<Avatar> avatarList = new ArrayList<Avatar>();
 		

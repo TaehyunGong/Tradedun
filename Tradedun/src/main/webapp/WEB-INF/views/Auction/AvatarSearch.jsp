@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Autoroad - Free Bootstrap 4 Template by Colorlib</title>
+    <title>TradeDun - ${title}</title>
     <meta charset="utf-8">
   </head>
 	<c:import  url="/header" />
@@ -17,7 +17,6 @@
 	</style>
   <body>
 
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css"/>
     <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -26,7 +25,7 @@
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
           	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Contact <i class="ion-ios-arrow-forward"></i></span></p>
-            <h1 class="mb-3 bread">AvatarSearch</h1>
+            <h1 class="mb-3 bread">${title}</h1>
           </div>
         </div>
       </div>	
@@ -43,8 +42,8 @@
           </div>
       	</div>
       	
-      	<div class='row'>
-     		<div class='col-md-5 pr-3'>
+      	<div class='row mb-3'>
+     		<div class='col-md-5 pr-3 pb-3'>
 				<!-- 판매 설정 -->
 		      	<div class="request-form">
 		      		<h3>조회 결과</h3>
@@ -72,11 +71,13 @@
       		
       		<div class='col-md-7'>
       			<table class="table table-condensed " >
+      				<thead>
+      					<td class='text-center' colspan="3">아바타 리스트</td>
+      				</thead>
       				<c:forEach var="avatar" items="${choiceAvatar}">
 						<tr>
 							<td style='width:60px;'>${avatar.slotName}</td>
-						    <td><img class="pr-3" src='https://img-api.neople.co.kr/df/items/${avatar.itemId}' title='${avatar.itemName}' alt='${avatar.itemName}'/>
-						    </td>
+						    <td><img class="pr-3" src='https://img-api.neople.co.kr/df/items/${avatar.itemId}' title='${avatar.itemName}' alt='${avatar.itemName}'/></td>
 						    <td><font class='pl-2' style='font-weight: bold;'>${avatar.itemName}</font></td>
 						</tr>
 					</c:forEach>
@@ -84,8 +85,8 @@
       		</div>
       	</div>
       	
-      	<div class='pt-5'>
-			 <table id="example" class='compact hover' style="width:100%">
+      	<div>
+			 <table id="example" class='compact hover cell-border' style="width:100%">
 			 	<thead>
 			 		<tr>
 			 			<td>부위</td>
@@ -110,10 +111,10 @@
 						  		<c:forEach var="emblem" items="${auction.rows[0].avatar.emblems}">
 						  			<c:choose>
 						  				<c:when test="${fn:substring(emblem.itemId, fn:length(emblem.itemId) -6, fn:length(emblem.itemId)) == 'emblem'}">
-						  					<img src="/images/emblems/${emblem.itemId}.png" onerror="this.style.display='none'" style='width:28px;'>
+						  					<img src="/images/emblems/${emblem.itemId}.png" class='emblem_list_size' onerror="this.style.display='none'" data-emblemName='${emblem.itemName}'>
 						  				</c:when>
 						  				<c:otherwise>
-						  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" onerror="this.style.display='none'" style='width:28px;'>
+						  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" class='emblem_list_size' onerror="this.style.display='none'" data-emblemName='${emblem.itemName}'>
 						  				</c:otherwise>
 						  			</c:choose>
 						  		</c:forEach>
@@ -142,10 +143,10 @@
 							  		<c:forEach var="emblem" items="${item.avatar.emblems}">
 							  			<c:choose>
 							  				<c:when test="${fn:substring(emblem.itemId, fn:length(emblem.itemId) -6, fn:length(emblem.itemId)) == 'emblem'}">
-							  					<img src="/images/emblems/${emblem.itemId}.png" onerror="this.style.display='none'" style='width:28px;'>
+							  					<img src="/images/emblems/${emblem.itemId}.png" class='emblem_list_size' onerror="this.style.display='none'" data-emblemName='${emblem.itemName}'>
 							  				</c:when>
 							  				<c:otherwise>
-							  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" onerror="this.style.display='none'" style='width:28px;'>
+							  					<img src="https://img-api.neople.co.kr/df/items/${emblem.itemId}" class='emblem_list_size' onerror="this.style.display='none'" data-emblemName='${emblem.itemName}'>
 							  				</c:otherwise>
 							  			</c:choose>
 							  		</c:forEach>
@@ -188,12 +189,12 @@
 		    
 			//경매장 리스트 첫번째 라인은 하이라이트
 			$('.trLine').css('background', '#ffdab8').css('font-weight', 'bold');
+			
 		} );
 		
 		//경매장 리스트 클릭시 테이블 down 
 		$(document).on('click', 'table tbody .trLine', function(){
 			var slotName = $(this).data('slotname');
-			console.log(slotName);
 			$('tr[data-slotName="'+ slotName +'"].hide').fadeToggle();
 		});
 	
@@ -234,6 +235,31 @@
 		function allOpen(){
 			$('.hide').show();
 		}
+		
+		//경매장 리스트 클릭시 테이블 down 
+		$(document).on('click', 'table tbody .emblem_list_size', function(){
+			var emblemName = $(this).data('emblemname');
+			toastr.info(emblemName, '엠블렘');
+		});
+		
+		//Toast 설정
+		toastr.options = {
+				  "closeButton": false,
+				  "debug": false,
+				  "newestOnTop": false,
+				  "progressBar": true,
+				  "positionClass": "toast-bottom-center",
+				  "preventDuplicates": true,
+				  "onclick": null,
+				  "showDuration": "300",
+				  "hideDuration": "500",
+				  "timeOut": "2500",
+				  "extendedTimeOut": "5000",
+				  "showEasing": "swing",
+				  "hideEasing": "linear",
+				  "showMethod": "fadeIn",
+				  "hideMethod": "fadeOut"
+				}
 	</script>
 	
   </body>

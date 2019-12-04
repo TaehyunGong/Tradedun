@@ -57,3 +57,122 @@
 	opacity: 1;
 	visibility: visible;
 }
+
+/*
+	AuctionMenu.jsp
+*/
+.auction-section {
+  position: relative; }
+  .auction-section .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    opacity: .7;
+    background: #000000; }
+
+.auction {
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease; }
+  @media (max-width: 767.98px) {
+    .auction {
+      margin-bottom: 40px; } }
+  .auction .icon {
+    line-height: 1.3;
+    position: relative;
+    z-index: 0; }
+    .auction .icon span {
+      font-size: 30px;
+      color: #fc983c; }
+  .auction .media-body {
+    /* color: rgba(0, 0, 0, 0.8); */ }
+    .auction .media-body h3 {
+      font-size: 18px;
+      font-weight: 500;
+      /* color: #000000; */ }
+    .auction .media-body p {
+      margin-bottom: 0; }
+  .auction.active {
+    background: #fc983c; }
+    .auction.active .icon span {
+      color: #fff; }
+    .auction.active .media-body {
+      /* color: rgba(255, 255, 255, 0.8); */ }
+      .auction.active .media-body h3 {
+        /* color: #fff; */ }
+      .auction.active .media-body p {
+        margin-bottom: 0; }
+  .auction.auction-2 .icon {
+    border: 2px solid #fc983c;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%; }
+    .auction.auction-2 .icon span {
+      /* color: #fff; */ }
+  .auction.auction-2 h3 {
+    /* color: #fff; */ }
+  .auction.auction-2 .media-body {
+    /* color: rgba(255, 255, 255, 0.8); */ }
+
+.auction-wrap {
+  display: block;
+  width: 100%;
+  margin-bottom: 40px; }
+  .auction-wrap .icon {
+    line-height: 1.3;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background: #000000;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    .auction-wrap .icon span {
+      font-size: 40px;
+      /* color: #fff; */ }
+  .auction-wrap .media-body {
+    width: calc(100% - 80px); }
+    .auction-wrap .media-body h3 {
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 18px; }
+  .auction-wrap:hover .icon {
+    background: #fc983c; }
+    .auction-wrap:hover .icon span {
+      /* color: #fff; */ }
+      
+.sub_title{
+	font-weight: bold;
+	font-size: 20px;
+}      
+      
+.content-hover-box:hover{
+	cursor: pointer;
+    opacity: .8;
+    background: #F0F0D0;
+    color:#fc983c !important;;
+    border-radius: 0.5em;
+}      
+
+
+.emblem_list_size{
+	width:28px;
+	cursor: zoom-in;
+}
