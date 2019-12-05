@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Autoroad - Free Bootstrap 4 Template by Colorlib</title>
+    <title>TradeDun - 글 작성</title>
     <meta charset="utf-8">
   </head>
   <body>
@@ -19,7 +19,7 @@
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
           	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Contact <i class="ion-ios-arrow-forward"></i></span></p>
-            <h1 class="mb-3 bread">글작성</h1>
+            <h1 class="mb-3 bread">글 작성</h1>
           </div>
         </div>
       </div>
@@ -30,29 +30,38 @@
         <div class="row block-9 justify-content-center mb-5">
           <div class="col-md-10 mb-md-5">
           
-            <form id="submitForm" action="/board/boardInsert" class="bg-light p-4 contact-form" 
+            <form id="submitForm" action="${action}" class="bg-light p-4 contact-form" 
             	method="post" enctype="multipart/form-data" onsubmit="return false;">
-              
+              	<input type="hidden" name="boardNo" value="${board.boardNo}">
 				<div class="form-group">
 				    <label for="#">글 카테고리</label>
 				    <div class="form-field">
 				        <div class="select-wrap">
-				            <select name="category" class="form-control">
-				            	<c:forEach var="category" items="${categroyList}">
-				            		<option value="${category.categoryCode}">${category.categoryName}</option>
-				            	</c:forEach>
-				            </select>
+			            	<c:choose>
+			            		<c:when test="${action eq '/board/boardModify'}">
+			            			<select name="category" class="form-control" readonly>
+			            				<option value="${board.categoryCode}">${board.categoryCode}</option>
+			            			</select>
+			            		</c:when>
+			            		<c:otherwise>
+			            			<select name="category" class="form-control">
+					            	<c:forEach var="category" items="${categroyList}">
+					            		<option value="${category.categoryCode}">${category.categoryName}</option>
+					            	</c:forEach>
+					            	</select>
+			            		</c:otherwise>
+			            	</c:choose>
 				        </div>
 				    </div>
 				</div>
               
               <div class="form-group">
               	<label for="#">제목</label>
-                <input type="text" class="form-control" placeholder="제목" name="title" required>
+                <input type="text" class="form-control" placeholder="제목" name="title" value="${board.title}" required>
               </div>
               
               <div class="form-group">
-                <textarea class="form-control" id="p_content" name="contents" ></textarea>
+                <textarea class="form-control" id="p_content" name="contents" >${board.contents}</textarea>
               </div>
               
               <div class="form-group">
@@ -78,6 +87,7 @@
 		})
 		
 		//수동 제출
+		// mode = modify || insert(default)
 		function submit(){
 			$('#submitForm').submit();
 		}

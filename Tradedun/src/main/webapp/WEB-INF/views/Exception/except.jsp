@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Autoroad - Free Bootstrap 4 Template by Colorlib</title>
+    <title>TradeDun - Error</title>
     <meta charset="utf-8">
   </head>
   <body>
@@ -27,7 +27,7 @@
     
 	 <div id='applyBox' class="row block-9 justify-content-center mt-5 mb-5">
 		<div class="request-form">
-			<h1>404 에러 발생</h1>
+			<h1>잘못된 접근입니다.</h1>
 	  	</div>
 	  </div>
 

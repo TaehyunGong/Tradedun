@@ -14,6 +14,7 @@ import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Board.dao.boardDao;
 import com.thkong.tradedun.Board.vo.Board;
 import com.thkong.tradedun.Common.FileLib;
+import com.thkong.tradedun.User.vo.User;
 
 @Transactional
 @Service
@@ -52,26 +53,30 @@ public class boardServiceImpl implements boardService{
 	 * @return
 	 */
 	@Override
-	public void insertBoard(String title, String contents, String categoryCode) throws Exception {
-		int boardNo = dao.selectBoardNo(categoryCode);
+	public void insertBoard(Board board) throws Exception {
 		
-		Board board = new Board();
+		//글 등록시 새로운 boardNo를 가져온다.
+		int boardNo = dao.selectBoardNo(board.getCategoryCode());
 		board.setBoardNo(boardNo);
-		board.setTitle(title);
-		board.setContents(contents);
-		board.setCategoryCode(categoryCode);
 		
-		int result = dao.insertBoard(board);
-		System.out.println(result);
+		dao.insertBoard(board);
 	}
 
 	/**
-	 * @description 게시글 카테고리 리스트 가져옴
+	 * @description 게시글 카테고리 리스트 가져옴, 관리자가 아니라면 공지사항을 제외해서 보여준다.
+	 * @param user
 	 * @return
 	 */
 	@Override
-	public List<Category> selectBoardCategoryList() {
-		return dao.selectBoardCategoryList();
+	public List<Category> selectBoardCategoryList(User user) {
+		List<Category> list = dao.selectBoardCategoryList();
+		
+		// 1192936782 <- 관리자 유저번호
+		if(user == null || !user.getUserNo().equals("1192936782"))
+			// 첫번째가 공지사항
+			list.remove(0);
+		
+		return list;
 	}
 
 	/**
@@ -97,5 +102,24 @@ public class boardServiceImpl implements boardService{
 		
 		return dao.selectBoard(board);
 	}
-	
+
+	/**
+	 * @description 작성글을 수정한다. 꼭 게시글 작성자와 수정자는 같은 사람이어야한다.
+	 * @param boardNo
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public boolean updateBoard(Board board, User user) {
+		Board compareBoard = dao.selectBoard(board);
+		boolean chk = false;
+		
+		//수정할 글과 작성자가 동일해야지만 수정할수 있다. ex) 관리자는 별도로 가능
+		if(compareBoard.getUserNo().equals(user.getUserNo()) || user.getUserNo().equals("1192936782")){
+			dao.updateBoard(board);
+		}
+		
+		return chk;
+	}
+
 }

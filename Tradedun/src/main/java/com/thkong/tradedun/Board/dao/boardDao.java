@@ -17,5 +17,7 @@ public interface boardDao {
 
 	Board selectBoard(Board board);
 
+	void updateBoard(Board board);
+
 	
 }
