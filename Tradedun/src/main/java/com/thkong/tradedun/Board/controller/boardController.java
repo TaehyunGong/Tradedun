@@ -1,16 +1,9 @@
 package com.thkong.tradedun.Board.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.thkong.tradedun.Board.service.boardService;
@@ -46,12 +39,12 @@ public class boardController {
 	 * @return
 	 */
 	@RequestMapping(value="/boardInsert", method = RequestMethod.POST)
-	public String boardInsert(MultipartHttpServletRequest req) {
+	public String boardInsert(MultipartHttpServletRequest req) throws Exception{
 		String title = req.getParameter("title");
 		String contents = req.getParameter("contents");
+		String categoryCode = req.getParameter("category");
 		
-		System.out.println("제목 : " + title);
-		System.out.println(contents);
+		service.insertBoard(title, contents, categoryCode);
 		
 		return "/Board/BoardWriter";
 	}

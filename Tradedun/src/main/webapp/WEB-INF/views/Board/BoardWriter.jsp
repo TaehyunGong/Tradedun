@@ -32,7 +32,19 @@
           
             <form id="submitForm" action="/board/boardInsert" class="bg-light p-4 contact-form" 
             	method="post" enctype="multipart/form-data" onsubmit="return false;">
-            	
+              
+				<div class="form-group">
+				    <label for="#">글 카테고리</label>
+				    <div class="form-field">
+				        <div class="select-wrap">
+				            <select name="category" class="form-control">
+				                <option value="B_notice">공지사항</option>
+				                <option value="B_board">게시글</option>
+				            </select>
+				        </div>
+				    </div>
+				</div>
+              
               <div class="form-group">
               	<label for="#">제목</label>
                 <input type="text" class="form-control" placeholder="제목" name="title" required>

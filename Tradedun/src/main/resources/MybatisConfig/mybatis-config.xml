@@ -2,7 +2,11 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
+	
+		<!-- User -->
 		<typeAlias alias="User" type="com.thkong.tradedun.User.vo.User"/>
+		
+		<!-- Auction -->
 		<typeAlias alias="ItemDetail" type="com.thkong.tradedun.Auction.vo.ItemDetail"/>
 		<typeAlias alias="AuctionBoard" type="com.thkong.tradedun.Auction.vo.AuctionBoard"/>
 		<typeAlias alias="AuctionBoardCharBox" type="com.thkong.tradedun.Auction.vo.AuctionBoardCharBox"/>
@@ -13,5 +17,9 @@
 		<typeAlias alias="Avatar" type="com.thkong.tradedun.Auction.vo.Avatar"/>
 		<typeAlias alias="JobGrow" type="com.thkong.tradedun.Auction.vo.JobGrow"/>
 		<typeAlias alias="AuctionSalesBoard" type="com.thkong.tradedun.Auction.vo.AuctionSalesBoard"/>
+		
+		<!-- Board -->
+		<typeAlias alias="Board" type="com.thkong.tradedun.Board.vo.Board"/>
+		
 	</typeAliases>
 </configuration>
