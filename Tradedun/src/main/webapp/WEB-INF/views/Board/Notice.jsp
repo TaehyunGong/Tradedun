@@ -26,24 +26,28 @@
 
     <section class="ftco-section">
       <div class="container">
-        <div class="row d-flex justify-content-center">
-        
-        	<c:forEach var="board" items="${boardList}">
-	        	<div class="col-md-10 d-flex ftco-animate">
-	          		<div class="blog-entry justify-content-end">
-	            	  <div class="text pt-4">
-	              		<div class="meta mb-3">
-	                  	<div><a href="#">${board.createDT}</a></div>
-	                  	<div><a href="#">Admin</a></div>
-	                  	<div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-	                	</div>
-	                	<h3 class="heading mt-2"><a href="#">${board.title}</a></h3>
-	                	<p>${board.contents}</p>
-	                	<p><a href="/?page=blog-single" class="btn-custom">자세히 보기 <span class="icon-long-arrow-right"></span></a></p>
-	              	</div>
-	            	</div>
-	          	</div>
-        	</c:forEach>
+        <div class="justify-content-center">
+        	
+        	<table id="example" class="display nowrap" style="width:100%">
+        		<thead>
+        			<tr>
+        				<th>글 번호</th>
+        				<th>분류</th>
+        				<th>제목</th>
+        				<th>작성 일</th>
+        			</tr>
+        		</thead>
+        		<tbody>
+        			<c:forEach var="board" items="${boardList}">
+        				<tr>
+        					<td>${board.boardNo}</td>
+        					<td>${board.categoryCode}</td>
+        					<td>${board.title}</td>
+        					<td>${board.createDT}</td>
+        				</tr>
+        			</c:forEach>
+        		</tbody>
+        	</table>
           
         </div>
         
@@ -66,6 +70,11 @@
     </section>
 
 	<c:import  url="/footer" />
+    <script>
     
+		$(document).ready(function() {
+			$('#example').DataTable();
+		});
+    </script>
   </body>
 </html>
