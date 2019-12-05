@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.thkong.tradedun.Auction.vo.Category;
@@ -57,6 +58,22 @@ public class boardController {
 		service.insertBoard(title, contents, categoryCode);
 		
 		return "/Board/BoardWriter";
+	}
+	
+	/**
+	 * @description 글 상세 보기
+	 * @param boardNo
+	 * @param categoryCode
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/boardDetail", method = RequestMethod.GET)
+	public String boardDetail(@RequestParam(required = true) int boardNo
+							, @RequestParam(required = true) String categoryCode
+							, Model model) {
+		Board board = service.selectBoard(boardNo, categoryCode);
+		model.addAttribute("board", board);
+		return "/Board/BoardDetail";
 	}
 
 }

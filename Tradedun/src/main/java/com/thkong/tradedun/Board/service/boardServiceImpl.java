@@ -82,5 +82,20 @@ public class boardServiceImpl implements boardService{
 	public List<Board> selectBoardList() {
 		return dao.selectBoardList();
 	}
+
+	/**
+	 * @description 게시글 상세 리스트 가져온다.
+	 * @param boardNo
+	 * @param categoryCode
+	 * @return
+	 */
+	@Override
+	public Board selectBoard(int boardNo, String categoryCode) {
+		Board board = new Board();
+		board.setBoardNo(boardNo);
+		board.setCategoryCode(categoryCode);
+		
+		return dao.selectBoard(board);
+	}
 	
 }

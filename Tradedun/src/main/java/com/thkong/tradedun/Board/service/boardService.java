@@ -17,4 +17,6 @@ public interface boardService {
 	public List<Category> selectBoardCategoryList();
 
 	public List<Board> selectBoardList();
+
+	public Board selectBoard(int boardNo, String categoryCode);
 }

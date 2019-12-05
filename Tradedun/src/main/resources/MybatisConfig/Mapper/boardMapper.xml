@@ -29,4 +29,12 @@
 		AND categoryCode = 'B_notice'
 		ORDER BY boardNo DESC
 	</select>
+	
+	<select id="selectBoard" parameterType="Board" resultType="Board">
+		SELECT boardNo, categoryCode, title, contents, createDT, modifyDT
+		FROM Board
+		WHERE deleteDT IS NULL
+		AND boardNo = #{boardNo}
+		AND categoryCode = #{categoryCode}
+	</select>
 </mapper>

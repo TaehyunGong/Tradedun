@@ -28,7 +28,7 @@
       <div class="container">
         <div class="justify-content-center">
         	
-        	<table id="example" class="display nowrap" style="width:100%">
+        	<table id="boardList" class="display nowrap" style="cursor:pointer" style="width:100%">
         		<thead>
         			<tr>
         				<th>글 번호</th>
@@ -51,21 +51,6 @@
           
         </div>
         
-        <div class="row mt-5">
-          <div class="col text-center">
-            <div class="block-27">
-              <ul>
-                <li><a href="#">&lt;</a></li>
-                <li class="active"><span>1</span></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&gt;</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -73,8 +58,14 @@
     <script>
     
 		$(document).ready(function() {
-			$('#example').DataTable();
+			var table = $('#boardList').DataTable();
+			
+		    $('#boardList tbody').on('click', 'tr', function () {
+		        var data = table.row( this ).data();
+		        location.href="/board/boardDetail?boardNo="+data[0]+"&categoryCode="+data[1];
+		    } );
 		});
+		
     </script>
   </body>
 </html>

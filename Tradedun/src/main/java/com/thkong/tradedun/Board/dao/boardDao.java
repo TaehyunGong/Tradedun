@@ -15,5 +15,7 @@ public interface boardDao {
 
 	List<Board> selectBoardList();
 
+	Board selectBoard(Board board);
+
 	
 }
