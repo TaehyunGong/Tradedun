@@ -58,7 +58,10 @@
 	
 		//ckEditor load
 		$(function(){
-			CKEDITOR.replace('p_content', {height: 400});
+			CKEDITOR.replace('p_content', {
+				height: 400,
+				filebrowserUploadUrl: '/board/uploadFile'
+			});
 		})
 		
 		//수동 제출
