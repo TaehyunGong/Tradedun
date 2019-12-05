@@ -38,8 +38,9 @@
 				    <div class="form-field">
 				        <div class="select-wrap">
 				            <select name="category" class="form-control">
-				                <option value="B_notice">공지사항</option>
-				                <option value="B_board">게시글</option>
+				            	<c:forEach var="category" items="${categroyList}">
+				            		<option value="${category.categoryCode}">${category.categoryName}</option>
+				            	</c:forEach>
 				            </select>
 				        </div>
 				    </div>

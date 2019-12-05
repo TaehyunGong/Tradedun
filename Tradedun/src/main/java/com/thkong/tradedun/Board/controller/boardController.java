@@ -1,11 +1,15 @@
 package com.thkong.tradedun.Board.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Board.service.boardService;
 
 @Controller
@@ -25,11 +29,14 @@ public class boardController {
 	}
 	
 	/**
-	 * @description 포워딩) 글작성 페이지로 넘김
+	 * @description 포워딩) 글작성 페이지로 board 카테고리 리스트를 가지고 넘김
 	 * @return
 	 */
 	@RequestMapping(value="/boardWriter")
-	public String boardWriter() {
+	public String boardWriter(Model model) {
+		List<Category> categoryList = service.selectBoardCategoryList();
+		model.addAttribute("categroyList", categoryList);
+		
 		return "/Board/BoardWriter";
 	}
 	

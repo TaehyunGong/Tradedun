@@ -3,12 +3,14 @@ package com.thkong.tradedun.Board.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Board.dao.boardDao;
 import com.thkong.tradedun.Board.vo.Board;
 import com.thkong.tradedun.Common.FileLib;
@@ -61,6 +63,11 @@ public class boardServiceImpl implements boardService{
 		
 		int result = dao.insertBoard(board);
 		System.out.println(result);
+	}
+
+	@Override
+	public List<Category> selectBoardCategoryList() {
+		return dao.selectBoardCategoryList();
 	}
 	
 }

@@ -13,4 +13,12 @@
 		INSERT INTO Board (boardNo, categoryCode, title, contents, createDT, modifyDT, deleteDT)
 		VALUES(#{boardNo}, #{categoryCode}, #{title}, #{contents}, NOW(), null, null)
 	</insert>
+	
+	<select id="selectBoardCategoryList" resultType="Category">
+		SELECT categoryCode, categoryKind, categoryName
+		FROM Category
+		WHERE categoryKind = 'board'
+		AND deleteDT IS NULL
+		ORDER BY sort
+	</select>
 </mapper>
