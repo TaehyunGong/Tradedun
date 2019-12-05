@@ -117,6 +117,7 @@ public class boardServiceImpl implements boardService{
 		//수정할 글과 작성자가 동일해야지만 수정할수 있다. ex) 관리자는 별도로 가능
 		if(compareBoard.getUserNo().equals(user.getUserNo()) || user.getUserNo().equals("1192936782")){
 			dao.updateBoard(board);
+			chk = true;
 		}
 		
 		return chk;

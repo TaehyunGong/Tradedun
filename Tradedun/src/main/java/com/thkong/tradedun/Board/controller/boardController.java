@@ -136,6 +136,7 @@ public class boardController {
 	/**
 	 * @description 글작성 컨트롤러
 	 * @param req
+	 * @param session
 	 * @return
 	 */
 	@RequestMapping(value="/boardModify", method = RequestMethod.POST)
