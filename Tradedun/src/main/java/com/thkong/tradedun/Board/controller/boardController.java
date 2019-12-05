@@ -1,8 +1,11 @@
 package com.thkong.tradedun.Board.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,10 +13,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.thkong.tradedun.Board.service.boardService;
+
 @Controller
 @RequestMapping(value="/board")
 public class boardController {
 
+	@Autowired
+	boardService service;
+	
 	/**
 	 * @description 포워딩) 공지사항 리스트로 페이지 넘김
 	 * @return
@@ -48,18 +56,20 @@ public class boardController {
 		return "/Board/BoardWriter";
 	}
 	
+	/**
+	 * @description ckEditor로 이미지 업로드시 파일업로드 로직
+	 * @param multiFile
+	 * @return
+	 * @throws IOException
+	 */
 	@RequestMapping(value="/uploadFile")
-	public @ResponseBody Map<String, String> uploadFile(MultipartHttpServletRequest multiFile){
-		MultipartFile file = multiFile.getFile("upload");
-		System.out.println(file.getOriginalFilename());
+	public @ResponseBody Map<String, String> uploadFile(MultipartHttpServletRequest multiFile) throws IOException{
+		MultipartFile multifile = multiFile.getFile("upload");
 		
-		// json 데이터로 등록
-        // {"uploaded" : 1, "fileName" : "test.jpg", "url" : "/img/test.jpg"}
+		File file = new File(multifile.getOriginalFilename());
+		multifile.transferTo(file);
 
-		Map<String, String> jsonMap = new HashMap<String, String>();
-		jsonMap.put("uploaded", "1");
-		jsonMap.put("fileName", "파일명.png");
-		jsonMap.put("url", "/images/nbg_1.png");
+		Map<String, String> jsonMap = service.uploadFile(file);
 		
 		return jsonMap;
 	}

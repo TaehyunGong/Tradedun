@@ -35,7 +35,7 @@
             	
               <div class="form-group">
               	<label for="#">제목</label>
-                <input type="text" class="form-control" placeholder="제목" name="title" >
+                <input type="text" class="form-control" placeholder="제목" name="title" required>
               </div>
               
               <div class="form-group">

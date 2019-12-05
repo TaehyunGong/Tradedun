@@ -10,5 +10,10 @@
         <!-- max size of file in memory (in bytes) -->
         <property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
     </bean>
+    
+    <!-- FileLib Bean -->
+    <bean id="fileLib" class="com.thkong.tradedun.Common.FileLib">
+    	<constructor-arg value="/resources/upImage/board/"/>
+    </bean>
 
 </beans>
