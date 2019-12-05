@@ -25,6 +25,12 @@ public class auctionController {
 	@Autowired
 	auctionService service;
 	
+	//템플릿 jsp 적용을 위한 임시용 매핑
+	@RequestMapping(value = "/auctionMenu", method = {RequestMethod.GET, RequestMethod.POST})
+	public String auction() {
+		return "/Auction/AuctionMenu";
+	}
+	
 	/**
 	 * @description 포워딩) 판매글 작성, 세션에 유저가 없다면 잘못된 접근이라 알리고 에러페이지로 넘김
 	 * @param session

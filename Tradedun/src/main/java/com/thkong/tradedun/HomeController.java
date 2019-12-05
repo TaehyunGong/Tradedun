@@ -24,10 +24,4 @@ public class HomeController {
 		return "/common/footer";
 	}
 	
-	//템플릿 jsp 적용을 위한 임시용 매핑
-	@RequestMapping(value = "/AuctionMenu", method = {RequestMethod.GET, RequestMethod.POST})
-	public String auction() {
-		return "/Auction/AuctionMenu";
-	}
-	
 }
