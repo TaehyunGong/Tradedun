@@ -13,5 +13,7 @@ public interface boardDao {
 
 	List<Category> selectBoardCategoryList();
 
+	List<Board> selectBoardList();
+
 	
 }

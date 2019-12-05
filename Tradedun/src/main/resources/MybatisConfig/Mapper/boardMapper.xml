@@ -21,4 +21,12 @@
 		AND deleteDT IS NULL
 		ORDER BY sort
 	</select>
+	
+	<select id="selectBoardList" resultType="Board">
+		SELECT boardNo, categoryCode, title, contents, createDT
+		FROM Board
+		WHERE deleteDT IS NULL
+		AND categoryCode = 'B_notice'
+		ORDER BY boardNo DESC
+	</select>
 </mapper>

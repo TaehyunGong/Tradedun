@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.thkong.tradedun.Auction.vo.Category;
+import com.thkong.tradedun.Board.vo.Board;
 
 public interface boardService {
 
@@ -14,4 +15,6 @@ public interface boardService {
 	public void insertBoard(String title, String contents, String categoryCode) throws Exception;
 
 	public List<Category> selectBoardCategoryList();
+
+	public List<Board> selectBoardList();
 }

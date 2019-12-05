@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Board.service.boardService;
+import com.thkong.tradedun.Board.vo.Board;
 
 @Controller
 @RequestMapping(value="/board")
@@ -24,7 +25,9 @@ public class boardController {
 	 * @return
 	 */
 	@RequestMapping(value="/notice")
-	public String auctionWriter() {
+	public String auctionWriter(Model model) {
+		List<Board> boardList = service.selectBoardList();
+		model.addAttribute("boardList", boardList);
 		return "/Board/Notice";
 	}
 	

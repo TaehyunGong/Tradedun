@@ -65,9 +65,22 @@ public class boardServiceImpl implements boardService{
 		System.out.println(result);
 	}
 
+	/**
+	 * @description 게시글 카테고리 리스트 가져옴
+	 * @return
+	 */
 	@Override
 	public List<Category> selectBoardCategoryList() {
 		return dao.selectBoardCategoryList();
+	}
+
+	/**
+	 * @description 게시글 리스트 가져옴
+	 * @return
+	 */
+	@Override
+	public List<Board> selectBoardList() {
+		return dao.selectBoardList();
 	}
 	
 }
