@@ -6,8 +6,6 @@
   <head>
     <title>TradeDun - 쇼룸 검색</title>
     <meta charset="utf-8">
-    
-	
   </head>
   <body>
 
@@ -19,7 +17,7 @@
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="/">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Auction <i class="ion-ios-arrow-forward"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/">메인 <i class="ion-ios-arrow-forward"></i></a></span> <a href="/auction/auctionMenu"><span>컨텐츠 <i class="ion-ios-arrow-forward"></i></span></a></p>
             <h1 class="mb-3 bread">위시리스트 아바타 검색</h1>
           </div>
         </div>

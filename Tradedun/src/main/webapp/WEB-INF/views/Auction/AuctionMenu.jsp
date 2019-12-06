@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Autoroad - Free Bootstrap 4 Template by Colorlib</title>
+    <title>TradeDun - 컨텐츠 메뉴</title>
     <meta charset="utf-8">
   </head>
   <body>
@@ -17,7 +17,7 @@
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Contact <i class="ion-ios-arrow-forward"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/">메인<i class="ion-ios-arrow-forward"></i></a></span></p>
             <h1 class="mb-3 bread">컨텐츠 메뉴</h1>
           </div>
         </div>
@@ -46,7 +46,7 @@
 	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('AuctionList')">
 	                    <div class="media-body py-md-4 text-center  p-3 m-4">
 	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-list"></span></div>
-	                        <p class='sub_title'>판매 글 리스트 보기</p>
+	                        <p class='sub_title'>판매 글 리스트</p>
 	                        <p>현재 판매중인 아바타들을 조회해보세요!</p>
 	                    </div>
 	                </div>
