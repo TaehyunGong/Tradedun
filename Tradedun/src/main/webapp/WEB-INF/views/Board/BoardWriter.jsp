@@ -13,12 +13,12 @@
 	<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
     <!-- END nav -->
     
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_2.jpg');" data-stellar-background-ratio="0.5">
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/nbg_6.png');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Contact <i class="ion-ios-arrow-forward"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/">메인<i class="ion-ios-arrow-forward"></i></a></span></p>
             <h1 class="mb-3 bread">글 작성</h1>
           </div>
         </div>
@@ -38,9 +38,9 @@
 				    <div class="form-field">
 				        <div class="select-wrap">
 			            	<c:choose>
-			            		<c:when test="${action eq '/board/boardModify'}">
-			            			<select name="category" class="form-control" readonly>
-			            				<option value="${board.categoryCode}">${board.categoryCode}</option>
+			            		<c:when test="${action eq '/board/boardModifyApply'}">
+			            			<select name="category" class="form-control">
+			            				<option value="${board.categoryCode}">${board.categoryName}</option>
 			            			</select>
 			            		</c:when>
 			            		<c:otherwise>

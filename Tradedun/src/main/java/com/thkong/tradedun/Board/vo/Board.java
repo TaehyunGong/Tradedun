@@ -15,4 +15,6 @@ public class Board {
 	private Date createDT;
 	private Date modifyDT;
 	private Date deleteDT;
+	
+	private String categoryName;
 }

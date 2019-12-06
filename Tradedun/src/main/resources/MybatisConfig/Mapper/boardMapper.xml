@@ -23,19 +23,25 @@
 	</select>
 	
 	<select id="selectBoardList" resultType="Board">
-		SELECT boardNo, userNo, categoryCode, title, contents, createDT
-		FROM Board
-		WHERE deleteDT IS NULL
-		AND categoryCode = 'B_notice'
-		ORDER BY boardNo DESC
+		SELECT T1.boardNo, T1.userNo, T1.categoryCode, T2.categoryName, T1.title, T1.contents, T1.createDT
+		FROM Board T1
+			JOIN Category T2
+				ON T1.categoryCode = T2.categoryCode
+				AND T2.categoryKind = 'board'
+		WHERE T1.deleteDT IS NULL
+		AND T1.categoryCode = 'B_notice'
+		ORDER BY T1.boardNo DESC
 	</select>
 	
 	<select id="selectBoard" parameterType="Board" resultType="Board">
-		SELECT boardNo, categoryCode, userNo, title, contents, createDT, modifyDT
-		FROM Board
-		WHERE deleteDT IS NULL
-		AND boardNo = #{boardNo}
-		AND categoryCode = #{categoryCode}
+		SELECT T1.boardNo, T1.categoryCode, T2.categoryName, T1.userNo, T1.title, T1.contents, T1.createDT, T1.modifyDT
+		FROM Board T1
+			JOIN Category T2
+				ON T1.categoryCode = T2.categoryCode
+				AND T2.categoryKind = 'board'
+		WHERE T1.deleteDT IS NULL
+		AND T1.boardNo = #{boardNo}
+		AND T1.categoryCode = #{categoryCode}
 	</select>
 	
 	<update id="updateBoard" parameterType="Board">

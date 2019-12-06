@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,12 +13,12 @@
 	<c:import  url="/header" />
     <!-- END nav -->
     
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_2.jpg');" data-stellar-background-ratio="0.5">
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/nbg_5.png');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Blog <i class="ion-ios-arrow-forward"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/">메인<i class="ion-ios-arrow-forward"></i></a></span></p>
             <h1 class="mb-3 bread">공지 사항</h1>
           </div>
         </div>
@@ -41,9 +42,9 @@
         			<c:forEach var="board" items="${boardList}">
         				<tr>
         					<td>${board.boardNo}</td>
-        					<td>${board.categoryCode}</td>
+        					<td>${board.categoryName}</td>
         					<td>${board.title}</td>
-        					<td>${board.createDT}</td>
+        					<td><fmt:formatDate value="${board.createDT}" pattern="yyyy.MM.dd" /></td>
         				</tr>
         			</c:forEach>
         		</tbody>
@@ -60,13 +61,17 @@
 		$(document).ready(function() {
 			var table = $('#boardList').DataTable({
 				"language": {
-				      "emptyTable": "현재 공지사항이 없습니다."
-				    }
+					"emptyTable": "현재 공지사항이 없습니다."
+				},
+				"order": [[ 0, "desc" ]],
+				"ordering": false,
+				"info":     false,
+				"lengthChange": false
 			});
 			
 		    $('#boardList tbody').on('click', 'tr', function () {
 		        var data = table.row( this ).data();
-		        location.href="/board/boardDetail?boardNo="+data[0]+"&categoryCode="+data[1];
+		        location.href="/board/boardDetail?boardNo="+data[0]+"&categoryCode=B_notice";
 		    } );
 		});
 		

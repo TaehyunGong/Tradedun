@@ -85,7 +85,7 @@ public class boardController {
 	}
 	
 	/**
-	 * @description 글 상세 보기
+	 * @description 포워딩) 글 상세 보기
 	 * @param boardNo
 	 * @param categoryCode
 	 * @param model
@@ -101,7 +101,7 @@ public class boardController {
 	}
 
 	/**
-	 * @description 글 수정
+	 * @description 포워딩) 글 수정
 	 * @param boardNo
 	 * @param categoryCode
 	 * @param model
@@ -128,18 +128,18 @@ public class boardController {
 			
 			model.addAttribute("categroyList", categoryList);
 			model.addAttribute("board", board);
-			model.addAttribute("action", "/board/boardModify");
+			model.addAttribute("action", "/board/boardModifyApply");
 		}
 		return page;
 	}
 	
 	/**
-	 * @description 글작성 컨트롤러
+	 * @description 수정된 글내용을 update
 	 * @param req
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value="/boardModify", method = RequestMethod.POST)
+	@RequestMapping(value="/boardModifyApply", method = RequestMethod.POST)
 	public String boardModify(MultipartHttpServletRequest req
 							, HttpSession session) throws Exception{
 		User user = (User)session.getAttribute("user");

@@ -12,13 +12,13 @@
     <c:import  url="/header" /> 
     <!-- END nav -->
     
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_2.jpg');" data-stellar-background-ratio="0.5">
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/nbg_6.png');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
           <div class="col-md-9 ftco-animate pb-5">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span class="mr-2"><a href="blog.html">Blog <i class="ion-ios-arrow-forward"></i></a></span> <span>Blog Single <i class="ion-ios-arrow-forward"></i></span></p>
-            <h1 class="mb-3 bread">글 상세</h1>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/">메인 <i class="ion-ios-arrow-forward"></i></a></span> <span class="mr-2"><a href="/board/notice">공지사항 <i class="ion-ios-arrow-forward"></i></a></span></p>
+            <h1 class="mb-3 bread">${board.categoryName} 상세</h1>
           </div>
         </div>
       </div>
@@ -30,11 +30,11 @@
 	            <div class="col-md-10 order-md-last ftco-animate mb-2">
 	                <h1 class="mb-3">${board.title }</h1>
 	                <hr> 
-	                <div class='' style='min-height: 200px;'>
+	                <div class='mb-3' style='min-height: 200px;'>
 	                	${board.contents}
 	                </div>
 	                <hr>
-	                <div class="row">
+	                <div class="row mt-3">
 		                <div class="col-lg align-self-end">
 		                	<div class="form-group">
 			                    <input type="button" onclick='forwarding("list");' value="리스트" class="form-control btn btn-primary"/>
@@ -43,7 +43,7 @@
 		                <div class="col-lg align-self-end">
 		                	<div class="form-group">
 		                		<c:if test="${sessionScope.user.userNo eq '1192936782' || session.user.userNo eq board.userNo}">
-				                    <input type="button" onclick='forwarding("modify");' value="글 수정" class="form-control btn btn-primary"/>
+				                    <input type="button" onclick='forwarding("modify");' value="글 수정" class="form-control btn btn-success"/>
 		                		</c:if>
 		                	</div>
 		                </div>
