@@ -27,7 +27,7 @@
 
     <section class="ftco-section">
       <div class="container">
-        <div class="justify-content-center">
+        <div class="justify-content-center mb-3">
         	
         	<table id="boardList" class="display nowrap" style="cursor:pointer" style="width:100%">
         		<thead>
@@ -51,7 +51,11 @@
         	</table>
           
         </div>
-        
+        <c:if test="${sessionScope.user.userNo eq '1192936782'}">
+	        <div class="form-group">
+				<a href="/board/boardWriter" class="form-control btn btn-primary">공지사항 작성</a>
+			</div>
+		</c:if>
       </div>
     </section>
 
