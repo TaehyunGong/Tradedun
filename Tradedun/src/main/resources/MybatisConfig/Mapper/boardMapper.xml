@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.thkong.tradedun.Board.dao.boardDao">
+	
+	<select id='selectBoardNo' resultType="Int" parameterType="String">
+		SELECT IFNULL(max(boardNo)+1,1) AS boardNo 
+		FROM Board
+		WHERE categoryCode = #{categoryCode}
+	</select>
+	
+	<insert id="insertBoard" parameterType="Board">
+		INSERT INTO Board (boardNo, categoryCode, userNo, title, contents, createDT, modifyDT, deleteDT)
+		VALUES(#{boardNo}, #{categoryCode}, #{userNo}, #{title}, #{contents}, NOW(), null, null)
+	</insert>
+	
+	<select id="selectBoardCategoryList" resultType="Category">
+		SELECT categoryCode, categoryKind, categoryName
+		FROM Category
+		WHERE categoryKind = 'board'
+		AND deleteDT IS NULL
+		ORDER BY sort
+	</select>
+	
+	<select id="selectBoardList" resultType="Board">
+		SELECT T1.boardNo, T1.userNo, T1.categoryCode, T2.categoryName, T1.title, T1.contents, T1.createDT
+		FROM Board T1
+			JOIN Category T2
+				ON T1.categoryCode = T2.categoryCode
+				AND T2.categoryKind = 'board'
+		WHERE T1.deleteDT IS NULL
+		AND T1.categoryCode = 'B_notice'
+		ORDER BY T1.boardNo DESC
+	</select>
+	
+	<select id="selectBoard" parameterType="Board" resultType="Board">
+		SELECT T1.boardNo, T1.categoryCode, T2.categoryName, T1.userNo, T1.title, T1.contents, T1.createDT, T1.modifyDT
+		FROM Board T1
+			JOIN Category T2
+				ON T1.categoryCode = T2.categoryCode
+				AND T2.categoryKind = 'board'
+		WHERE T1.deleteDT IS NULL
+		AND T1.boardNo = #{boardNo}
+		AND T1.categoryCode = #{categoryCode}
+	</select>
+	
+	<update id="updateBoard" parameterType="Board">
+		UPDATE Board SET title = #{title}, contents = #{contents}, modifyDT = NOW()
+		WHERE boardNo = #{boardNo}
+		AND categoryCode = #{categoryCode}
+	</update>
+	
+	<update id="deleteBoard" parameterType="Board">
+		UPDATE Board SET deleteDT = NOW()
+		WHERE boardNo = #{boardNo} 
+		AND categoryCode = #{categoryCode}
+	</update>
+	
+</mapper>
