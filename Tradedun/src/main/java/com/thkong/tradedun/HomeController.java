@@ -10,7 +10,7 @@ public class HomeController {
 	
 	//템플릿 jsp 적용을 위한 임시용 매핑
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(@RequestParam(defaultValue = "home") String page) {
+	public String home(@RequestParam(defaultValue = "main") String page) {
 		return page;
 	}
 	

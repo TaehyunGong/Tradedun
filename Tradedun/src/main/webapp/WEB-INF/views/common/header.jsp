@@ -48,13 +48,11 @@
 
      <div class="collapse navbar-collapse" id="ftco-nav">
        <ul class="navbar-nav ml-auto">
-         <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
-         <li class="nav-item"><a href="/board/notice" class="nav-link">Notice</a></li>
-         <li class="nav-item"><a href="/auction/auctionMenu" class="nav-link">Auction</a></li>
-         <li class="nav-item"><a href="/?page=about" class="nav-link">About</a></li>
-         <li class="nav-item"><a href="/?page=pricing" class="nav-link">Pricing</a></li>
-         <li class="nav-item"><a href="/?page=car" class="nav-link">Our Car</a></li>
-         <li class="nav-item"><a href="/?page=contact" class="nav-link">Contact</a></li>
+         <li class="nav-item active"><a href="/" class="nav-link">메인</a></li>
+         <li class="nav-item"><a href="/board/notice" class="nav-link">공지</a></li>
+         <li class="nav-item"><a href="/auction/auctionMenu" class="nav-link">컨텐츠</a></li>
+         <li class="nav-item"><a href="/auction/rareAvatarSet" class="nav-link">레압 검색</a></li>
+         <li class="nav-item"><a href="/auction/avatarShowroom" class="nav-link">쇼룸 검색</a></li>
          <c:choose>
          	<c:when test="${empty user.userNo}">
 		    	<li class="nav-item"><a href="/login?SNS=kakao" class="nav-link"><img src="/images/kakao_login_btn_small.png" alt="카카오톡 로그인"/></a></li>
