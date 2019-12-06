@@ -27,7 +27,7 @@
 	<section class="ftco-section ftco-degree-bg">
 	    <div class="container">
 	        <div class="row mb-5 justify-content-center">
-	            <div class="col-md-8 order-md-last ftco-animate mb-2">
+	            <div class="col-md-10 order-md-last ftco-animate mb-2">
 	                <h1 class="mb-3">${board.title }</h1>
 	                <hr> 
 	                <div class='' style='min-height: 200px;'>
@@ -37,14 +37,21 @@
 	                <div class="row">
 		                <div class="col-lg align-self-end">
 		                	<div class="form-group">
-		                		<c:if test="${board.userNo eq '1192936782' || session.user.userNo eq board.userNo}">
+			                    <input type="button" onclick='forwarding("list");' value="리스트" class="form-control btn btn-primary"/>
+		                	</div>
+		                </div>
+		                <div class="col-lg align-self-end">
+		                	<div class="form-group">
+		                		<c:if test="${sessionScope.user.userNo eq '1192936782' || session.user.userNo eq board.userNo}">
 				                    <input type="button" onclick='forwarding("modify");' value="글 수정" class="form-control btn btn-primary"/>
 		                		</c:if>
 		                	</div>
 		                </div>
 		                <div class="col-lg align-self-end">
 		                	<div class="form-group">
-			                    <input type="button" onclick='forwarding("list");' value="리스트" class="form-control btn btn-primary"/>
+		                		<c:if test="${sessionScope.user.userNo eq '1192936782' || session.user.userNo eq board.userNo}">
+				                    <input type="button" onclick='forwarding("delete");' value="글 삭제" class="form-control btn btn-danger"/>
+		                		</c:if>
 		                	</div>
 		                </div>
 	                </div>
@@ -63,6 +70,7 @@
     		
     		switch(page){
     			case 'modify' : result = '/board/boardModify?boardNo=${board.boardNo}&categoryCode=${board.categoryCode}'; break;
+    			case 'delete' : result = '/board/boardDelete?boardNo=${board.boardNo}&categoryCode=${board.categoryCode}'; break;
     			case 'list' : result = '/board/notice'; break;
     		}
     		

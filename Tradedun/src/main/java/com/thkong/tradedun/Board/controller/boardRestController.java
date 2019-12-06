@@ -23,15 +23,17 @@ public class boardRestController {
 	 * @description ckEditor로 이미지 업로드시 파일업로드 로직
 	 * @param multiFile
 	 * @return
+	 * @throws  
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/uploadFile")
 	public Map<String, String> uploadFile(MultipartHttpServletRequest multiFile) throws IOException{
+		
 		MultipartFile multifile = multiFile.getFile("upload");
 		
 		File file = new File(multifile.getOriginalFilename());
+		
 		multifile.transferTo(file);
-
 		Map<String, String> jsonMap = service.uploadFile(file);
 		
 		return jsonMap;

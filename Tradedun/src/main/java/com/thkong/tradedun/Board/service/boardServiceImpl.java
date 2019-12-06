@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.impl.conn.Wire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,6 +122,37 @@ public class boardServiceImpl implements boardService{
 		}
 		
 		return chk;
+	}
+
+	/**
+	 * @description 글삭제한다. 꼭 글 삭제 시 작성자와 수정자는 같은 유저이어야함. 관리자는 별도
+	 * @param boardNo
+	 * @param user
+	 * @return 포워딩 시킬 페이지를 반환
+	 */
+	@Override
+	public String deleteBoard(int boardNo, String categoryCode, User user) {
+		
+		String page = "/Exception/except";
+		
+		//비로그인 유저로 접근시 잘못된 경로라 알림
+		if(user == null) {
+			return page;
+		}
+		
+		Board board = new Board();
+		board.setBoardNo(boardNo);
+		board.setCategoryCode(categoryCode);
+		
+		String writerUser = dao.selectBoard(board).getUserNo();
+		
+		if(writerUser.equals(user.getUserNo())) {
+			if(dao.deleteBoard(board) == 1) {
+				page = "redirect:/board/notice";
+			}
+		}
+		
+		return page;
 	}
 
 }

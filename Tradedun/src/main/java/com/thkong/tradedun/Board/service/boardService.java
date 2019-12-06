@@ -23,4 +23,6 @@ public interface boardService {
 
 	public boolean updateBoard(Board board, User user);
 
+	public String deleteBoard(int boardNo, String categoryCode, User user);
+
 }

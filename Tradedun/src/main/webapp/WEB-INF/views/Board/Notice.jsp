@@ -58,7 +58,11 @@
     <script>
     
 		$(document).ready(function() {
-			var table = $('#boardList').DataTable();
+			var table = $('#boardList').DataTable({
+				"language": {
+				      "emptyTable": "현재 공지사항이 없습니다."
+				    }
+			});
 			
 		    $('#boardList tbody').on('click', 'tr', function () {
 		        var data = table.row( this ).data();

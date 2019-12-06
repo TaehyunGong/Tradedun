@@ -44,4 +44,10 @@
 		AND categoryCode = #{categoryCode}
 	</update>
 	
+	<update id="deleteBoard" parameterType="Board">
+		UPDATE Board SET deleteDT = NOW()
+		WHERE boardNo = #{boardNo} 
+		AND categoryCode = #{categoryCode}
+	</update>
+	
 </mapper>

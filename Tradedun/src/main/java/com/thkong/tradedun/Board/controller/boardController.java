@@ -164,4 +164,22 @@ public class boardController {
 		return "redirect:/board/boardDetail?boardNo="+ boardNo + "&categoryCode=" + categoryCode;
 	}
 	
+	/**
+	 * @description 글 삭제
+	 * @param boardNo
+	 * @param categoryCode
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/boardDelete", method = RequestMethod.GET)
+	public String boardDelete(@RequestParam(required = true) int boardNo
+							, @RequestParam(required = true) String categoryCode
+							, Model model
+							, HttpSession session) {
+		User user = (User)session.getAttribute("user");
+		String page = service.deleteBoard(boardNo, categoryCode, user);
+		return page;
+	}
+	
 }
