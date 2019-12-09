@@ -181,6 +181,11 @@
 	table-layout: fixed;
 }
 
+.main-notice tr:hover{
+	background: antiquewhite;
+	cursor: pointer;
+}
+
 .main-notice td:nth-child(1){
 	width:10%;
 }

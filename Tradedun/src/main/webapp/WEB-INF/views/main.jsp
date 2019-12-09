@@ -33,10 +33,10 @@
           	<div class="request-form ftco-animate">
           		<h2>공지사항</h2>
    				<table class="table main-notice">
-   					<c:forEach varStatus="n" begin="0" end="9">
-	   					<tr>
-	   						<td><i class="fas fa-bell"></i></td>
-	   						<td>제목입니다.</td>
+   					<c:forEach var="board" items="${boardList}">
+	   					<tr onclick="location.href='/board/boardDetail?boardNo=${board.boardNo}&categoryCode=${board.categoryCode }'">
+	   						<td><i class="fas fa-bell" style="color: red;" ></i></td>
+	   						<td>${board.title }</td>
 	   					</tr>
    					</c:forEach>
    				</table>
