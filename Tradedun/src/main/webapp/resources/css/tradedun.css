@@ -176,3 +176,20 @@
 	width:28px;
 	cursor: zoom-in;
 }
+
+.main-notice{
+	table-layout: fixed;
+}
+
+.main-notice td:nth-child(1){
+	width:10%;
+}
+
+.main-notice tr td{
+	text-overflow:ellipsis; 
+	overflow:hidden; 
+	white-space:nowrap;
+}
+	
+
+
