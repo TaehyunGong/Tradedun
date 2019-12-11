@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+	import="java.util.Date" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
   <head>
@@ -33,11 +34,28 @@
           	<div class="request-form ftco-animate">
           		<h2>공지사항</h2>
    				<table class="table main-notice">
-   					<c:forEach var="board" items="${boardList}">
-	   					<tr onclick="location.href='/board/boardDetail?boardNo=${board.boardNo}&categoryCode=${board.categoryCode }'">
-	   						<td><i class="fas fa-bell" style="color: red;" ></i></td>
-	   						<td>${board.title }</td>
-	   					</tr>
+					
+					<c:set var="today" value="<%=new Date(new Date().getTime() - 60*60*24*1000 * 7) %>" />
+					<fmt:formatDate var="todatFormmat" value="${today}" pattern="yyyyMMdd" />
+					
+   					<%-- <c:forEach var="board" items="${boardList}" begin="0" end="10"> --%>
+   					<c:forEach var="num" begin="0" end="10">
+   						<fmt:formatDate var="createDT" value="${boardList[num].createDT}" pattern="yyyyMMdd" />
+   						
+   						<c:choose>
+							<c:when test="${empty boardList[num]}">
+								<tr>
+									<td></td>
+									<td>-</td>
+								</tr>
+							</c:when>
+   							<c:otherwise>
+			   					<tr onclick="location.href='/board/boardDetail?boardNo=${boardList[num].boardNo}&categoryCode=${boardList[num].categoryCode }'">
+			   						<td><c:if test="${createDT >= todatFormmat}"><i class="fas fa-bell" style="color: red;" ></i></c:if></td>
+			   						<td>${boardList[num].title}</td>
+			   					</tr>
+   							</c:otherwise>
+		   				</c:choose>
    					</c:forEach>
    				</table>
    			</div>
