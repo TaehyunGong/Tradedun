@@ -181,7 +181,7 @@
 	table-layout: fixed;
 }
 
-.main-notice tr:hover{
+.main-notice .used:hover{
 	background: antiquewhite;
 	cursor: pointer;
 }
@@ -195,6 +195,9 @@
 	overflow:hidden; 
 	white-space:nowrap;
 }
-	
+
+.main-notice-left{
+	width:600px;
+}	
 
 

@@ -11,56 +11,56 @@
   <body>
     <c:import  url="/?page=/common/header" />
     
-	<div class="hero-wrap" style="background-image: url('/images/nbg_1.png');" data-stellar-background-ratio="0.5">
+	<div class="hero-wrap" style="background-image: url('/images/nbg_3.png');" data-stellar-background-ratio="0.5">
 	    <div class="overlay"></div>
 	    <div class="container">
-	    	        <div class="row no-gutters slider-text justify-content-start align-items-center">
-          <div class="col-lg-6 col-md-6 ftco-animate d-flex align-items-end">
-          	<div class="text">
-	            <h1 class="mb-4">Now <span>It's easy for you</span> <span>rent a car</span></h1>
-	            <p style="font-size: 18px;">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts</p>
-	            <a href="https://vimeo.com/45830194" class="icon-wrap popup-vimeo d-flex align-items-center mt-4">
-	            	<div class="icon d-flex align-items-center justify-content-center">
-	            		<span class="ion-ios-play"></span>
-	            	</div>
-	            	<div class="heading-title ml-5">
-		            	<span>Easy steps for renting a car</span>
-	            	</div>
-	            </a>
-            </div>
-          </div>
-          <div class="col-lg-1 col"></div>
-          <div class="col-lg-5 col-md-6 mt-0 mt-md-5 ">
-          	<div class="request-form ftco-animate">
-          		<h2>공지사항</h2>
-   				<table class="table main-notice">
-					
-					<c:set var="today" value="<%=new Date(new Date().getTime() - 60*60*24*1000 * 7) %>" />
-					<fmt:formatDate var="todatFormmat" value="${today}" pattern="yyyyMMdd" />
-					
-   					<%-- <c:forEach var="board" items="${boardList}" begin="0" end="10"> --%>
-   					<c:forEach var="num" begin="0" end="10">
-   						<fmt:formatDate var="createDT" value="${boardList[num].createDT}" pattern="yyyyMMdd" />
-   						
-   						<c:choose>
-							<c:when test="${empty boardList[num]}">
-								<tr>
-									<td></td>
-									<td>-</td>
-								</tr>
-							</c:when>
-   							<c:otherwise>
-			   					<tr onclick="location.href='/board/boardDetail?boardNo=${boardList[num].boardNo}&categoryCode=${boardList[num].categoryCode }'">
-			   						<td><c:if test="${createDT >= todatFormmat}"><i class="fas fa-bell" style="color: red;" ></i></c:if></td>
-			   						<td>${boardList[num].title}</td>
-			   					</tr>
-   							</c:otherwise>
-		   				</c:choose>
-   					</c:forEach>
-   				</table>
-   			</div>
-          </div>
-        </div>
+	        <div class="row no-gutters slider-text justify-content-start align-items-center">
+	            <div class="col-lg-6 col-md-6 ftco-animate d-flex align-items-end">
+	                <div class="request-form main-notice-left">
+	                	<h2>레어 아바타 검색</h2>
+			          	<div class="justify-content-end"> 
+			              <a href="blog-single.html" class="block-20" style="background-image: url('/images/image_1.jpg');">
+			              </a>
+			              <div class="text pt-4">
+			                <p>여러가지의 레어 아바타를 바로 검색 해보세요</p>
+			              </div>
+			            </div>
+	                </div>
+	            </div>
+	            <div class="col-lg-1 col"></div>
+	            <div class="col-lg-5 col-md-6 md-5 ">
+	                <div class="request-form ftco-animate">
+	                    <h2>공지사항</h2>
+	                    <table class="table main-notice">
+	
+	                        <c:set var="today" value="<%=new Date(new Date().getTime() - 60*60*24*1000 * 7) %>" />
+	                        <fmt:formatDate var="todatFormmat" value="${today}" pattern="yyyyMMdd" />
+	
+	                        <%-- <c:forEach var="board" items="${boardList}" begin="0" end="10"> --%>
+                            <c:forEach var="num" begin="0" end="7">
+                                <fmt:formatDate var="createDT" value="${boardList[num].createDT}" pattern="yyyyMMdd" />
+
+                                <c:choose>
+                                    <c:when test="${empty boardList[num]}">
+                                        <tr>
+                                            <td></td>
+                                            <td>-</td>
+                                        </tr>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tr class="used" onclick="location.href='/board/boardDetail?boardNo=${boardList[num].boardNo}&categoryCode=${boardList[num].categoryCode }'">
+                                            <td>
+                                                <c:if test="${createDT >= todatFormmat}"><i class="fas fa-bell" style="color: red;"></i></c:if>
+                                            </td>
+                                            <td>${boardList[num].title}</td>
+                                        </tr>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+	                    </table>
+	                </div>
+	            </div>
+	        </div>
 	    </div>
 	</div>
 
