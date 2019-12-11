@@ -39,22 +39,24 @@
 	<!-- Toasts -->
 	<link rel="stylesheet" href="/css/toastr.min.css"/>
 
+	<!-- favicon -->
+	<link rel="shortcut icon" type="image/png" sizes="16x16" href="/resources/images/common/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/resources/images/common/favicon-16x16.png">
+
  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
    <div class="container">
-     <a class="navbar-brand" href="/">Trade<span>Dun</span></a>
+     <a class="navbar-brand" href="/">Trade<ruby><span>Dun</span><rt>BETA</rt></ruby></a>
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
        <span class="oi oi-menu"></span> Menu
      </button>
 
      <div class="collapse navbar-collapse" id="ftco-nav">
        <ul class="navbar-nav ml-auto">
-         <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
-         <li class="nav-item"><a href="/board/notice" class="nav-link">Notice</a></li>
-         <li class="nav-item"><a href="/auction/auctionMenu" class="nav-link">Auction</a></li>
-         <li class="nav-item"><a href="/?page=about" class="nav-link">About</a></li>
-         <li class="nav-item"><a href="/?page=pricing" class="nav-link">Pricing</a></li>
-         <li class="nav-item"><a href="/?page=car" class="nav-link">Our Car</a></li>
-         <li class="nav-item"><a href="/?page=contact" class="nav-link">Contact</a></li>
+         <li class="nav-item active"><a href="/" class="nav-link">메인</a></li>
+         <li class="nav-item"><a href="/board/notice" class="nav-link">공지</a></li>
+         <li class="nav-item"><a href="/auction/auctionMenu" class="nav-link">컨텐츠</a></li>
+         <li class="nav-item"><a href="/auction/rareAvatarSet" class="nav-link">레압 검색</a></li>
+         <li class="nav-item"><a href="/auction/avatarShowroom" class="nav-link">쇼룸 검색</a></li>
          <c:choose>
          	<c:when test="${empty user.userNo}">
 		    	<li class="nav-item"><a href="/login?SNS=kakao" class="nav-link"><img src="/images/kakao_login_btn_small.png" alt="카카오톡 로그인"/></a></li>
