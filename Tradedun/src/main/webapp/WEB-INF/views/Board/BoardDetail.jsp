@@ -6,11 +6,9 @@
   <head>
     <title>TradeDun - ${board.title}</title>
     <meta charset="utf-8">
+    <c:import  url="/header" /> 
   </head>
   <body>
-    
-    <c:import  url="/header" /> 
-    <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/nbg_6.png');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>

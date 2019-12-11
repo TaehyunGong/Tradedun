@@ -6,12 +6,10 @@
   <head>
     <title>TradeDun - 글 작성</title>
     <meta charset="utf-8">
+	<c:import  url="/header" />    
   </head>
   <body>
-
-	<c:import  url="/header" />    
 	<script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
-    <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/nbg_6.png');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>

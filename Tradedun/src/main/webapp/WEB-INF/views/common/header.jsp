@@ -39,6 +39,10 @@
 	<!-- Toasts -->
 	<link rel="stylesheet" href="/css/toastr.min.css"/>
 
+	<!-- favicon -->
+	<link rel="shortcut icon" type="image/png" sizes="16x16" href="/resources/images/common/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/resources/images/common/favicon-16x16.png">
+
  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
    <div class="container">
      <a class="navbar-brand" href="/">Trade<ruby><span>Dun</span><rt>BETA</rt></ruby></a>

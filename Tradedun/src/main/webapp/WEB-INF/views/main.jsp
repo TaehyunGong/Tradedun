@@ -7,9 +7,10 @@
   <head>
     <title>TradeDun</title>
     <meta charset="UTF-8">
+    
+    <c:import  url="/?page=/common/header" />
   </head>
   <body>
-    <c:import  url="/?page=/common/header" />
     
 	<div class="hero-wrap" style="background-image: url('/images/nbg_1.png');" data-stellar-background-ratio="0.5">
 	    <div class="overlay"></div>

@@ -7,10 +7,10 @@
   <head>
     <title>TradeDun - 아바타 판매 리스트</title>
     <meta charset="utf-8">
+    <c:import  url="/header" />
   </head>
   <body>
     
-    <c:import  url="/header" />
     
     <!-- END nav -->
     

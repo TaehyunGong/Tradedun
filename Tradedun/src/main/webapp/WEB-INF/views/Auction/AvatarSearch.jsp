@@ -8,8 +8,8 @@
   <head>
     <title>TradeDun - ${title}</title>
     <meta charset="utf-8">
-  </head>
 	<c:import  url="/header" />
+  </head>
 	<style>
 		.selectListAuction{
 			background: red;
