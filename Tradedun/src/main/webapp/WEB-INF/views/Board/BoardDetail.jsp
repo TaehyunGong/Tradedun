@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,7 +27,7 @@
 	    <div class="container">
 	        <div class="row mb-5 justify-content-center">
 	            <div class="col-md-10 order-md-last ftco-animate mb-2">
-	                <h1 class="mb-3">${board.title }</h1>
+	                <h1 class="mb-3">${fn:escapeXml(board.title)}</h1>
 	                <hr> 
 	                <div class='mb-3' style='min-height: 200px;'>
 	                	${board.contents}

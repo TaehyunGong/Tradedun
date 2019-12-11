@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -41,7 +42,7 @@
         				<tr>
         					<td>${board.boardNo}</td>
         					<td>${board.categoryName}</td>
-        					<td>${board.title}</td>
+        					<td>${fn:escapeXml(board.title)}</td>
         					<td><fmt:formatDate value="${board.createDT}" pattern="yyyy.MM.dd" /></td>
         				</tr>
         			</c:forEach>

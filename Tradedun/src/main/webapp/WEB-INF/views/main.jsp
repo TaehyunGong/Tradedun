@@ -2,6 +2,7 @@
 	import="java.util.Date" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
+<%@ taglib prefix="fn" uri = "http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -53,7 +54,7 @@
                                             <td>
                                                 <c:if test="${createDT >= todatFormmat}"><i class="fas fa-bell" style="color: red;"></i></c:if>
                                             </td>
-                                            <td>${boardList[num].title}</td>
+                                            <td>${fn:escapeXml(boardList[num].title)}</td>
                                         </tr>
                                     </c:otherwise>
                                 </c:choose>
