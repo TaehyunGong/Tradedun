@@ -169,6 +169,9 @@
 	
 		$(document).ready(function() {
 			var table = $('#example').DataTable({
+				"language": {
+					"emptyTable": "검색된 결과가 없습니다."
+				},
 				info:		false,
 				ordering:	false,
 				searching:	false,
