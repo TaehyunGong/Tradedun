@@ -3,9 +3,16 @@
 
 <mapper namespace="com.thkong.tradedun.Common.dao.LogsDao">
 	
+	<!-- 레어아바타 차수 검색 -->
 	<insert id="insertRareAvatarSearch" parameterType="AvatarMastar">
 		INSERT INTO Logs (code, createDT, log1, log2)
 		VALUES('rareAvatarSearch', NOW(), #{jobId}, #{categoryCode})
+	</insert>
+
+	<!-- 쇼룸 아바타 검색) 복붙한 원본 문자열 -->
+	<insert id="insertShowRoomAvatarSearch" parameterType="Map">
+		INSERT INTO Logs (code, createDT, log1, log2)
+		VALUES('showRoomAvatarSearch', NOW(), #{jobId}, #{showroom})
 	</insert>
 	
 </mapper>

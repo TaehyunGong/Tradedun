@@ -523,6 +523,17 @@ public class auctionServiceImpl implements auctionService {
 		List<Avatar> list = new ArrayList<Avatar>();
 		int rowPriceSum = 0;
 		
+		//로그 더미 데이터 INSERT
+		// 중요하지않은 정보라 컨텐츠에 방해가 되면 안되서 무조건 예외는 따로 처리
+		try {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("jobId", jobId);
+			map.put("showroom", showroom);
+			logsDao.insertShowRoomAvatarSearch(map);
+		}catch(Exception ex) {
+			log.error(ex);
+		}
+		
 		//쇼룸 복붙 파싱 로직
 	    //ex)모자\n강인한 소울 라이트닝 캡\n		
 		boolean vaildate = false;
