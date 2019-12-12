@@ -27,9 +27,11 @@ public class HomeController {
 	public String home(@RequestParam(defaultValue = "main") String page
 						, Model model) throws IOException {
 		
+		//공지사항 리스트
 		List<Board> boardList = boardService.selectBoardList();
 		model.addAttribute("boardList", boardList);
 		
+		//레어아바타 직군, 차수 리스트
 		String avatarList = auctionService.selectRareAvatarList();
 		model.addAttribute("avatarList", avatarList);
 		

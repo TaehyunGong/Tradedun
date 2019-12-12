@@ -200,4 +200,11 @@
 	width:600px;
 }	
 
+.ready_test{
+	color: red;
+    text-align: center;
+    transform: rotate(-45deg);
+    position: absolute;
+}
+
 
