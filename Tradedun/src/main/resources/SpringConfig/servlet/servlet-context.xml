@@ -33,17 +33,16 @@
 	
 	<context:component-scan base-package="com.thkong.tradedun" />
 	
-	<!-- 로그 인터셉터 정의, 인터셉터는 나중에 사용하도록하자.. -->
-	<!-- <mvc:interceptors>
+	<!-- 로그 인터셉터 정의 -->
+	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/**"/>
-			<mvc:exclude-mapping path="/header*"/>
-			<mvc:exclude-mapping path="/footer*"/>
-			<mvc:exclude-mapping path="/resources**"/>
+			<mvc:mapping path="/login"/>
+			<mvc:mapping path="/kakaoLogin"/>
+			<mvc:mapping path="/logout"/>
 			
 			<beans:bean id="loggerInterceptor" class="com.thkong.tradedun.Common.LoggerInterceptor">
 			</beans:bean>
 		</mvc:interceptor>
-	</mvc:interceptors> -->
+	</mvc:interceptors>
 	
 </beans:beans>

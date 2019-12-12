@@ -15,4 +15,10 @@
 		VALUES('showRoomAvatarSearch', NOW(), #{jobId}, #{showroom})
 	</insert>
 	
+	<!-- 유저 로그인 로그 -->
+	<insert id="insertUserLoginLog" parameterType="Map">
+		INSERT INTO Logs (code, createDT, log1, log2, log3, log4, log5)
+		VALUES('userLogin', NOW(), #{mapper}, #{host}, #{user-agent}, #{referer}, #{cookie})
+	</insert>
+	
 </mapper>

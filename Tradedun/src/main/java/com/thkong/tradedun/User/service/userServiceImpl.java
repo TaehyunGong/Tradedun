@@ -5,11 +5,13 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thkong.tradedun.Common.dao.LogsDao;
 import com.thkong.tradedun.User.dao.userDao;
 import com.thkong.tradedun.User.vo.Access_token_info;
 import com.thkong.tradedun.User.vo.KakaoInfoDetail;
@@ -31,6 +33,12 @@ public class userServiceImpl implements userService {
 	
 	@Autowired
 	private userDao dao;
+	
+	//더미 로그 전용 dao
+	@Autowired
+	private LogsDao logsDao;
+
+	private Logger log = Logger.getLogger(this.getClass());
 	
 	/**
 	 * @description rest Response가 200이 아니라면 이 메소드를 실행하여 에러 메세지를 출력한다.

@@ -10,5 +10,7 @@ public interface LogsDao {
 
 	void insertShowRoomAvatarSearch(Map<String, String> map);
 
+	void insertUserLoginLog(Map<String, String> map);
+
 	
 }
