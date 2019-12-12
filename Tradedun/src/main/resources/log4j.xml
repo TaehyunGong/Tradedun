@@ -2,17 +2,48 @@
 <!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
  
-    <!-- 콘솔 로그 -->
+    <!-- 콘솔 로그(로그 성능저하를 예방하여 최소한의 출력만 사용) -->
     <appender name="infoConsole" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[%5p] %m%n" />
+        </layout>  
+    </appender>
+
+	<!-- 에러 로그(전체적인 프로세스의 상태 및 시간을 출력) -->
+    <appender name="errorConsole" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="[%5p] %d{hh\:mm s} (%F\:%L) %c{1}.%M \: %m%n" />
         </layout>  
     </appender>
     
-    <!-- root 설정 -->
+    <!-- 출력용 로그, additivity="false" 를 사용해 root와의 중복을 방지한다. -->
+    <logger name="myLog" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="infoConsole"/>
+    </logger>
+    
+   	<!-- 스프링 프레임워크의 기본 로그는 전부 출력해준다. -->
+	<logger name="org.springframework.core">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.beans">
+		<level value="info" />
+	</logger>
+	
+	<logger name="org.springframework.context">
+		<level value="info" />
+	</logger>
+
+	<logger name="org.springframework.web">
+		<level value="info" />
+	</logger>
+	
+    <!-- root 설정은 하지않고 내가 선언한 myLog만 출력한다. (무분별한 로그찍기 방지) -->
     <root>
-        <level value="INFO" />
-        <appender-ref ref="infoConsole" />
+    	<level value="ERROR" />
+		<appender-ref ref="errorConsole"/>
     </root>
+    
      
 </log4j:configuration>
