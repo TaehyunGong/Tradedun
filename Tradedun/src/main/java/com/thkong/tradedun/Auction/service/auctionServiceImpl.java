@@ -72,12 +72,6 @@ public class auctionServiceImpl implements auctionService {
 	@Autowired
 	private auctionDao dao;
 	
-	//더미 로그 전용 dao
-	@Autowired
-	private LogsDao logsDao;
-
-	private Logger log = Logger.getLogger(this.getClass());
-	
 	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다.
 	private List<String> parts = Arrays.asList(
 			new String[]{"모자", "머리", "얼굴", "상의", "하의", "신발", "목가슴", "허리", "스킨"});
@@ -523,17 +517,6 @@ public class auctionServiceImpl implements auctionService {
 		List<Avatar> list = new ArrayList<Avatar>();
 		int rowPriceSum = 0;
 		
-		//로그 더미 데이터 INSERT
-		// 중요하지않은 정보라 컨텐츠에 방해가 되면 안되서 무조건 예외는 따로 처리
-		try {
-			Map<String, String> map = new HashMap<String, String>();
-			map.put("jobId", jobId);
-			map.put("showroom", showroom);
-			logsDao.insertShowRoomAvatarSearch(map);
-		}catch(Exception ex) {
-			log.error(ex);
-		}
-		
 		//쇼룸 복붙 파싱 로직
 	    //ex)모자\n강인한 소울 라이트닝 캡\n		
 		boolean vaildate = false;
@@ -678,14 +661,6 @@ public class auctionServiceImpl implements auctionService {
 		AvatarMastar am = new AvatarMastar();
 		am.setJobId(jobId);
 		am.setCategoryCode(categoryCode);
-		
-		//로그 더미 데이터 INSERT
-		// 중요하지않은 정보라 컨텐츠에 방해가 되면 안되서 무조건 예외는 따로 처리
-		try {
-			logsDao.insertRareAvatarSearch(am);
-		}catch(Exception ex) {
-			log.error(ex);
-		}
 		
 		List<Avatar> list = dao.selectAvatarSet(am);
 		if(list.size() == 0)

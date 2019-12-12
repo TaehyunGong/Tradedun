@@ -5,22 +5,16 @@
     <!-- 콘솔 로그(로그 성능저하를 예방하여 최소한의 출력만 사용) -->
     <appender name="infoConsole" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[%5p] %m%n" />
+            <param name="ConversionPattern" value="[%-5p] %d{yyyy.MM.dd hh\:mm\:ss} %m%n" />
         </layout>  
     </appender>
 
 	<!-- 에러 로그(전체적인 프로세스의 상태 및 시간을 출력) -->
     <appender name="errorConsole" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[%5p] %d{hh\:mm s} (%F\:%L) %c{1}.%M \: %m%n" />
+            <param name="ConversionPattern" value="[%-5p] %d{yyyy.MM.dd hh\:mm\:ss} (%F\:%L) %c{1}.%M \: %m%n" />
         </layout>  
     </appender>
-    
-    <!-- 출력용 로그, additivity="false" 를 사용해 root와의 중복을 방지한다. -->
-    <logger name="myLog" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="infoConsole"/>
-    </logger>
     
    	<!-- 스프링 프레임워크의 기본 로그는 전부 출력해준다. -->
 	<logger name="org.springframework.core">
@@ -39,7 +33,13 @@
 		<level value="info" />
 	</logger>
 	
-    <!-- root 설정은 하지않고 내가 선언한 myLog만 출력한다. (무분별한 로그찍기 방지) -->
+	<!-- 출력용 로그, additivity="false" 를 사용해 root와의 중복을 방지한다. -->
+    <logger name="com.thkong.tradedun.Common.LoggerInterceptor" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="infoConsole"/>
+    </logger>
+	
+	<!-- root 로그는 error만 지정해준다. -->
     <root>
     	<level value="ERROR" />
 		<appender-ref ref="errorConsole"/>

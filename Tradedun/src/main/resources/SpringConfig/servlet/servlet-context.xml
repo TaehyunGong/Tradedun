@@ -33,12 +33,19 @@
 	
 	<context:component-scan base-package="com.thkong.tradedun" />
 	
-	<!-- 로그 인터셉터 정의 -->
+	<!-- 로그 인터셉터 정의
+		 요청한 상태를 로그로 남기기 위해 아래 명시적으로 mapping한 패스만 잡는다. 
+	-->
 	<mvc:interceptors>
 		<mvc:interceptor>
+			<!-- User -->
 			<mvc:mapping path="/login"/>
 			<mvc:mapping path="/kakaoLogin"/>
 			<mvc:mapping path="/logout"/>
+			
+			<!-- Auction -->
+			<mvc:mapping path="/auction/avatarCharacterSetSearch"/>
+			<mvc:mapping path="/auction/avatarShowroomSearch"/>
 			
 			<beans:bean id="loggerInterceptor" class="com.thkong.tradedun.Common.LoggerInterceptor">
 			</beans:bean>
