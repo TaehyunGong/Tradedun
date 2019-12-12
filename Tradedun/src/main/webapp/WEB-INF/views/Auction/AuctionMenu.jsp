@@ -34,24 +34,6 @@
 	        </div>
 	        <div class="row">
 	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
-	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('AuctionWriter')">
-	                    <div class="media-body py-md-4 text-center p-3 m-4">
-	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-pen"></span></div>
-	                        <p class='sub_title'>판매 글 작성</p>
-	                        <p>판매하고싶은 아바타를 착용한 캐릭터에서 바로 가져와 글을 등록할수 있습니다.</p>
-	                    </div>
-	                </div>
-	            </div>
-	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
-	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('AuctionList')">
-	                    <div class="media-body py-md-4 text-center  p-3 m-4">
-	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-list"></span></div>
-	                        <p class='sub_title'>판매 글 리스트</p>
-	                        <p>현재 판매중인 아바타들을 조회해보세요!</p>
-	                    </div>
-	                </div>
-	            </div>
-	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
 	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('rareAvatarSet')">
 	                    <div class="media-body py-md-4 text-center  p-3 m-4">
 	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-search"></span></div>
@@ -66,6 +48,28 @@
 	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-search-dollar"></span></div>
 	                        <p class='sub_title'>쇼룸 아바타 검색</p>
 	                        <p>던파 공홈 쇼룸에 등록한 위시리스트들을 간편히 경매장에서 검색해보세요!</p>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+	            	<h1 class='ready_test'>준비중</h1>
+	            	
+	                <div class="media block-6 auction auction-2" onclick="">
+	                    <div class="media-body py-md-4 text-center p-3 m-4">
+	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-pen"></span></div>
+	                        <p class='sub_title'>판매 글 작성</p>
+	                        <p>판매하고싶은 아바타를 착용한 캐릭터에서 바로 가져와 글을 등록할수 있습니다.</p>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+	            	<h1 class='ready_test'>준비중</h1>
+	            
+	                <div class="media block-6 auction auction-2" onclick="">
+	                    <div class="media-body py-md-4 text-center  p-3 m-4">
+	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fas fa-list"></span></div>
+	                        <p class='sub_title'>판매 글 리스트</p>
+	                        <p>현재 판매중인 아바타들을 조회해보세요!</p>
 	                    </div>
 	                </div>
 	            </div>

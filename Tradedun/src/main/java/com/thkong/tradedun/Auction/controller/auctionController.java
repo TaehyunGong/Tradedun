@@ -36,7 +36,7 @@ public class auctionController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value="/AuctionWriter")
+//	@RequestMapping(value="/AuctionWriter")
 	public String auctionWriter(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("user");
 		
@@ -145,7 +145,7 @@ public class auctionController {
 	 * @return
 	 * @throws IOException 
 	 */
-	@RequestMapping(value="/AuctionList")
+//	@RequestMapping(value="/AuctionList")
 	public String auctionList(Model model
 							, @RequestParam(required = false, defaultValue = "all") String jobId
 							, @RequestParam(required = false, defaultValue = "all") String jobGrowId

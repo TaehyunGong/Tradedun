@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
+import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -47,6 +47,7 @@ import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Auction.vo.ItemDetail;
 import com.thkong.tradedun.Auction.vo.JobGrow;
 import com.thkong.tradedun.Common.DnfApiLib;
+import com.thkong.tradedun.Common.dao.LogsDao;
 import com.thkong.tradedun.User.vo.User;
 
 @Transactional
@@ -70,7 +71,7 @@ public class auctionServiceImpl implements auctionService {
 
 	@Autowired
 	private auctionDao dao;
-
+	
 	//아바타의 부위별 id, 변동될 일이 없기 때문에 고정적으로 박아준다.
 	private List<String> parts = Arrays.asList(
 			new String[]{"모자", "머리", "얼굴", "상의", "하의", "신발", "목가슴", "허리", "스킨"});
