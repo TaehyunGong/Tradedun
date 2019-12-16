@@ -21,7 +21,7 @@
 	                <div class="request-form main-notice-left">
 	                	<h2>레어 아바타 검색</h2>
 			          	<div class="justify-content-end"> 
-			              <a href="blog-single.html" class="block-20" style="background-image: url('/images/image_1.jpg');">
+			              <a href="/auction/rareAvatarSet" class="block-20" style="background-image: url('/images/main_rareAvatar.png');">
 			              </a>
 			              <div class="text pt-4">
 			                <p>여러가지의 레어 아바타를 바로 검색 해보세요</p>
@@ -125,7 +125,7 @@
 	<section class="ftco-section ftco-no-pt">
 		<div class="container">
 			<div class="row no-gutters">
-				<div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(/images/about.jpg);">
+				<div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(/images/main_showroom.gif);">
 				</div>
 				<div class="col-md-6 wrap-about py-md-5 ftco-animate">
           <div class="heading-section mb-5 pl-md-5">
