@@ -2,11 +2,11 @@ package com.thkong.tradedun.Board.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.impl.conn.Wire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,15 +33,15 @@ public class boardServiceImpl implements boardService{
 	 * @return
 	 */
 	@Override
-	public Map<String, String> uploadFile(File file) throws IOException{
-		String fileName= fileLib.uploadFile(file);
+	public Map<String, String> uploadFile(File file, InputStream input) throws IOException{
+		String fileName= fileLib.uploadFile(file, input);
 		
 		// json 데이터로 등록
         // {"uploaded" : 1, "fileName" : "test.jpg", "url" : "/img/test.jpg"}
 		Map<String, String> jsonMap = new HashMap<String, String>();
 		jsonMap.put("uploaded", "1");
 		jsonMap.put("fileName", fileName);
-		jsonMap.put("url", "/upImage/board/"+fileName);
+		jsonMap.put("url", "/upImage/"+fileName);
 		
 		return jsonMap;
 	}

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -18,25 +19,25 @@ import org.springframework.core.io.Resource;
 public class FileLib {
 
 	private String filePath = "";
-	
-	//업로드 및 다운로드할 파일의 경로를 필수로 받는다.
-	public FileLib(Resource path) throws IOException {
-		System.out.println("FileLib File Upload and Download Path : " + path.getURL().getPath());
-		this.filePath = path.getURL().getPath(); 
-	}
 
+	public FileLib(String path) {
+		System.out.println("File Path : " + path);
+		this.filePath = path;
+	}
+	
 	/**
 	 * @param file
+	 * @param input 
 	 * @return 파일 명 + 확장자
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public String uploadFile(File file) throws FileNotFoundException, IOException {
+	public String uploadFile(File file, InputStream input) throws FileNotFoundException, IOException {
 		
 		//파일 원본 이름
 		String fileName = fileNameGenerater(file.getName());
 		
-		byte[] bytes = IOUtils.toByteArray(new FileInputStream(file));
+		byte[] bytes = IOUtils.toByteArray(input);
 		
 		byte fileData[] = bytes;
 		FileOutputStream fos = new FileOutputStream(filePath + fileName);

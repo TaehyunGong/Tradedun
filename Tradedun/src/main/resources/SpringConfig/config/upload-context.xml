@@ -12,8 +12,9 @@
     </bean>
     
     <!-- FileLib Bean -->
-    <bean id="fileLib" class="com.thkong.tradedun.Common.FileLib">
-    	<constructor-arg value="/resources/upImage/board/"/>
+    <!-- 파일 업로드 path 설정 -->
+    <bean id="fileLib" class="com.thkong.tradedun.Common.FileLib" >
+    	<constructor-arg name="path" value="/upImage/"/>
     </bean>
 
 </beans>

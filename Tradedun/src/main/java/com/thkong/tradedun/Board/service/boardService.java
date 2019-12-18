@@ -2,6 +2,7 @@ package com.thkong.tradedun.Board.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import com.thkong.tradedun.User.vo.User;
 
 public interface boardService {
 
-	public Map<String, String> uploadFile(File file) throws IOException;
+	public Map<String, String> uploadFile(File file, InputStream inputStream) throws IOException;
 
 	public void insertBoard(Board board) throws Exception;
 

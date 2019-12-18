@@ -32,9 +32,8 @@ public class boardRestController {
 		MultipartFile multifile = multiFile.getFile("upload");
 		
 		File file = new File(multifile.getOriginalFilename());
-		
-		multifile.transferTo(file);
-		Map<String, String> jsonMap = service.uploadFile(file);
+//		multifile.transferTo(file);
+		Map<String, String> jsonMap = service.uploadFile(file, multifile.getInputStream());
 		
 		return jsonMap;
 	}
