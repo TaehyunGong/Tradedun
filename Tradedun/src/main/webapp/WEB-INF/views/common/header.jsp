@@ -62,7 +62,7 @@
 		    	<li class="nav-item"><a href="/login?SNS=kakao" class="nav-link"><img src="/images/kakao_login_btn_small.png" alt="카카오톡 로그인"/></a></li>
          	</c:when>
          	<c:otherwise>
-         		<li class="nav-item"><a href="/logout" class="nav-link"><img src="/images/kakao_login_btn_small" alt="로그아웃"/></a></li>
+         		<li class="nav-item"><a href="/logout" class="nav-link">로그아웃</a></li>
          	</c:otherwise>
          </c:choose>
        </ul>
