@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.thkong.tradedun.Contact.dao.contactDao">
+
+	<select id="selectContactCodeList" resultType="CodeTB">
+		SELECT code, codeKind, codeName, deleteDT, sort, refCode
+		FROM CodeTB
+		WHERE codeKind = 'kindCode'
+		AND code LIKE 'contact%'
+	</select>
+	
+	<select id='selectContactNo' resultType="Int">
+		SELECT IFNULL(max(contactNo)+1,1) AS contactNo 
+		FROM Contact
+	</select>
+	
+	<insert id="insertContact" parameterType="Contact">
+		INSERT INTO Contact(contactNo, contactKind, fromEmail, title, contents, createDT)
+		VALUES(#{contactNo}, #{contactKind}, #{fromEmail}, #{title}, #{contents}, NOW())	
+	</insert>
+	
+	<select id='selectAttachNo' resultType="Int">
+		SELECT IFNULL(max(attachNo)+1,1) AS attachNo 
+		FROM Attach
+	</select>
+	
+	<insert id="insertAttach" parameterType="Attach">
+		INSERT INTO Attach(attachNo, targetNo, kindCode, attachOrigin, attachExtenstion, attachName, deleteDT)
+		VALUES(#{attachNo}, #{targetNo}, #{kindCode}, #{attachOrigin}, #{attachExtenstion}, #{attachName}, NULL)	
+	</insert>
+	
+</mapper>

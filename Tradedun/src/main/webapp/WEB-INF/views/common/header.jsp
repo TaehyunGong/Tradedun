@@ -57,6 +57,7 @@
          <li class="nav-item"><a href="/auction/auctionMenu" class="nav-link">컨텐츠</a></li>
          <li class="nav-item"><a href="/auction/rareAvatarSet" class="nav-link">레압 검색</a></li>
          <li class="nav-item"><a href="/auction/avatarShowroom" class="nav-link">쇼룸 검색</a></li>
+         <li class="nav-item"><a href="/contact/contactMail" class="nav-link">문의</a></li>
          <c:choose>
          	<c:when test="${empty user.userNo}">
 		    	<li class="nav-item"><a href="/login?SNS=kakao" class="nav-link"><img src="/images/kakao_login_btn_small.png" alt="카카오톡 로그인"/></a></li>

@@ -26,13 +26,14 @@ public class FileLib {
 	}
 	
 	/**
+	 * @param path
 	 * @param file
 	 * @param input 
 	 * @return 파일 명 + 확장자
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public String uploadFile(File file, InputStream input) throws FileNotFoundException, IOException {
+	public String uploadFile(String path, File file, InputStream input) throws FileNotFoundException, IOException {
 		
 		//파일 원본 이름
 		String fileName = fileNameGenerater(file.getName());
@@ -40,7 +41,7 @@ public class FileLib {
 		byte[] bytes = IOUtils.toByteArray(input);
 		
 		byte fileData[] = bytes;
-		FileOutputStream fos = new FileOutputStream(filePath + fileName);
+		FileOutputStream fos = new FileOutputStream(filePath + path + fileName);
         fos.write(fileData);
 		
         System.out.println("업로드 완료");
@@ -77,10 +78,18 @@ public class FileLib {
 		String fileName = random + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		
 		//확장자를 업로드 이름에 삽입
-		String ext = originFileName.substring( originFileName.lastIndexOf(".") + 1 );
-		fileName = fileName + "." + ext; //확장자
+		fileName = fileName + "." + fileExtenstion(originFileName); //확장자
 		
 		return fileName;
+	}
+	
+	/**
+	 * @description 파일의 확장자를 가져온다.
+	 * @param originFileName
+	 * @return
+	 */
+	public String fileExtenstion(String originFileName) {
+		return originFileName.substring( originFileName.lastIndexOf(".") + 1 );
 	}
 	
 	/**

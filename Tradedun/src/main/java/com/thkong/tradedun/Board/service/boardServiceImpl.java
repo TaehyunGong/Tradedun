@@ -34,14 +34,14 @@ public class boardServiceImpl implements boardService{
 	 */
 	@Override
 	public Map<String, String> uploadFile(File file, InputStream input) throws IOException{
-		String fileName= fileLib.uploadFile(file, input);
+		String fileName= fileLib.uploadFile("/upImage/", file, input);
 		
 		// json 데이터로 등록
         // {"uploaded" : 1, "fileName" : "test.jpg", "url" : "/img/test.jpg"}
 		Map<String, String> jsonMap = new HashMap<String, String>();
 		jsonMap.put("uploaded", "1");
 		jsonMap.put("fileName", fileName);
-		jsonMap.put("url", "/upImage/"+fileName);
+		jsonMap.put("url", "/upLoad/upImage/"+fileName);
 		
 		return jsonMap;
 	}
