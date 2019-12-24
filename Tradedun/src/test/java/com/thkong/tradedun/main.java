@@ -1,6 +1,6 @@
  package com.thkong.tradedun;
 
-import java.io.IOException;
+import javax.mail.Message;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.context.ApplicationContext;
@@ -15,11 +15,22 @@ public class main {
 //	ObjectMapper mapper = context.getBean("mapper", ObjectMapper.class);
 	SqlSession session = context.getBean("sqlSession", SqlSession.class);
 	
-	public void process() throws IOException {
+	public void process() throws Exception {
 		MailLib mail = context.getBean("MailLib", MailLib.class);
+		
+		Message msg = mail.getInstance()
+						.setFrom("tony950620@gmail.com")
+						.setRecipient("tony950620@naver.com")
+						.setSubject("제목")
+						.setContent("내용")
+						.build();
+		
+		mail.send(msg);
+		
+		System.out.println("성공?");
 	}
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		new main().process();
 	}
 }

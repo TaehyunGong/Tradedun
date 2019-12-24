@@ -32,6 +32,10 @@
 	<bean id="MailLib" class="com.thkong.tradedun.Common.MailLib">
 		<constructor-arg name="user" value="#{props['mail.smtp.user']}"/>
 		<constructor-arg name="password" value="#{props['mail.smtp.password']}"/>
+		<constructor-arg name="host" value="#{props['mail.smtp.host']}"/>
+		<constructor-arg name="port" value="#{props['mail.smtp.port']}"/>
+ 		<constructor-arg name="starttls" value="#{props['mail.smtp.starttls.enable']}"/>
+		<constructor-arg name="auth" value="#{props['mail.smtp.auth']}"/>
 	</bean>
 	     		
 	<!-- 템플릿 엔진을 빈으로 올리고 path경로를 webapp/resources/template/으로 고정시키고 인코딩 설정해준다. -->
