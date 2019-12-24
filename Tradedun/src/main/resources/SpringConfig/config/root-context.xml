@@ -9,7 +9,7 @@
 	<bean id='conn' class='com.thkong.tradedun.Common.httpConnection' />
 	
 	<!-- 설정 프로퍼티 로드 -->
-	<util:properties id="props" location="classpath:Configuration.properties" />
+	<util:properties id="props" location="file:/upLoad/Configuration.properties" />
 
 	<bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
