@@ -27,6 +27,12 @@
 	<bean id='dnfapi' class='com.thkong.tradedun.Common.DnfApiLib'>
 		<constructor-arg name="dnfRestKey" value="#{props['dnf.RestKey']}"/>
 	</bean>
+	
+	<!-- 메일 SMTP bean 생성 -->
+	<bean id="MailLib" class="com.thkong.tradedun.Common.MailLib">
+		<constructor-arg name="user" value="#{props['mail.smtp.user']}"/>
+		<constructor-arg name="password" value="#{props['mail.smtp.password']}"/>
+	</bean>
 	     		
 	<!-- 템플릿 엔진을 빈으로 올리고 path경로를 webapp/resources/template/으로 고정시키고 인코딩 설정해준다. -->
 	<bean id='velocityEngine' class="org.springframework.ui.velocity.VelocityEngineFactoryBean">

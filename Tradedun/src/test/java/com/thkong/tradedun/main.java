@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
+import com.thkong.tradedun.Common.MailLib;
+
 public class main {
 	
 	ApplicationContext context = new GenericXmlApplicationContext("/SpringConfig/config/*.xml");
@@ -14,10 +16,7 @@ public class main {
 	SqlSession session = context.getBean("sqlSession", SqlSession.class);
 	
 	public void process() throws IOException {
-		int result = session.selectOne("selectContactNo");
-		
-		System.out.println("결과 : " + result);
-		
+		MailLib mail = context.getBean("MailLib", MailLib.class);
 	}
 	
 	public static void main(String[] args) throws IOException {
