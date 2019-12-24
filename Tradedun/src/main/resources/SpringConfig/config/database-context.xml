@@ -7,10 +7,10 @@
 	
 	<!-- DataBase Connection -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="org.mariadb.jdbc.Driver"></property>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/Tradedun"></property>
-        <property name="username" value="root"></property>
-        <property name="password" value="123"></property>
+        <property name="driverClassName" value="#{props['db.driverClassName']}"></property>
+        <property name="url" value="#{props['db.url']}"></property>
+        <property name="username" value="#{props['db.username']}"></property>
+        <property name="password" value="#{props['db.password']}"></property>
     </bean>
     
    	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
