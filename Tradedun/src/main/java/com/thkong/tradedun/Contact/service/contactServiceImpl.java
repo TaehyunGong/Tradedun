@@ -31,7 +31,7 @@ public class contactServiceImpl implements contactService{
 	}
 
 	@Override
-	public boolean sendContact(Contact contact, File file, InputStream inputStream) throws IOException {
+	public boolean sendContact(Contact contact, File file, InputStream inputStream) throws Exception {
 		boolean isCheck = false;
 
 		//Contact 테이블의 마지막 row의 contactNo + 1를 가져온다

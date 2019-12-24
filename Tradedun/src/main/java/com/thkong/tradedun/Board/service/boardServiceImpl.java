@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartException;
 
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Board.dao.boardDao;
@@ -31,9 +32,11 @@ public class boardServiceImpl implements boardService{
 	 * @description 이미지 업로드 로직
 	 * @param file
 	 * @return
+	 * @throws Exception 
+	 * @throws MultipartException 
 	 */
 	@Override
-	public Map<String, String> uploadFile(File file, InputStream input) throws IOException{
+	public Map<String, String> uploadFile(File file, InputStream input) throws MultipartException, Exception{
 		String fileName= fileLib.uploadFile("/upImage/", file, input);
 		
 		// json 데이터로 등록

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -23,11 +24,13 @@ public class boardRestController {
 	 * @description ckEditor로 이미지 업로드시 파일업로드 로직
 	 * @param multiFile
 	 * @return
+	 * @throws Exception 
+	 * @throws MultipartException 
 	 * @throws  
 	 * @throws IOException
 	 */
 	@RequestMapping(value="/uploadFile")
-	public Map<String, String> uploadFile(MultipartHttpServletRequest multiFile) throws IOException{
+	public Map<String, String> uploadFile(MultipartHttpServletRequest multiFile) throws MultipartException, Exception{
 		
 		MultipartFile multifile = multiFile.getFile("upload");
 		

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TradeDun - 컨텐츠 메뉴</title>
+    <title>TradeDun - 문의하기</title>
     <meta charset="utf-8">
 	<c:import  url="/header" />    
   </head>
@@ -62,7 +62,7 @@
 	                    </div>
 	                    
 						<div class="form-group">
-	                    	<label for="#">첨부파일</label>
+	                    	<label for="#">첨부파일 및 이미지 (최대 20MB)</label>
 	                        <input type="file" name="attach" class="form-control">
 	                    </div>
 	                    

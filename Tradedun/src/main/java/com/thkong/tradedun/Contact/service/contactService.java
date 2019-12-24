@@ -12,6 +12,6 @@ public interface contactService {
 
 	List<CodeTB> selectContactCodeList();
 
-	boolean sendContact(Contact contact, File file, InputStream inputStream) throws IOException;
+	boolean sendContact(Contact contact, File file, InputStream inputStream) throws Exception;
 
 }

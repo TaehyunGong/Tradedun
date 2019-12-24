@@ -6,13 +6,15 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartException;
+
 import com.thkong.tradedun.Auction.vo.Category;
 import com.thkong.tradedun.Board.vo.Board;
 import com.thkong.tradedun.User.vo.User;
 
 public interface boardService {
 
-	public Map<String, String> uploadFile(File file, InputStream inputStream) throws IOException;
+	public Map<String, String> uploadFile(File file, InputStream inputStream) throws IOException, MultipartException, Exception;
 
 	public void insertBoard(Board board) throws Exception;
 

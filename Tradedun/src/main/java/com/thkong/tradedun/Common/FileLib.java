@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartException;
 
 public class FileLib {
 
@@ -33,7 +34,7 @@ public class FileLib {
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */
-	public String uploadFile(String path, File file, InputStream input) throws FileNotFoundException, IOException {
+	public String uploadFile(String path, File file, InputStream input) throws Exception, MultipartException {
 		
 		//파일 원본 이름
 		String fileName = fileNameGenerater(file.getName());

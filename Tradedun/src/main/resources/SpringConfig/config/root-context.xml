@@ -8,7 +8,7 @@
 	<!-- 기존의 싱글톤 라이브러리를 빈으로 변경 -->
 	<bean id='conn' class='com.thkong.tradedun.Common.httpConnection' />
 	
-	<util:properties id="props" location="classpath:APIKEY.properties" />
+	<util:properties id="props" location="classpath:Configuration.properties" />
 
 	<bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
