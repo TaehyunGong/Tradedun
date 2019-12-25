@@ -1,16 +1,23 @@
 package com.thkong.tradedun.Contact.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
+import javax.mail.Message;
+
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thkong.tradedun.Auction.vo.CodeTB;
 import com.thkong.tradedun.Common.FileLib;
+import com.thkong.tradedun.Common.MailLib;
 import com.thkong.tradedun.Common.vo.Attach;
 import com.thkong.tradedun.Contact.dao.contactDao;
 import com.thkong.tradedun.Contact.vo.Contact;
@@ -24,6 +31,12 @@ public class contactServiceImpl implements contactService{
 	
 	@Autowired
 	private FileLib fileLib;
+	
+	@Autowired 
+	VelocityEngine velocityEngine;
+	
+	@Autowired
+	MailLib mailLib;
 	
 	@Override
 	public List<CodeTB> selectContactCodeList() {
@@ -67,7 +80,45 @@ public class contactServiceImpl implements contactService{
 				isCheck = true;
 		}
 		
+		//DB에 정상적으로 삽입했을때 메일을 발송한다.
+		if(isCheck) {
+			String contents = renderTemplate(null, "AuctionListAdd.vm");
+			
+			Message msg = mailLib.getInstance()
+							.setFrom("tony950620@gmail.com")
+							.setRecipient("tony950620@naver.com")
+							.setSubject("벨로시티")
+							.setContent(contents)
+							.build();
+			
+			mailLib.send(msg);
+		}
+		
 		return isCheck;
+	}
+	
+	/**
+	 * @description 템플릿 context를 받고 랜더링 후 Template 객체로 반환한다.
+	 * @createDate 2019. 11. 1.
+	 * @param context
+	 * @param templateName
+	 * @return
+	 */
+	public String renderTemplate(Map<String, Object> contextValiable, String templateName) {
+		VelocityContext velocityContext = new VelocityContext();
+		
+		if(contextValiable != null) {
+			//map의 키+값 의갯수 만큼 context에 삽입
+			for( Map.Entry<String, Object> elem : contextValiable.entrySet() ){
+				velocityContext.put(elem.getKey(), elem.getValue());
+			}
+		}
+		
+		Template template = velocityEngine.getTemplate(templateName);
+		StringWriter stringWriter = new StringWriter(); 
+		template.merge(velocityContext, stringWriter);
+		
+		return stringWriter.toString();
 	}
 
 }
