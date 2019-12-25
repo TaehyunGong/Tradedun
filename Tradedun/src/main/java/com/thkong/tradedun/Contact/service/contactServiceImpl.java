@@ -82,12 +82,12 @@ public class contactServiceImpl implements contactService{
 		
 		//DB에 정상적으로 삽입했을때 메일을 발송한다.
 		if(isCheck) {
-			String contents = renderTemplate(null, "AuctionListAdd.vm");
+			String contents = renderTemplate(null, "ContactConfirm.vm");
 			
 			Message msg = mailLib.getInstance()
-							.setFrom("tony950620@gmail.com")
-							.setRecipient("tony950620@naver.com")
-							.setSubject("벨로시티")
+							.setFrom("tony950620@gmail.com", "TradeDun")
+							.setRecipient(contact.getFromEmail())
+							.setSubject("[TradeDun]_문의 해주셔서 감사합니다!")
 							.setContent(contents)
 							.build();
 			
