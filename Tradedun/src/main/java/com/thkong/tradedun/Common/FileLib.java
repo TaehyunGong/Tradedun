@@ -44,8 +44,6 @@ public class FileLib {
 		byte fileData[] = bytes;
 		FileOutputStream fos = new FileOutputStream(filePath + path + fileName);
         fos.write(fileData);
-		
-        System.out.println("업로드 완료");
         
 		return fileName;
 	}

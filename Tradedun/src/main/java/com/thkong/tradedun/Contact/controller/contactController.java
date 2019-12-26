@@ -35,12 +35,23 @@ public class contactController {
 	}
 	
 	/**
+	 * @description 포워딩) 문의종류를 DB에서 가져와 문의페이지로 넘김
+	 * @return
+	 */
+	@RequestMapping(value="/contactResult")
+	public String contactResult(Model model) {
+		
+		return "/Contact/contactResult";
+	}
+	
+	/**
 	 * @description 문의 메일 발송 및 DB 저장 컨트롤러
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping(value="/sendContact", method = RequestMethod.POST)
-	public String sendContact(MultipartHttpServletRequest req) throws Exception{
+	public String sendContact(MultipartHttpServletRequest req
+							, Model model) throws Exception{
 		
 		Contact contact = new Contact();
 		String code = req.getParameter("code");
@@ -62,7 +73,7 @@ public class contactController {
 		}
 		boolean isCheck = service.sendContact(contact, file, multifile.getInputStream());
 		
-		return "redirect:/contact/contactMail";
+		return "redirect:/contact/contactResult";
 	}
 	
 }

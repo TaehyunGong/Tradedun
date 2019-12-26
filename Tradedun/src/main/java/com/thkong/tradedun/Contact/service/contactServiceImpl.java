@@ -68,8 +68,6 @@ public class contactServiceImpl implements contactService{
 			
 			int attachResult = dao.insertAttach(attach);
 			
-			System.out.println("확장자 : " + file.getName());
-			
 			//문의와 첨부파일이 정상적으로 DB에 insert 되면 true
 			if(result != 0 || attachResult != 0) 
 				isCheck = true;

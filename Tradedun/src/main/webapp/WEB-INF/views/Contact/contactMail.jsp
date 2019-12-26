@@ -12,7 +12,7 @@
 
     <!-- END nav -->
     
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/bg_2.jpg');" data-stellar-background-ratio="0.5">
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/images/nbg_4.png');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
@@ -31,7 +31,7 @@
 	                <h2 class="text-center">잘 안되는 버그나 필요한 기능이 있으시다면 메일로 알려주세요!</h2>
 	                
 					<form id="submitForm" action="/contact/sendContact" class="bg-light p-5 contact-form" 
-            			method="post" enctype="multipart/form-data" onsubmit="return false;">
+            			method="post" enctype="multipart/form-data">
             			
              			<div class="form-group">
 						    <label for="#">문의 종류</label>
@@ -58,7 +58,7 @@
 	                    
 	                    <div class="form-group">
 	                    	<label for="#">내용 *</label>
-	                        <textarea name="contents" id="" cols="30" rows="7" class="form-control" placeholder="내용" required="required"></textarea>
+	                        <textarea name="contents" id="contents" cols="30" rows="7" class="form-control" placeholder="내용" required="required"></textarea>
 	                    </div>
 	                    
 						<div class="form-group">
@@ -67,7 +67,7 @@
 	                    </div>
 	                    
 	                    <div class="form-group">
-	                        <input type="button" onclick="submit()" value="문의 메일 보내기" class="btn btn-primary py-3 px-5">
+	                        <input type="button" id="btn" onclick="send()" value="문의 메일 보내기" class="btn btn-primary py-3 px-5">
 	                    </div>
 	                </form>
 	
@@ -81,10 +81,37 @@
 	<script type="text/javascript">
 	
 		//수동 제출
-		// mode = modify || insert(default)
-		function submit(){
-			$('#submitForm').submit();
+		function send(){
+			var email = $('input[name=email]');
+			var contents = $('#contents');
+			
+			if(! isEmail( $(email).val() )){
+				alert('잘못된 이메일입니다.');
+				$(email).focus();
+				return false;
+			}
+			
+			if($(contents).val().length <= 0){
+				alert('내용을 작성해주세요');
+				$(contents).focus();
+				return false;
+			}
+			
+			$('#btn').removeClass('btn-primary').css('background', 'red').css('color', 'white').val('문의 메일 보내는 중...');
+			
+			if(confirm('문의메일을 보내시겠습니까?')){
+				$('#btn').removeAttr('onclick');
+				$('#submitForm').submit();
+			}
 		}
+		
+		//이메일 정규식
+		function isEmail(asValue) {
+			var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+			return regExp.test(asValue); // 형식에 맞는 경우 true 리턴	
+
+		}
+
 	</script>
 	
   </body>
