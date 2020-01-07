@@ -5,6 +5,8 @@
 <html>
   <head>
     <title>TradeDun - 컨텐츠 메뉴</title>
+    <meta name="description" content="경매장 검색 컨텐츠 메뉴" />
+    
     <meta charset="utf-8">
 	<c:import  url="/header" />    
   </head>

@@ -6,6 +6,7 @@
   <head>
     <title>TradeDun - 문의하기</title>
     <meta charset="utf-8">
+    <meta name="description" content="문의, 메일 보내기" />
 	<c:import  url="/header" />    
   </head>
   <body>

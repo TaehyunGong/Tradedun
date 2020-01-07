@@ -7,6 +7,7 @@
   <head>
     <title>TradeDun - ${board.title}</title>
     <meta charset="utf-8">
+    <meta name="description" content="공지사항 상세보기" />
     <c:import  url="/header" /> 
   </head>
   <body>

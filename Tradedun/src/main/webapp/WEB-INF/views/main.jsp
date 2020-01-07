@@ -8,6 +8,7 @@
   <head>
     <title>TradeDun</title>
     <meta charset="UTF-8">
+    <meta name="description" content="던파 트레이드던 경매장 아바타 검색" />
     
     <c:import  url="/?page=/common/header" />
   </head>

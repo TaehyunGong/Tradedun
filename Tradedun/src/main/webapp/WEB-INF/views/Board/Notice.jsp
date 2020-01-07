@@ -8,6 +8,7 @@
   <head>
     <title>TradeDun - 공지사항</title>
     <meta charset="utf-8">
+    <meta name="description" content="공지사항 리스트" />
 	<c:import  url="/header" />
   </head>
   <body>

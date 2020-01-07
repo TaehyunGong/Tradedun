@@ -6,6 +6,7 @@
   <head>
     <title>TradeDun - 쇼룸 검색</title>
     <meta charset="utf-8">
+    <meta name="description" content="던파 쇼룸 경매장 검색" />
 	<c:import  url="/header" />    
   </head>
   <body>

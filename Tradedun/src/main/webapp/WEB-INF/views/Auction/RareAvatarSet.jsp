@@ -6,6 +6,7 @@
   <head>
     <title>TradeDun - 레어아바타 검색</title>
     <meta charset="utf-8">
+    <meta name="description" content="레어아바타, 레압 경매장 검색" />
 	<c:import  url="/header" />    
   </head>
   <body>
