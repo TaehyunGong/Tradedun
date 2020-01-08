@@ -24,7 +24,7 @@
 
 ### 2. Product Server
 - Apache와 Tomcat은 <code>MS Azure</code> 가상머신에서 운영
-- MariaDB는 AWS의 <code>가상머신</code>에서 운영
+- MariaDB는 <code>AWS</code>의 가상머신에서 운영
 
 ### 3. ETC
 - **SSL Free 인증서 적용**
@@ -39,6 +39,7 @@
   - 리눅스의 경우 : <code>\<Context docBase="/upLoad/" path="/upLoad/" /></code>
 
 ## Apply Run in Local 
+
 ### IDE 이클립스 기준
 1. 로컬에 clone 실행 <code>git clone https://github.com/TaehyunGong/Tradedun.git</code>
 2. eclipse 실행 후 Workspace는 원하는 아무경로로 생성
@@ -50,4 +51,4 @@
 8. Configuration.properties 의 위치를 지정하기 위해 추가 <code>\<Context docBase="D:\upLoad/" path="/upLoad/" /></code>
 9. Tradedun/src/main/resources/Configuration.properties 파일을 Context /upLoad/로 셋팅한 위치로 이동 후 내용 수정
 10. DB 테이블 DDL 추가 (password : 57pn54) http://aquerytool.com:80/aquerymain/index/?rurl=b7d43aa2-0134-41cb-82c8-67e65cbca9a7
-11. 
+11. 실행
