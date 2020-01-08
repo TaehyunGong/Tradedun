@@ -28,7 +28,7 @@
 
 ### 3. ETC
 - **SSL Free 인증서 적용**
-  - 90일 뒤 인증서 교체 필요
+  - 90일 뒤 인증서 교체 필요, 만료기간 2020-03-15
 - **web server와 was를 분리 후 mod_jk로 통신**
   - WEB서버에 SSL 적용 함으로 WEB서버와 통신하는 모든 서버에 SSL적용하기 위함
 - **web server & was 를 Docker 컨테이너에 import**
@@ -37,3 +37,15 @@
 - **Database & API KEY Configuration 은 최상단 루트 /upLoad 에 보관**
   - 윈도우의 경우 : <code>\<Context docBase="D:\upLoad/" path="/upLoad/" /></code>
   - 리눅스의 경우 : <code>\<Context docBase="/upLoad/" path="/upLoad/" /></code>
+
+## Apply Run in Local 
+### IDE 이클립스 기준
+1. 로컬에 clone 실행 <code>git clone https://github.com/TaehyunGong/Tradedun.git</code>
+2. eclipse 실행 후 Workspace는 원하는 아무경로로 생성
+3. import -> **Existing Maven Projects** -> Root Directory에서 clone를 받은 프로젝트 선택
+4. <code>/Tradedun/pom.xml</code> 선택 후 Finished
+5. eclipse에서 Servers 추가 -> tomcat 8.5 -> Tradedun 프로젝트로 docBase 선택
+6. Directory에 추가된 Servers -> Tomcat v8.5 Server at localhost-config -> server.xml 열기
+7. 최하단의 <Host> 태그 안에 Context를 우측으로 변경<code>\<Context docBase="tradedun" path="/tradedun" reloadable="true"        source="org.eclipse.jst.jee.server:tradedun"/></code>
+8. <code></code>
+
