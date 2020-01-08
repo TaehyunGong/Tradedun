@@ -47,5 +47,7 @@
 5. eclipse에서 Servers 추가 -> tomcat 8.5 -> Tradedun 프로젝트로 docBase 선택
 6. Directory에 추가된 Servers -> Tomcat v8.5 Server at localhost-config -> server.xml 열기
 7. 최하단의 <Host> 태그 안에 Context를 우측으로 변경<code>\<Context docBase="tradedun" path="/tradedun" reloadable="true"        source="org.eclipse.jst.jee.server:tradedun"/></code>
-8. <code></code>
+8. Configuration.properties 의 위치를 지정하기 위해 추가 <code>\<Context docBase="D:\upLoad/" path="/upLoad/" /></code>
+9. Tradedun/src/main/resources/Configuration.properties 파일을 Context /upLoad/로 셋팅한 위치로 이동
+10. DB 테이블 DDL 추가 
 
