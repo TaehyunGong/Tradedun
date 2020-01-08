@@ -50,5 +50,7 @@
 7. 최하단의 <Host> 태그 안에 Context를 우측으로 변경<code>\<Context docBase="tradedun" path="/tradedun" reloadable="true"        source="org.eclipse.jst.jee.server:tradedun"/></code>
 8. Configuration.properties 의 위치를 지정하기 위해 추가 <code>\<Context docBase="D:\upLoad/" path="/upLoad/" /></code>
 9. Tradedun/src/main/resources/Configuration.properties 파일을 Context /upLoad/로 셋팅한 위치로 이동 후 내용 수정
-10. DB 테이블 DDL 추가 (password : 57pn54) http://aquerytool.com:80/aquerymain/index/?rurl=b7d43aa2-0134-41cb-82c8-67e65cbca9a7
+10. DB 테이블 DDL 및 코드 추가 
+  10-1. (password : 57pn54) http://aquerytool.com:80/aquerymain/index/?rurl=b7d43aa2-0134-41cb-82c8-67e65cbca9a7
+  10-2. (INSERT 시트로 추가) https://docs.google.com/spreadsheets/d/13o0hBFbKcpU4_LrUKQDJ5mu9Ax6A4dwvZJes3Xde18Y/edit?usp=sharing
 11. 실행
