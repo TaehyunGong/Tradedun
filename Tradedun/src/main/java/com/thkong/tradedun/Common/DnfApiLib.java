@@ -101,6 +101,11 @@ public class DnfApiLib {
 									.asObject(Auctions.class)
 									.ifFailure(res -> exceptionMethod(res))
 									.getBody();
+		
+		// 임시용으로 강제 throw
+		if(auctions.getRows() == null)
+			throw new DnfApiException("DnfApi ERROR : auction");
+		
 		return auctions;
 	}
 	
@@ -117,6 +122,12 @@ public class DnfApiLib {
 									.asObject(Auctions.class)
 									.ifFailure(res -> exceptionMethod(res))
 									.getBody();
+		
+		// 임시용으로 강제 throw
+		if(auctions.getRows() == null) {
+			throw new DnfApiException("DnfApi ERROR : auctionItemName");
+		}
+		
 		return auctions;
 	}
 

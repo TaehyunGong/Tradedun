@@ -1,58 +1,41 @@
  package com.thkong.tradedun;
 
-import java.io.StringWriter;
-import java.util.Map;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.mail.Message;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import com.thkong.tradedun.Common.MailLib;
+import com.thkong.tradedun.Auction.vo.Auction;
+import com.thkong.tradedun.Auction.vo.Auctions;
+import com.thkong.tradedun.Common.DnfApiException;
+import com.thkong.tradedun.Common.DnfApiLib;
 
 public class main {
 	
-	ApplicationContext context = new GenericXmlApplicationContext("/SpringConfig/config/*.xml");
-//	DnfApiLib dnfapi = context.getBean("dnfapi", DnfApiLib.class);
+	ApplicationContext context = new GenericXmlApplicationContext("/SpringConfig/config/root-context.xml");
+//	ApplicationContext context1 = new GenericXmlApplicationContext("/SpringConfig/config/database-context.xml");
+	DnfApiLib dnfapi = context.getBean("dnfapi", DnfApiLib.class);
 //	ObjectMapper mapper = context.getBean("mapper", ObjectMapper.class);
-	SqlSession session = context.getBean("sqlSession", SqlSession.class);
+//	SqlSession session = context.getBean("sqlSession", SqlSession.class);
 	
 	VelocityEngine velocityEngine = context.getBean("velocityEngine", VelocityEngine.class);
 	
-	public void process() throws Exception {
-		MailLib mail = context.getBean("MailLib", MailLib.class);
+	public void process() throws DnfApiException {
+		List<Auctions> avatarList = new ArrayList<Auctions>();
 		
-		String contents = renderTemplate(null, "");
-		
-		Message msg = mail.getInstance()
-						.setFrom("tony950620@gmail.com")
-						.setRecipient("tony950620@naver.com")
-						.setSubject("벨로시티")
-						.setContent(contents)
-						.build();
-		
-		mail.send(msg);
-		
-		System.out.println("성공?");
-	}
-	
-	public String renderTemplate(Map<String, Object> contextValiable, String templateName) {
-		VelocityContext velocityContext = new VelocityContext();
-		
-		//map의 키+값 의갯수 만큼 context에 삽입
-		for( Map.Entry<String, Object> elem : contextValiable.entrySet() ){
-			velocityContext.put(elem.getKey(), elem.getValue());
-        }
-		
-		Template template = velocityEngine.getTemplate(templateName);
-		StringWriter stringWriter = new StringWriter(); 
-		template.merge(velocityContext, stringWriter);
-		
-		return stringWriter.toString();
+		try {
+			Auctions auctions = dnfapi.auctionItemName("");
+			
+			System.out.println(auctions);
+			
+			for(Auction auction : auctions.getRows()) {}
+			
+		}catch(IOException ex) {
+			System.out.println(ex.getMessage());
+		}
 	}
 	
 	public static void main(String[] args) throws Exception {
