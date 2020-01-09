@@ -12,4 +12,9 @@ public class exceptionController {
 	public String forward404(HttpServletResponse res) {
 		return "/Exception/except";
 	}
+	
+	@RequestMapping("/dnfInspect")
+	public String dnfInspect(HttpServletResponse res) {
+		return "/Exception/dnfInspect";
+	}
 }

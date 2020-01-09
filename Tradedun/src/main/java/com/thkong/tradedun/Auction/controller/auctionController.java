@@ -4,18 +4,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.thkong.tradedun.Auction.service.auctionService;
 import com.thkong.tradedun.Auction.vo.AuctionSalesBoardDetail;
 import com.thkong.tradedun.Auction.vo.CodeTB;
+import com.thkong.tradedun.Common.DnfApiException;
 import com.thkong.tradedun.User.vo.User;
 
 @Controller
@@ -180,4 +184,18 @@ public class auctionController {
 		return "/Auction/AuctionDetail";
 	}
 	
+	
+	/**
+	 * @description 점검중이거나 DNF API서버에 일시적으로 문제가 있을경우 예외처리
+	 * @param req
+	 * @param exception
+	 * @return
+	 */
+	@ExceptionHandler(DnfApiException.class)
+	public ModelAndView DNFAPIError(HttpServletRequest req, Exception exception)
+	{
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:/dnfInspect");
+		return mav;
+	}
 }
