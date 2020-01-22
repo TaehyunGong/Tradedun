@@ -48,4 +48,8 @@ public class HomeController {
 		return "/common/footer";
 	}
 	
+	@RequestMapping(value = "/temp", method = {RequestMethod.GET, RequestMethod.POST})
+	public String template(@RequestParam(defaultValue = "home") String page) {
+		return "/HTML_Template/"+page;
+	}
 }

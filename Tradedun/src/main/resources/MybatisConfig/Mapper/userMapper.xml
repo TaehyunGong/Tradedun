@@ -13,4 +13,16 @@
 		INSERT INTO User (userNo, nickName, email, emailYN, createDT)
 		VALUES(#{userNo}, #{nickName}, #{email}, #{emailYN}, #{createDT})
 	</insert>
+	
+	<update id="updateUserInfo" parameterType="User">
+		UPDATE User SET email = #{email}, emailYN = #{emailYN}
+		WHERE userNo = #{userNo}	
+	</update>
+	
+	<!-- 추후에 유저 설정 테이블을 별도로 생성 -->
+	<select id="selectUserInfo" parameterType="String" resultType="User">
+		SELECT userNo, snsId, nickName, email, emailYN, messageYN, createDT, deleteDT
+		FROM   User
+		WHERE  userNo = #{userId}
+	</select>
 </mapper>

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +36,7 @@ public class userController {
 		
 		return "redirect:/";
 	}
-
+	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String login(HttpSession session) throws IOException {
 		if(service.logout(session) != null) {
@@ -46,4 +47,45 @@ public class userController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value="/user/userMenu", method = RequestMethod.GET)
+	public String userMenu(HttpSession session) throws IOException {
+		String page = "404";
+		if(session.getAttribute("user") != null) {
+			page = "/User/userMenu";
+		}
+		
+		return page;
+	}
+	
+	@RequestMapping(value="/user/userInfo", method = RequestMethod.GET)
+	public String mySettings(HttpSession session, Model model) throws IOException {
+		String page = "404";
+		if(session.getAttribute("user") != null) {
+			//세션에 있는 유저아이디를 파라메터에 넣어준다.
+			User sessionUser = (User)session.getAttribute("user");
+			User user = service.selectUserInfo(sessionUser.getUserNo());
+			
+			model.addAttribute("userInfo", user);
+			page = "/User/userInfo";
+		}
+		
+		return page;
+	}
+	
+	@RequestMapping(value="/user/updateUserInfo", method = RequestMethod.POST)
+	public String updateUserInfo(HttpSession session, User user) throws IOException {
+		String page = "404";
+		if(session.getAttribute("user") != null) {
+			//세션에 있는 유저아이디를 파라메터에 넣어준다.
+			User sessionUser = (User)session.getAttribute("user");
+			user.setUserNo(sessionUser.getUserNo());
+			
+			if(service.updateUserInfo(user)) {
+				page = "redirect:/user/userInfo";
+			}
+			
+		}
+		
+		return page;
+	}
 }

@@ -190,4 +190,26 @@ public class userServiceImpl implements userService {
 		return output.getId();
 	}
 
+	/**
+	 * @description 마이 페이지의 내용을 저장한다.
+	 * @createDate 2020. 01. 22.
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public boolean updateUserInfo(User user) {
+		return dao.updateUserInfo(user);
+	}
+
+	/**
+	 * @description 마이 페이지의 내용을 가져온다.
+	 * @createDate 2020. 01. 22.
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public User selectUserInfo(String userId) {
+		return dao.selectUserInfo(userId);
+	}
+
 }

@@ -13,4 +13,8 @@ public interface userService {
 	public User kakaoLogin(String code, String redirectUrl) throws IOException ;
 	
 	public String logout(HttpSession session) throws IOException;
+
+	public boolean updateUserInfo(User user);
+
+	public User selectUserInfo(String userId);
 }

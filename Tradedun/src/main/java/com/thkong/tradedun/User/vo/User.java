@@ -10,8 +10,8 @@ public class User {
 	private String snsId;
 	private String nickName;
 	private String email;
-	private char emailYN;
-	private char messageYN;
+	private String emailYN;
+	private String messageYN;
 	private Date createDT;
 	private Date deleteDT;
 	
