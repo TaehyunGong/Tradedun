@@ -36,8 +36,8 @@
 	                    <div class="categories">
 	                        <h3>마이 페이지</h3>
 	                        <li><a href="#">판매중 아바타</a></li>
-	                        <li><a href="#">내 조회 리스트</a></li>
-	                        <li><a href="#">내 정보</a></li>
+	                        <li><a href="/user/userSearchList">내 조회 리스트</a></li>
+	                        <li>내 정보</li>
 	                    </div>
 	                </div>
 	            </div>

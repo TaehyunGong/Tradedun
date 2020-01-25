@@ -1,7 +1,9 @@
 package com.thkong.tradedun.User.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -210,6 +212,11 @@ public class userServiceImpl implements userService {
 	@Override
 	public User selectUserInfo(String userId) {
 		return dao.selectUserInfo(userId);
+	}
+
+	@Override
+	public ArrayList<Map<String, String>> selectUserSearchList(String userNo) {
+		return logsDao.selectUserSearchList(userNo);
 	}
 
 }

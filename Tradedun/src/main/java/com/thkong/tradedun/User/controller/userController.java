@@ -1,6 +1,8 @@
 package com.thkong.tradedun.User.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -88,4 +90,20 @@ public class userController {
 		
 		return page;
 	}
+	
+	@RequestMapping(value="/user/userSearchList", method = RequestMethod.GET)
+	public String userSearchList(HttpSession session, Model model) throws IOException {
+		String page = "404";
+		if(session.getAttribute("user") != null) {
+			//세션에 있는 유저아이디를 파라메터에 넣어준다.
+			User sessionUser = (User)session.getAttribute("user");
+			ArrayList<Map<String, String>> list = service.selectUserSearchList(sessionUser.getUserNo());
+			
+			model.addAttribute("list", list);
+			page = "/User/UserSearchList";
+		}
+		
+		return page;
+	}
+	
 }
