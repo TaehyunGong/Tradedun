@@ -22,5 +22,5 @@ public interface userService {
 
 	public ArrayList<Map<String, String>> selectUserSearchList(String userNo, int row);
 
-	public int selectUserSearchCount(String userNo);
+	public Map<String, Object> selectUnderPageNumber(String userNo, int row);
 }

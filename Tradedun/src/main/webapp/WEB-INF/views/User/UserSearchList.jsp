@@ -90,13 +90,22 @@
 	            <div class="col text-center">
 	                <div class="block-27">
 	                    <ul>
-	                        <li><a href="#">&lt;</a></li>
-	                        <li class="active"><span>1</span></li>
-	                        <li><a href="#">2</a></li>
-	                        <li><a href="#">3</a></li>
-	                        <li><a href="#">4</a></li>
-	                        <li><a href="#">5</a></li>
-	                        <li><a href="#">&gt;</a></li>
+	                    	<c:if test="${thisPage > 3}">
+		                        <li><a href="/user/userSearchList?row=1">&lt;&lt;</a></li>
+	                    	</c:if>
+	                    	<c:forEach var="num" items="${pageNumbers}">
+	                    		<c:choose>
+	                    			<c:when test="${num eq thisPage}">
+	                    				<li class="active"><span>${num}</span></li>
+	                    			</c:when>
+	                    			<c:otherwise>
+			                    		<li><a href="/user/userSearchList?row=${num}">${num}</a></li>
+	                    			</c:otherwise>
+	                    		</c:choose>
+	                    	</c:forEach>
+	                    	<c:if test="${thisPage < endPage-2 }">
+			                    <li><a href="/user/userSearchList?row=${endPage}">&gt;&gt;</a></li>
+	                    	</c:if>
 	                    </ul>
 	                </div>
 	            </div>

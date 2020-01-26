@@ -100,10 +100,14 @@ public class userController {
 			//세션에 있는 유저아이디를 파라메터에 넣어준다.
 			User sessionUser = (User)session.getAttribute("user");
 			ArrayList<Map<String, String>> list = service.selectUserSearchList(sessionUser.getUserNo(), row);
-			int logCount = service.selectUserSearchCount(sessionUser.getUserNo());
+			Map<String, Object> underPageNumber = service.selectUnderPageNumber(sessionUser.getUserNo(), row);
 			
 			model.addAttribute("list", list);
-			model.addAttribute("logCount",logCount);
+			model.addAttribute("logCount", underPageNumber.get("logCount"));
+			model.addAttribute("pageNumbers", underPageNumber.get("pageNumbers"));
+			model.addAttribute("endPage", underPageNumber.get("endPage"));
+			model.addAttribute("thisPage", row);
+			
 			page = "/User/UserSearchList";
 		}
 		

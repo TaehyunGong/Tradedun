@@ -30,7 +30,7 @@
 			AND		(@ROWNUM:=0) = 0	-- 페이징을 위한 rownum 초기화
 		) A
 		ORDER BY createDT DESC	-- 역순으로 가져옴 
-		LIMIT #{start} , #{end}
+		LIMIT #{start} , #{pageCnt}
 	</select>
 	
 	<select id="selectUserSearchCount" parameterType="String" resultType="Int">

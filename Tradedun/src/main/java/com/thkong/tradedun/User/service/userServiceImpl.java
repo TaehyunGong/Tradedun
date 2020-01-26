@@ -221,14 +221,56 @@ public class userServiceImpl implements userService {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("userNo", userNo);
 		param.put("start",	(row-1)*10);
-		param.put("end", 	row * 10);
+		param.put("pageCnt", 	10);
 		
 		return logsDao.selectUserSearchList(param);
 	}
 
 	@Override
-	public int selectUserSearchCount(String userNo) {
-		return logsDao.selectUserSearchCount(userNo);
+	public Map<String, Object> selectUnderPageNumber(String userNo, int row) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int logCount = logsDao.selectUserSearchCount(userNo);
+		ArrayList<Integer> pageNumbers = new ArrayList<Integer>();
+		
+		/*
+		 * 한 페이지에는 최대 10행
+		 * 하단 페이징은 5개
+		 */
+		
+		//조회건수로 최대 페이지 갯수, 로그가없을시 0제수 나눗셈 에러를 방지
+		int total = (int)Math.ceil((logCount == 0 ? 1 : logCount) / 10.0);
+		
+		//row가 1또는 2라면 1~5까지 다보여준다.
+		if(row < 3) {
+			for(int i=1; i <= 5; i++) {
+				if(i <= total) {
+					pageNumbers.add(i);
+				}
+			}
+		//row가 total-1보다 클경우 
+		}else if(total-1 <= row){
+			for(int i=total-4; i <= total; i++) {
+				pageNumbers.add(i);
+			}
+		}else {
+			// x-2 < x < x+2
+			for(int i=row-2; i <= row+2; i++) {
+				if(i <= total) {
+					pageNumbers.add(i);
+				}
+			}
+		}
+		
+		//페이지가 없다면 1만 보여줌
+		if(pageNumbers.size() == 0){
+			pageNumbers.add(1);
+		}
+		
+		map.put("pageNumbers", pageNumbers);
+		map.put("logCount", logCount);
+		map.put("endPage", total);
+		
+		return map;
 	}
 
 }
