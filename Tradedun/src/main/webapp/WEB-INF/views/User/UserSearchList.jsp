@@ -43,30 +43,42 @@
 	            </div>
 	
 	            <div class="col-md-9 text-center d-flex ftco-animate">
-	                <div class="car-list">
-	                    <table class="table">
-	                        <thead class="thead-primary">
-	                            <tr class="text-center">
-	                            	<th class="heading">&nbsp;</th>
-	                                <th class="heading">날짜</th>
-	                                <th class="heading">컨텐츠</th>
-	                                <th class="heading">직업</th>
-	                                <th class="heading">차수 or 아바타</th>
-	                            </tr>
-	                        </thead>
-	                        <tbody>
-	                        	<c:forEach var="log" items="${list}" varStatus="num">
-	                            <tr>
+                   <table class="table">
+                       <thead class="thead-primary">
+                           <tr class="text-center">
+                           	<th class="heading">*</th>
+                               <th class="heading">날짜</th>
+                               <th class="heading">컨텐츠</th>
+                               <th class="heading">직업</th>
+                               <th class="heading">차수 or 아바타</th>
+                               <th class="heading">조회</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                       	<c:forEach var="log" items="${list}" varStatus="num">
+                           <tr>
+                           	<c:choose>
+                           		<c:when test="${log.requestUrl eq '/auction/avatarCharacterSetSearch'}">
 	                                <td>${num.count }</td>
 	                                <td>${log.createDT }</td>
-	                                <td>${log.requestUrl }</td>
+	                                <td>레어아바타 검색</td>
 	                                <td>${log.codeName }</td>
 	                                <td>${log.categoryName }</td>
-	                            </tr>
-	                        	</c:forEach>
-	                        </tbody>
-	                    </table>
-	                </div>
+		                            <td><a href="${log.requestUrl}?jobId=${log.attr1}&categoryCode=${log.attr2}" class="btn btn-primary">검색</a></td> 
+                           		</c:when>
+                           		<c:when test="${log.requestUrl eq '/auction/avatarShowroomSearch'}">
+									<td>${num.count }</td>
+	                                <td>${log.createDT }</td>
+	                                <td>쇼룸 아바타 검색</td>
+	                                <td>${log.codeName }</td>
+	                                <td><a href="#${num.count}showroom" rel="modal:open" class='btn btn-success'>상세보기</a></td>
+	                                <td><button onclick="submitShowroom('${num.count }')" class="btn btn-primary">검색</button></td>
+                           		</c:when>
+                           	</c:choose>
+                           </tr>
+                       	</c:forEach>
+                       </tbody>
+                   </table>
 	            </div>
 	
 	        </div>
@@ -88,13 +100,24 @@
 	        </div>
 	    </div>
 	</section>      
-	<script>
 	
-		function forward(page){
-			location.href='/user/'+page;
+	<script>
+		function submitShowroom(num){
+			$('#showroomForm'+num).submit();
 		}
-		
 	</script>
+
+	<c:forEach var="pop" items="${list}" varStatus="num">
+		<c:if test="${pop.requestUrl eq '/auction/avatarShowroomSearch'}">
+			<div id="${num.count}showroom" class="modal">
+				<form id="showroomForm${num.count }" action="/auction/avatarShowroomSearch" method="post">
+					<input type="hidden" name="jobId" value="${pop.attr1 }">
+					<textarea name="showroom" style="width:100%; height:350px; border: none; resize: none;" readonly="readonly">${pop.attr2 }</textarea>
+				</form>
+				<a href="#" rel="modal:close" class='btn btn-danger'>닫기</a>
+			</div>
+		</c:if>
+	</c:forEach>
 
 	<c:import  url="/footer" />
   </body>
