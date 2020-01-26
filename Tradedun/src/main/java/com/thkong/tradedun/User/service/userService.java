@@ -20,5 +20,7 @@ public interface userService {
 
 	public User selectUserInfo(String userId);
 
-	public ArrayList<Map<String, String>> selectUserSearchList(String userNo);
+	public ArrayList<Map<String, String>> selectUserSearchList(String userNo, int row);
+
+	public int selectUserSearchCount(String userNo);
 }

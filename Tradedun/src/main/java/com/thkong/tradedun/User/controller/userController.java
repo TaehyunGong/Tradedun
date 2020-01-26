@@ -92,14 +92,18 @@ public class userController {
 	}
 	
 	@RequestMapping(value="/user/userSearchList", method = RequestMethod.GET)
-	public String userSearchList(HttpSession session, Model model) throws IOException {
+	public String userSearchList(HttpSession session
+							   , Model model
+							   , @RequestParam(required=true, defaultValue="1") int row) throws IOException {
 		String page = "404";
 		if(session.getAttribute("user") != null) {
 			//세션에 있는 유저아이디를 파라메터에 넣어준다.
 			User sessionUser = (User)session.getAttribute("user");
-			ArrayList<Map<String, String>> list = service.selectUserSearchList(sessionUser.getUserNo());
+			ArrayList<Map<String, String>> list = service.selectUserSearchList(sessionUser.getUserNo(), row);
+			int logCount = service.selectUserSearchCount(sessionUser.getUserNo());
 			
 			model.addAttribute("list", list);
+			model.addAttribute("logCount",logCount);
 			page = "/User/UserSearchList";
 		}
 		

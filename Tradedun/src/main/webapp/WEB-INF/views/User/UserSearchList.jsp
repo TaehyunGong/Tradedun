@@ -42,8 +42,11 @@
 	                </div>
 	            </div>
 	
-	            <div class="col-md-9 text-center d-flex ftco-animate">
-                   <table class="table">
+				<div class="col-md-9 ftco-animate">
+					<div>
+						<h2>총 조회 건수 : <span style="color:#f7b71d;">${logCount}</span></h2>
+					</div>
+                   <table class="table text-center ">
                        <thead class="thead-primary">
                            <tr class="text-center">
                            	<th class="heading">*</th>
@@ -59,7 +62,7 @@
                            <tr>
                            	<c:choose>
                            		<c:when test="${log.requestUrl eq '/auction/avatarCharacterSetSearch'}">
-	                                <td>${num.count }</td>
+	                                <td>${log.ROWNUM }</td>
 	                                <td>${log.createDT }</td>
 	                                <td>레어아바타 검색</td>
 	                                <td>${log.codeName }</td>
@@ -67,7 +70,7 @@
 		                            <td><a href="${log.requestUrl}?jobId=${log.attr1}&categoryCode=${log.attr2}" class="btn btn-primary">검색</a></td> 
                            		</c:when>
                            		<c:when test="${log.requestUrl eq '/auction/avatarShowroomSearch'}">
-									<td>${num.count }</td>
+									<td>${log.ROWNUM }</td>
 	                                <td>${log.createDT }</td>
 	                                <td>쇼룸 아바타 검색</td>
 	                                <td>${log.codeName }</td>

@@ -7,6 +7,8 @@ public interface LogsDao {
 	
 	void insertLogs(Map<String, Object> map);
 
-	ArrayList<Map<String, String>> selectUserSearchList(String userNo);
+	ArrayList<Map<String, String>> selectUserSearchList(Map<String, Object> param);
+
+	int selectUserSearchCount(String userNo);
 
 }

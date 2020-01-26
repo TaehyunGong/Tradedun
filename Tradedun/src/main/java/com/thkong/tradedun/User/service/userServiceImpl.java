@@ -3,6 +3,7 @@ package com.thkong.tradedun.User.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -215,8 +216,19 @@ public class userServiceImpl implements userService {
 	}
 
 	@Override
-	public ArrayList<Map<String, String>> selectUserSearchList(String userNo) {
-		return logsDao.selectUserSearchList(userNo);
+	public ArrayList<Map<String, String>> selectUserSearchList(String userNo, int row) {
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("userNo", userNo);
+		param.put("start",	(row-1)*10);
+		param.put("end", 	row * 10);
+		
+		return logsDao.selectUserSearchList(param);
+	}
+
+	@Override
+	public int selectUserSearchCount(String userNo) {
+		return logsDao.selectUserSearchCount(userNo);
 	}
 
 }

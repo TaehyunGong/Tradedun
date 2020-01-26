@@ -38,7 +38,7 @@
 	                </div>
 	            </div>
 	            <div class="col-md-3 d-flex align-self-stretch ftco-animate">
-	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('userSearchList')">
+	                <div class="media block-6 auction auction-2 content-hover-box" onclick="forward('userSearchList?row=1')">
 	                    <div class="media-body py-md-4 text-center  p-3 m-4">
 	                        <div class="icon d-flex align-items-center justify-content-center"><span class="fab fa-searchengin"></span></div>
 	                        <p class='sub_title'>내 조회 리스트</p>
