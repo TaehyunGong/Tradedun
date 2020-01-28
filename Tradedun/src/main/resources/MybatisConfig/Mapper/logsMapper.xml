@@ -37,5 +37,7 @@
 		SELECT COUNT(*)
 		FROM Logs
 		WHERE userNo = #{userNo}
+		AND		requestUrl IN ('/auction/avatarCharacterSetSearch'
+								, '/auction/avatarShowroomSearch')
 	</select>
 </mapper>
