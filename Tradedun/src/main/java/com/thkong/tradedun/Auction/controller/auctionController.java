@@ -42,7 +42,10 @@ public class auctionController {
 	 */
 //	@RequestMapping(value="/AuctionWriter")
 	public String auctionWriter(HttpSession session, Model model) {
-		User user = (User)session.getAttribute("user");
+		User user = null;
+		if(session.getAttribute("user") != null) {
+			user = (User)session.getAttribute("user");
+		}
 		
 		String page = "/Auction/AuctionMenu";
 		if(user != null)
@@ -101,7 +104,11 @@ public class auctionController {
 	public String insertBoardWrite(@RequestParam(required = true) String submitJson
 											, @RequestParam(required = true) String subject
 											, HttpSession session) throws IOException {
-		User user = (User)session.getAttribute("user");
+		User user = null;
+		if(session.getAttribute("user") != null) {
+			user = (User)session.getAttribute("user");
+		}
+		
 		String page = "404";
 		//등록된 아이템, 제목, 유저가 유효하다면 이 조건을 실행하여 포워딩 패스를 넘겨준다.
 		if(user != null && "1".equals(service.insertBoardWrite(submitJson, subject, user))) {

@@ -9,4 +9,33 @@
 		VALUES(#{requestUrl}, NOW(), #{host}, #{user-agent}, #{referer}, #{cookie}, #{userNo}, #{clientIP}, #{attr1}, #{attr2}, #{attr3}, #{attr4})
 	</insert>
 	
+	<select id="selectUserSearchList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT ROWNUM, requestUrl, createDT, userNo, clientIP, attr1, attr2
+				, code, codeName
+				, categoryCode, categoryName
+		FROM (
+			SELECT 	requestUrl, createDT, userNo, clientIP, attr1, attr2
+				, T2.code, T2.codeName
+				, T3.categoryCode, T3.categoryName
+				, @ROWNUM := @ROWNUM +1 AS ROWNUM
+			FROM 	Logs T1
+					LEFT OUTER JOIN CodeTB T2
+						ON T1.attr1 = T2.code
+					LEFT OUTER JOIN Category T3
+						ON T1.attr2 = T3.categoryCode
+			WHERE 	1=1
+			AND		userNo = #{userNo}
+			AND		requestUrl IN ('/auction/avatarCharacterSetSearch'
+								, '/auction/avatarShowroomSearch')
+			AND		(@ROWNUM:=0) = 0	-- 페이징을 위한 rownum 초기화
+		) A
+		ORDER BY createDT DESC	-- 역순으로 가져옴 
+		LIMIT #{start} , #{pageCnt}
+	</select>
+	
+	<select id="selectUserSearchCount" parameterType="String" resultType="Int">
+		SELECT COUNT(*)
+		FROM Logs
+		WHERE userNo = #{userNo}
+	</select>
 </mapper>

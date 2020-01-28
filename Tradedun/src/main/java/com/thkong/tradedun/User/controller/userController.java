@@ -1,12 +1,15 @@
 package com.thkong.tradedun.User.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +38,7 @@ public class userController {
 		
 		return "redirect:/";
 	}
-
+	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String login(HttpSession session) throws IOException {
 		if(service.logout(session) != null) {
@@ -44,6 +47,71 @@ public class userController {
 		}
 		
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/user/userMenu", method = RequestMethod.GET)
+	public String userMenu(HttpSession session) throws IOException {
+		String page = "404";
+		if(session.getAttribute("user") != null) {
+			page = "/User/userMenu";
+		}
+		
+		return page;
+	}
+	
+	@RequestMapping(value="/user/userInfo", method = RequestMethod.GET)
+	public String mySettings(HttpSession session, Model model) throws IOException {
+		String page = "404";
+		if(session.getAttribute("user") != null) {
+			//세션에 있는 유저아이디를 파라메터에 넣어준다.
+			User sessionUser = (User)session.getAttribute("user");
+			User user = service.selectUserInfo(sessionUser.getUserNo());
+			
+			model.addAttribute("userInfo", user);
+			page = "/User/userInfo";
+		}
+		
+		return page;
+	}
+	
+	@RequestMapping(value="/user/updateUserInfo", method = RequestMethod.POST)
+	public String updateUserInfo(HttpSession session, User user) throws IOException {
+		String page = "404";
+		if(session.getAttribute("user") != null) {
+			//세션에 있는 유저아이디를 파라메터에 넣어준다.
+			User sessionUser = (User)session.getAttribute("user");
+			user.setUserNo(sessionUser.getUserNo());
+			
+			if(service.updateUserInfo(user)) {
+				page = "redirect:/user/userInfo";
+			}
+			
+		}
+		
+		return page;
+	}
+	
+	@RequestMapping(value="/user/userSearchList", method = RequestMethod.GET)
+	public String userSearchList(HttpSession session
+							   , Model model
+							   , @RequestParam(required=true, defaultValue="1") int row) throws IOException {
+		String page = "404";
+		if(session.getAttribute("user") != null) {
+			//세션에 있는 유저아이디를 파라메터에 넣어준다.
+			User sessionUser = (User)session.getAttribute("user");
+			ArrayList<Map<String, String>> list = service.selectUserSearchList(sessionUser.getUserNo(), row);
+			Map<String, Object> underPageNumber = service.selectUnderPageNumber(sessionUser.getUserNo(), row);
+			
+			model.addAttribute("list", list);
+			model.addAttribute("logCount", underPageNumber.get("logCount"));
+			model.addAttribute("pageNumbers", underPageNumber.get("pageNumbers"));
+			model.addAttribute("endPage", underPageNumber.get("endPage"));
+			model.addAttribute("thisPage", row);
+			
+			page = "/User/UserSearchList";
+		}
+		
+		return page;
 	}
 	
 }
